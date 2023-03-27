@@ -15,9 +15,11 @@ public class ProductionRequest extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "designer_id")
     private Designer designer;
 
     private String title;
