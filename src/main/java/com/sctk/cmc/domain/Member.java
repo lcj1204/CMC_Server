@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -26,6 +27,15 @@ public class Member extends BaseTimeEntity {
 
     private int likeCount;
     private Boolean active;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "body_info_id")
+    private BodyInfo bodyInfo;
+
+    @OneToMany(mappedBy = "member")
+    private List<LikeProduct> likeProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private ProductionRequest productionRequest;
 
     @Builder
     public Member(String name, String nickname, String email, String password, String introduce, String contact) {
