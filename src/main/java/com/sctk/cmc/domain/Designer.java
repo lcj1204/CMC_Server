@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -22,6 +23,10 @@ public class Designer extends BaseTimeEntity {
     private Portfolio portfolio;
     private String introduce;
     private String contact; // Contact 클래스 필요
+
+    @OneToMany(mappedBy = "designer")
+    private List<LikeDesigner> memberLikes;
+
     private int likeCount;
     private Boolean active;
 

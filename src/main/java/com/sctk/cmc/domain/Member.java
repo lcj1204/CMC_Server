@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,6 +20,10 @@ public class Member extends BaseTimeEntity {
     private String password;
     private String introduce;
     private String contact; // Contact 클래스 필요
+
+    @OneToMany(mappedBy = "member")
+    private List<LikeDesigner> designerLikes;
+
     private int likeCount;
     private Boolean active;
 
