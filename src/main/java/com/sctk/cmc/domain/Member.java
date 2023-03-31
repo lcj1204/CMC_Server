@@ -35,7 +35,7 @@ public class Member extends BaseTimeEntity {
     private List<LikeProduct> likeProducts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private ProductionRequest productionRequest;
+    private List<ProductionRequest> productionRequest;
 
     @Builder
     public Member(String name, String nickname, String email, String password, String introduce, String contact) {
