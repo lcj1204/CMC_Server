@@ -20,7 +20,7 @@ public class ProductionProgress extends BaseTimeEntity {
     /**
      * 양방향 매핑
      */
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "productionProgress", fetch = FetchType.LAZY)
     private Product product;
 
     @OneToMany(mappedBy = "productionProgress")

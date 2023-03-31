@@ -27,8 +27,8 @@ public class Member extends BaseTimeEntity {
 
     private int likeCount;
     private Boolean active;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "body_info_id")
+
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private BodyInfo bodyInfo;
 
     @OneToMany(mappedBy = "member")
