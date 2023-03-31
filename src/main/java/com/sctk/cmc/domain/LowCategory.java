@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class LowCategory extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "high_category_id")
+    @Column(name = "low_category_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -21,6 +21,7 @@ public class BodyInfo extends BaseTimeEntity{
     private float hip;
     private float thigh;
 
-    @OneToOne(mappedBy = "member_id", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 }

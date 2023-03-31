@@ -16,6 +16,6 @@ public class ProductionProgressImg extends BaseTimeEntity{
     private ProgressType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "production_progress_id")
+    @JoinColumn(name = "production_progress_id")
     private ProductionProgress productionProgress;
 }
