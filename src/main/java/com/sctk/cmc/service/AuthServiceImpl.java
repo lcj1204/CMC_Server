@@ -15,7 +15,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Member authenticate(String email, String password) {
+    public Member authenticateMember(String email, String password) {
         if (!memberService.existsByEmail(email)) {
             throw new CMCException(MEMBERS_ILLEGAL_EMAIL);
         }

@@ -2,8 +2,6 @@ package com.sctk.cmc.service;
 
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.exception.CMCException;
-import com.sctk.cmc.exception.ResponseStatus;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +32,7 @@ class AuthServiceImplTest {
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
 
         //when
-        Member authenticatedMember = authService.authenticate(anyEmail, anyPassword);
+        Member authenticatedMember = authService.authenticateMember(anyEmail, anyPassword);
 
         //then
         assertThat(authenticatedMember.getEmail()).isEqualTo(anyEmail);
@@ -48,7 +46,7 @@ class AuthServiceImplTest {
         when(memberService.existsByEmail(any())).thenReturn(false);
 
         // then
-        assertThatThrownBy(() -> authService.authenticate(email, password))
+        assertThatThrownBy(() -> authService.authenticateMember(email, password))
                 .isInstanceOf(CMCException.class)
                 .hasMessage(MEMBERS_ILLEGAL_EMAIL.name());
     }
