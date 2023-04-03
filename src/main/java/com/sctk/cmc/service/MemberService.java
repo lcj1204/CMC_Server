@@ -8,4 +8,6 @@ public interface MemberService {
     Long join(MemberJoinParam param);
 
     Member retrieveByEmail(String email);
+
+    boolean existsByEmail(String email);
 }
