@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static com.sctk.cmc.exception.ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL;
@@ -71,6 +74,48 @@ class DesignerServiceImplTest {
 
     @Test
     public void email로_designer_검색_존재X_테스트() throws Exception {
+        //given
+        String anyEmail = "anyEmail";
+        when(designerRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        //when
+        assertThatThrownBy(() -> designerService.retrieveByEmail(anyEmail))
+                .isInstanceOf(CMCException.class)
+                .hasMessage(AUTHENTICATION_ILLEGAL_EMAIL.name());
+    }
+
+    @Test
+    public void name으로_designer_검색_존재O_테스트() throws Exception {
+        //given
+        String anyName = "anyName";
+        String anyEmail = "anyEmail";
+
+        List<Designer> mockFindDesigners = List.of(createDesignerHasNameEmail(anyName, anyEmail));
+
+        when(designerRepository.findAllByName(any())).thenReturn(mockFindDesigners);
+
+        //when
+        List<Designer> designers = designerService.retrieveAllByName(anyName);
+
+        //then
+        assertThat(designers.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void name으로_designer_검색_여러명_존재_테스트() throws Exception {
+        //given
+        String anyName = "anyName";
+        when(designerRepository.findAllByName(any())).thenReturn(Collections.EMPTY_LIST);
+
+        //when
+        List<Designer> designers = designerService.retrieveAllByName(anyName);
+
+        //then
+        assertThat(designers.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void name으로_designer_검색_존재X_테스트() throws Exception {
         //given
         String anyEmail = "anyEmail";
         when(designerRepository.findByEmail(any())).thenReturn(Optional.empty());
