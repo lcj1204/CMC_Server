@@ -19,11 +19,12 @@ public class HighCategory extends BaseTimeEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "highCategory")
-    private List<LowCategory> lowCategorys;
-
     public HighCategory(Designer designer, String name) {
         this.designer = designer;
         this.name = name;
+    }
+
+    public void setDesigner(Designer designer) {
+        this.designer = designer;
     }
 }

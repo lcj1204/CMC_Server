@@ -16,14 +16,14 @@ public class LowCategory extends BaseTimeEntity {
     @JoinColumn(name = "designer_id")
     private Designer designer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "high_category_id")
-    private HighCategory highCategory;
-
     private String name;
 
     public LowCategory(Designer designer, String name) {
         this.designer = designer;
         this.name = name;
+    }
+
+    public void setDesigner(Designer designer) {
+        this.designer = designer;
     }
 }
