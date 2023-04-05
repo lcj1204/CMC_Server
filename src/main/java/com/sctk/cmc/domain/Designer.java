@@ -1,11 +1,16 @@
 package com.sctk.cmc.domain;
 
+import com.sctk.cmc.exception.CMCException;
+import com.sctk.cmc.exception.ResponseStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.sctk.cmc.exception.ResponseStatus.*;
 
 @Getter
 @NoArgsConstructor
@@ -21,6 +26,12 @@ public class Designer extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "designer")
     private Portfolio portfolio;
+
+    @OneToMany(mappedBy = "designer")
+    private List<HighCategory> highCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "designer")
+    private List<LowCategory> lowCategories = new ArrayList<>();
     private String introduce;
     private String contact; // Contact 클래스 필요
 
@@ -40,5 +51,23 @@ public class Designer extends BaseTimeEntity {
         this.contact = contact;
         this.likeCount = 0;
         active = true;
+    }
+
+    public void setHighCategories(List<HighCategory> highCategories) {
+        if (highCategories.size() > 3) {
+            throw new CMCException(DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT);
+        }
+        this.highCategories = highCategories;
+        highCategories.stream()
+                .forEach(category -> category.setDesigner(this));
+    }
+
+    public void setLowCategories(List<LowCategory> lowCategories) {
+        if (lowCategories.size() > 3) {
+            throw new CMCException(DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT);
+        }
+        this.lowCategories = lowCategories;
+        lowCategories.stream()
+                .forEach(category -> category.setDesigner(this));
     }
 }
