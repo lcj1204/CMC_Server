@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -18,11 +19,10 @@ public class DesignerRepository {
         return designer.getId();
     }
 
-    public Optional<Designer> findByName(String name) {
+    public List<Designer> findAllByName(String name) {
         return em.createQuery("select d from Designer d where d.name = :name", Designer.class)
                 .setParameter("name", name)
-                .getResultStream()
-                .findAny();
+                .getResultList();
     }
 
     public Optional<Designer> findByEmail(String email) {
