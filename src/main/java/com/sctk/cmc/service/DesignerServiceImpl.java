@@ -1,26 +1,28 @@
 package com.sctk.cmc.service;
 
-import com.sctk.cmc.domain.Member;
-import com.sctk.cmc.dto.member.MemberJoinParam;
+import com.sctk.cmc.domain.Designer;
+import com.sctk.cmc.dto.designer.DesignerJoinParam;
 import com.sctk.cmc.exception.CMCException;
-import com.sctk.cmc.repository.MemberRepository;
+import com.sctk.cmc.repository.DesignerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.sctk.cmc.exception.ResponseStatus.*;
+import java.util.List;
+
+import static com.sctk.cmc.exception.ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL;
 
 @RequiredArgsConstructor
 @Service
-public class MemberServiceImpl implements MemberService {
+public class DesignerServiceImpl implements DesignerService {
     private final PasswordEncoder passwordEncoder;
-    private final MemberRepository memberRepository;
+    private final DesignerRepository designerRepository;
 
     @Transactional
     @Override
-    public Long join(MemberJoinParam param) {
-        return memberRepository.save(Member.builder()
+    public Long join(DesignerJoinParam param) {
+        return designerRepository.save(Designer.builder()
                 .name(param.getName())
                 .nickname(param.getNickname())
                 .email(param.getEmail())
@@ -29,14 +31,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member retrieveByEmail(String email) {
-        return memberRepository.findByEmail(email)
+    public Designer retrieveByEmail(String email) {
+        return designerRepository.findByEmail(email)
                 .orElseThrow(() -> new CMCException(AUTHENTICATION_ILLEGAL_EMAIL));
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return memberRepository.findByEmail(email)
+        return designerRepository.findByEmail(email)
                 .isPresent();
+    }
+
+    @Override
+    public List<Designer> retrieveAllByName(String name) {
+        return designerRepository.findAllByName(name);
     }
 }

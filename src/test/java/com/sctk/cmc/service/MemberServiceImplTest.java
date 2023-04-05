@@ -76,7 +76,7 @@ class MemberServiceImplTest {
         //when
         assertThatThrownBy(() -> memberService.retrieveByEmail(anyEmail))
                 .isInstanceOf(CMCException.class)
-                .hasMessage(MEMBERS_ILLEGAL_EMAIL.name());
+                .hasMessage(AUTHENTICATION_ILLEGAL_EMAIL.name());
     }
 
     Member createMember() {

@@ -1,5 +1,6 @@
 package com.sctk.cmc.service;
 
+import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.exception.CMCException;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +13,13 @@ import static com.sctk.cmc.exception.ResponseStatus.*;
 @Service
 public class AuthServiceImpl implements AuthService {
     private final MemberService memberService;
+    private final DesignerService designerService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public Member authenticateMember(String email, String password) {
         if (!memberService.existsByEmail(email)) {
-            throw new CMCException(MEMBERS_ILLEGAL_EMAIL);
+            throw new CMCException(AUTHENTICATION_ILLEGAL_EMAIL);
         }
 
         Member member = memberService.retrieveByEmail(email);
@@ -25,6 +27,20 @@ public class AuthServiceImpl implements AuthService {
             return member;
         }
 
-        throw new CMCException(MEMBERS_ILLEGAL_PASSWORD);
+        throw new CMCException(AUTHENTICATION_ILLEGAL_PASSWORD);
+    }
+
+    @Override
+    public Designer authenticateDesigner(String email, String password) {
+        if (!designerService.existsByEmail(email)) {
+            throw new CMCException(AUTHENTICATION_ILLEGAL_EMAIL);
+        }
+
+        Designer designer = designerService.retrieveByEmail(email);
+        if (passwordEncoder.matches(password, designer.getPassword())) {
+            return designer;
+        }
+
+        throw new CMCException(AUTHENTICATION_ILLEGAL_PASSWORD);
     }
 }
