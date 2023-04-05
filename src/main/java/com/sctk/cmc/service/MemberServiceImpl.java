@@ -29,6 +29,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member retrieveById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_ID));
+    }
+
+    @Override
     public Member retrieveByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new CMCException(AUTHENTICATION_ILLEGAL_EMAIL));
