@@ -1,5 +1,6 @@
 package com.sctk.cmc.service;
 
+import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.exception.CMCException;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,8 @@ class AuthServiceImplTest {
 
     @MockBean
     MemberService memberService;
+    @MockBean
+    DesignerService designerService;
     @MockBean
     PasswordEncoder passwordEncoder;
 
@@ -48,7 +51,7 @@ class AuthServiceImplTest {
         // then
         assertThatThrownBy(() -> authService.authenticateMember(email, password))
                 .isInstanceOf(CMCException.class)
-                .hasMessage(MEMBERS_ILLEGAL_EMAIL.name());
+                .hasMessage(AUTHENTICATION_ILLEGAL_EMAIL.name());
     }
 
     Member createMemberHasEmail(String email) {
@@ -57,4 +60,41 @@ class AuthServiceImplTest {
                 .build();
     }
 
+    @Test
+    public void designer_인증_테스트() throws Exception {
+        //given
+        String anyName = "anyName";
+        String anyEmail = "anyEmail";
+        String anyPassword = "anyPassword";
+        when(designerService.existsByEmail(any())).thenReturn(true);
+        when(designerService.retrieveByEmail(any())).thenReturn(createDesignerHasNameEmail(anyName, anyEmail));
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+
+        //when
+        Designer authenticatedDesigner = authService.authenticateDesigner(anyEmail, anyPassword);
+
+        //then
+        assertThat(authenticatedDesigner.getEmail()).isEqualTo(anyEmail);
+    }
+
+    @Test
+    public void designer_인증_존재X_이메일일때_테스트() throws Exception {
+        //given
+        String email = "email";
+        String password = "password";
+        when(designerService.existsByEmail(any())).thenReturn(false);
+
+        // then
+        assertThatThrownBy(() -> authService.authenticateDesigner(email, password))
+                .isInstanceOf(CMCException.class)
+                .hasMessage(AUTHENTICATION_ILLEGAL_EMAIL.name());
+    }
+
+
+    Designer createDesignerHasNameEmail(String name, String email) {
+        return Designer.builder()
+                .name(name)
+                .email(email)
+                .build();
+    }
 }
