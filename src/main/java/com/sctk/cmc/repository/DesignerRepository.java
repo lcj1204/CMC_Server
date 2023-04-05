@@ -19,6 +19,10 @@ public class DesignerRepository {
         return designer.getId();
     }
 
+    public Optional<Designer> findById(Long id) {
+        return Optional.ofNullable(em.find(Designer.class, id));
+    }
+
     public List<Designer> findAllByName(String name) {
         return em.createQuery("select d from Designer d where d.name = :name", Designer.class)
                 .setParameter("name", name)
