@@ -58,6 +58,8 @@ public class Designer extends BaseTimeEntity {
             throw new CMCException(DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT);
         }
         this.highCategories = highCategories;
+        highCategories.stream()
+                .forEach(category -> category.setDesigner(this));
     }
 
     public void setLowCategories(List<LowCategory> lowCategories) {
@@ -65,5 +67,7 @@ public class Designer extends BaseTimeEntity {
             throw new CMCException(DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT);
         }
         this.lowCategories = lowCategories;
+        lowCategories.stream()
+                .forEach(category -> category.setDesigner(this));
     }
 }
