@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member retrieveByEmail(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_EMAIL));
+                .orElseThrow(() -> new CMCException(AUTHENTICATION_ILLEGAL_EMAIL));
     }
 
     @Override
