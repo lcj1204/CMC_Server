@@ -6,6 +6,7 @@ import com.sctk.cmc.domain.LowCategory;
 import com.sctk.cmc.dto.designer.DesignerJoinParam;
 import com.sctk.cmc.exception.CMCException;
 import com.sctk.cmc.repository.DesignerRepository;
+import com.sctk.cmc.service.abstractions.DesignerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,6 @@ public class DesignerServiceImpl implements DesignerService {
     public int registerLowCategories(Long designerId, List<LowCategory> lowCategories) {
         Designer designer = retrieveById(designerId);
         designer.setLowCategories(lowCategories);
-        return 0;
+        return lowCategories.size();
     }
 }

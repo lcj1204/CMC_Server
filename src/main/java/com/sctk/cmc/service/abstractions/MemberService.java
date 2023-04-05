@@ -1,4 +1,4 @@
-package com.sctk.cmc.service;
+package com.sctk.cmc.service.abstractions;
 
 
 import com.sctk.cmc.domain.Member;

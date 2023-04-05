@@ -4,6 +4,7 @@ import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.dto.member.MemberJoinParam;
 import com.sctk.cmc.exception.CMCException;
 import com.sctk.cmc.repository.MemberRepository;
+import com.sctk.cmc.service.abstractions.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
