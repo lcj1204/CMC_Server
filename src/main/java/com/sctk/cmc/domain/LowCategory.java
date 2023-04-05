@@ -12,7 +12,7 @@ public class LowCategory extends BaseTimeEntity {
     @Column(name = "low_category_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "designer_id")
     private Designer designer;
 
