@@ -1,4 +1,4 @@
-package com.sctk.cmc.exception;
+package com.sctk.cmc.common.exception;
 
 import lombok.Getter;
 
