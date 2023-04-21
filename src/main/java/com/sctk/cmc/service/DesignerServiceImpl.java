@@ -4,7 +4,7 @@ import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.HighCategory;
 import com.sctk.cmc.domain.LowCategory;
 import com.sctk.cmc.dto.designer.DesignerJoinParam;
-import com.sctk.cmc.exception.CMCException;
+import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.DesignerRepository;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.sctk.cmc.exception.ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL;
-import static com.sctk.cmc.exception.ResponseStatus.DESIGNERS_ILLEGAL_ID;
+import static com.sctk.cmc.common.exception.ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL;
+import static com.sctk.cmc.common.exception.ResponseStatus.DESIGNERS_ILLEGAL_ID;
 
 @RequiredArgsConstructor
 @Service

@@ -1,5 +1,8 @@
-package com.sctk.cmc.exception;
+package com.sctk.cmc.common.exception;
 
+import lombok.Getter;
+
+@Getter
 public enum ResponseStatus {
     // Common
     SUCCESS(1000, "응답에 성공하였습니다."),

@@ -2,7 +2,7 @@ package com.sctk.cmc.service;
 
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.dto.member.MemberJoinParam;
-import com.sctk.cmc.exception.CMCException;
+import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.MemberRepository;
 import com.sctk.cmc.service.abstractions.MemberService;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
-import static com.sctk.cmc.exception.ResponseStatus.*;
+import static com.sctk.cmc.common.exception.ResponseStatus.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
