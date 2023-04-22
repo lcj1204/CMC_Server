@@ -3,14 +3,13 @@ package com.sctk.cmc.service;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.exception.CMCException;
+import com.sctk.cmc.exception.ResponseStatus;
 import com.sctk.cmc.service.abstractions.AuthService;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.abstractions.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import static com.sctk.cmc.exception.ResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +21,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Member authenticateMember(String email, String password) {
         if (!memberService.existsByEmail(email)) {
-            throw new CMCException(AUTHENTICATION_ILLEGAL_EMAIL);
+            throw new CMCException(ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL);
         }
 
         Member member = memberService.retrieveByEmail(email);
@@ -30,13 +29,13 @@ public class AuthServiceImpl implements AuthService {
             return member;
         }
 
-        throw new CMCException(AUTHENTICATION_ILLEGAL_PASSWORD);
+        throw new CMCException(ResponseStatus.AUTHENTICATION_ILLEGAL_PASSWORD);
     }
 
     @Override
     public Designer authenticateDesigner(String email, String password) {
         if (!designerService.existsByEmail(email)) {
-            throw new CMCException(AUTHENTICATION_ILLEGAL_EMAIL);
+            throw new CMCException(ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL);
         }
 
         Designer designer = designerService.retrieveByEmail(email);
@@ -44,6 +43,6 @@ public class AuthServiceImpl implements AuthService {
             return designer;
         }
 
-        throw new CMCException(AUTHENTICATION_ILLEGAL_PASSWORD);
+        throw new CMCException(ResponseStatus.AUTHENTICATION_ILLEGAL_PASSWORD);
     }
 }

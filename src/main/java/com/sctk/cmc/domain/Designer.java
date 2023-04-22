@@ -1,11 +1,9 @@
 package com.sctk.cmc.domain;
 
 import com.sctk.cmc.exception.CMCException;
-import com.sctk.cmc.exception.ResponseStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,7 @@ public class Designer extends BaseTimeEntity {
     @OneToMany(mappedBy = "designer")
     private List<LowCategory> lowCategories = new ArrayList<>();
     private String introduce;
-    private String contact; // Contact 클래스 필요
+    private String contact;
 
     @OneToMany(mappedBy = "designer")
     private List<LikeDesigner> memberLikes;
