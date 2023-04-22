@@ -10,4 +10,5 @@ public class DesignerJoinParam {
     private String nickname;
     private String email;
     private String password;
+    private String contact;
 }

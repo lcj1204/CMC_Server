@@ -31,6 +31,7 @@ public class DesignerServiceImpl implements DesignerService {
                 .nickname(param.getNickname())
                 .email(param.getEmail())
                 .password(passwordEncoder.encode(param.getPassword()))
+                .contact(param.getContact())
                 .build());
     }
 
