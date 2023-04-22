@@ -2,7 +2,7 @@ package com.sctk.cmc.service;
 
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Member;
-import com.sctk.cmc.exception.CMCException;
+import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.service.abstractions.AuthService;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.abstractions.MemberService;
@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.sctk.cmc.exception.ResponseStatus.*;
+import static com.sctk.cmc.common.exception.ResponseStatus.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
