@@ -3,7 +3,6 @@ package com.sctk.cmc.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ public class Member extends BaseTimeEntity {
     private String email;
     private String password;
     private String introduce;
-    private String contact; // Contact 클래스 필요
 
     @OneToMany(mappedBy = "member")
     private List<LikeDesigner> designerLikes;
@@ -38,13 +36,12 @@ public class Member extends BaseTimeEntity {
     private List<ProductionRequest> productionRequest;
 
     @Builder
-    public Member(String name, String nickname, String email, String password, String introduce, String contact) {
+    public Member(String name, String nickname, String email, String password, String introduce) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.introduce = introduce;
-        this.contact = contact;
         this.likeCount = 0;
         active = true;
     }
