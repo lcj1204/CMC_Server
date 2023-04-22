@@ -1,10 +1,6 @@
 package com.sctk.cmc.domain;
 
-<<<<<<< HEAD
-import com.sctk.cmc.exception.CMCException;
-=======
 import com.sctk.cmc.common.exception.CMCException;
->>>>>>> Develop
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
