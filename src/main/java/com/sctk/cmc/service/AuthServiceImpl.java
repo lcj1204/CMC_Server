@@ -1,13 +1,9 @@
 package com.sctk.cmc.service;
 
+import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Member;
-<<<<<<< HEAD
-import com.sctk.cmc.exception.CMCException;
-import com.sctk.cmc.exception.ResponseStatus;
-=======
 import com.sctk.cmc.common.exception.CMCException;
->>>>>>> Develop
 import com.sctk.cmc.service.abstractions.AuthService;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.abstractions.MemberService;
@@ -15,11 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
-=======
-import static com.sctk.cmc.common.exception.ResponseStatus.*;
-
->>>>>>> Develop
 @RequiredArgsConstructor
 @Service
 public class AuthServiceImpl implements AuthService {
