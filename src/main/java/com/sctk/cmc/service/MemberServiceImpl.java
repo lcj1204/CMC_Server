@@ -8,7 +8,6 @@ import com.sctk.cmc.service.dto.member.MemberJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.MemberRepository;
 import com.sctk.cmc.service.abstractions.MemberService;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

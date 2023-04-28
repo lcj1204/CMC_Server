@@ -18,7 +18,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/details")
+    @GetMapping("/detail")
     public BaseResponse<MemberDetailsResponse> getMemberDetails() {
         MemberDetails memberDetails = memberService.retrieveById(getMemberId());
 
@@ -52,8 +52,8 @@ public class MemberController {
     }
 
     private Long getMemberId() {
-        return (Long) SecurityContextHolder.getContext()
+        return Long.parseLong(SecurityContextHolder.getContext()
                 .getAuthentication()
-                .getPrincipal();
+                .getName());
     }
 }
