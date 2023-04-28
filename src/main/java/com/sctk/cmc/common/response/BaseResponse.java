@@ -3,16 +3,18 @@ package com.sctk.cmc.common.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class BaseResponse<T> {
 
     private static final int SUCCESS_CODE = 1000;
     private static final String SUCCESS_MESSAGE = "요청에 성공하였습니다.";
 
-    private final Boolean isSuccess;
-    private final int code;
-    private final String message;
+    private Boolean isSuccess;
+    private int code;
+    private String message;
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private T data;
