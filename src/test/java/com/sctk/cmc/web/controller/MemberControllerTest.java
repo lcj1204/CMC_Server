@@ -62,7 +62,7 @@ class MemberControllerTest {
                 mockDetails.getIntroduce()
         );
 
-        when(memberService.retrieveById(anyLong())).thenReturn(mockDetails);
+        when(memberService.retrieveDetailsById(anyLong())).thenReturn(mockDetails);
 
         // when
         MvcResult result = mvc.perform(get(REQUEST_URI.MEMBER_DETAILS))

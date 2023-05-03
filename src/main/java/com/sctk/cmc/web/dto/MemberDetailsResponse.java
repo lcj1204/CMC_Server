@@ -1,10 +1,11 @@
 package com.sctk.cmc.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class MemberDetailsResponse {
     private String name;
     private String nickname;
@@ -12,3 +13,5 @@ public class MemberDetailsResponse {
     private String profileImgUrl;
     private String introduce;
 }
+
+
