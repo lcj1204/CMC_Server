@@ -1,10 +1,10 @@
-package com.sctk.cmc.service.dto;
+package com.sctk.cmc.service.dto.member;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class BodyInfoParams {
+public class BodyInfoView {
     private float height;
     private float weight;
     private float shoulder;
@@ -16,7 +16,7 @@ public class BodyInfoParams {
     private float lower;
 
     @Builder
-    public BodyInfoParams(float height, float weight, float shoulder, float chest, float waist, float hip, float thigh, float upper, float lower) {
+    public BodyInfoView(float height, float weight, float shoulder, float chest, float waist, float hip, float thigh, float upper, float lower) {
         this.height = height;
         this.weight = weight;
         this.shoulder = shoulder;
