@@ -3,7 +3,9 @@ package com.sctk.cmc.service;
 import com.sctk.cmc.domain.BodyInfo;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.service.dto.BodyInfoParams;
+import com.sctk.cmc.service.dto.member.BodyInfoView;
 import com.sctk.cmc.service.dto.member.MemberDetails;
+import com.sctk.cmc.service.dto.member.MemberInfo;
 import com.sctk.cmc.service.dto.member.MemberJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.MemberRepository;
@@ -32,10 +34,14 @@ public class MemberServiceImpl implements MemberService {
                 .build());
     }
 
-    @Override
-    public MemberDetails retrieveById(Long id) {
-        Member member = memberRepository.findById(id)
+    public Member retrieveById(Long memberId) {
+        return memberRepository.findById(memberId)
                 .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_ID));
+    }
+
+    @Override
+    public MemberDetails retrieveDetailsById(Long memberId) {
+        Member member = retrieveById(memberId);
 
         return new MemberDetails(
                 member.getName(),
@@ -43,6 +49,28 @@ public class MemberServiceImpl implements MemberService {
                 member.getEmail(),
                 member.getProfileImgUrl(),
                 member.getIntroduce()
+        );
+    }
+
+    @Override
+    public MemberInfo retrieveInfoById(Long memberId) {
+        Member member = retrieveById(memberId);
+        BodyInfo info = member.getBodyInfo();
+
+        return new MemberInfo(
+                member.getName(),
+                member.getProfileImgUrl(),
+                BodyInfoView.builder()
+                        .height(info.getHeight())
+                        .weight(info.getWeight())
+                        .shoulder(info.getShoulder())
+                        .chest(info.getChest())
+                        .waist(info.getWaist())
+                        .hip(info.getHip())
+                        .thigh(info.getThigh())
+                        .upper(info.getUpper())
+                        .lower(info.getLower())
+                        .build()
         );
     }
 
@@ -64,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_ID));
 
-        BodyInfo bodyInfo = BodyInfo.builder()
+        BodyInfo.builder()
                 .member(member)
                 .height(bodyInfoParams.getHeight())
                 .hip(bodyInfoParams.getHip())
