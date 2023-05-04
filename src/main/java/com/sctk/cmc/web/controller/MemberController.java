@@ -2,11 +2,13 @@ package com.sctk.cmc.web.controller;
 
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
-import com.sctk.cmc.service.dto.BodyInfoParams;
+import com.sctk.cmc.service.dto.member.BodyInfoParams;
+import com.sctk.cmc.service.dto.member.BodyInfoModifyParams;
 import com.sctk.cmc.service.dto.member.MemberDetails;
 import com.sctk.cmc.service.abstractions.MemberService;
 import com.sctk.cmc.service.dto.member.MemberInfo;
-import com.sctk.cmc.web.dto.BodyInfoRegisterRequest;
+import com.sctk.cmc.web.dto.BodyInfoPostRequest;
+import com.sctk.cmc.web.dto.BodyInfoPutRequest;
 import com.sctk.cmc.web.dto.MemberDetailsResponse;
 import com.sctk.cmc.web.dto.MemberInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +52,7 @@ public class MemberController {
 
     // 구매자 신체 정보 등록
     @PostMapping("/body-info")
-    public BaseResponse<ResponseStatus> registerBodyInfo(@RequestBody BodyInfoRegisterRequest request) {
+    public BaseResponse<ResponseStatus> postBodyInfo(@RequestBody BodyInfoPostRequest request) {
         BodyInfoParams bodyInfoParams = BodyInfoParams.builder()
                 .height(request.getHeight())
                 .hip(request.getHip())
@@ -68,6 +70,25 @@ public class MemberController {
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
 
+    // 구매자 신체 정보 수정
+    @PutMapping("/body-info")
+    public BaseResponse<ResponseStatus> putBodyInfo(@RequestBody BodyInfoPutRequest request) {
+        BodyInfoModifyParams bodyInfoModifyParams = BodyInfoModifyParams.builder()
+                .height(request.getHeight())
+                .hip(request.getHip())
+                .lower(request.getLower())
+                .upper(request.getUpper())
+                .waist(request.getWaist())
+                .chest(request.getChest())
+                .thigh(request.getThigh())
+                .weight(request.getWeight())
+                .shoulder(request.getShoulder())
+                .build();
+
+        memberService.modifyBodyInfo(getMemberId(), bodyInfoModifyParams);
+
+        return new BaseResponse<>(ResponseStatus.SUCCESS);
+    }
     private Long getMemberId() {
         return Long.parseLong(SecurityContextHolder.getContext()
                 .getAuthentication()
