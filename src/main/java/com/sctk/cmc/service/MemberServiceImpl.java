@@ -2,11 +2,7 @@ package com.sctk.cmc.service;
 
 import com.sctk.cmc.domain.BodyInfo;
 import com.sctk.cmc.domain.Member;
-import com.sctk.cmc.service.dto.BodyInfoParams;
-import com.sctk.cmc.service.dto.member.BodyInfoView;
-import com.sctk.cmc.service.dto.member.MemberDetails;
-import com.sctk.cmc.service.dto.member.MemberInfo;
-import com.sctk.cmc.service.dto.member.MemberJoinParam;
+import com.sctk.cmc.service.dto.member.*;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.MemberRepository;
 import com.sctk.cmc.service.abstractions.MemberService;
@@ -34,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
                 .build());
     }
 
-    public Member retrieveById(Long memberId) {
+    private Member retrieveById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_ID));
     }
@@ -88,21 +84,39 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void registerBodyInfo(Long memberId, BodyInfoParams bodyInfoParams) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_ID));
+    public void registerBodyInfo(Long memberId, BodyInfoParams params) {
+        Member member = retrieveById(memberId);
 
         BodyInfo.builder()
                 .member(member)
-                .height(bodyInfoParams.getHeight())
-                .hip(bodyInfoParams.getHip())
-                .lower(bodyInfoParams.getLower())
-                .upper(bodyInfoParams.getUpper())
-                .waist(bodyInfoParams.getWaist())
-                .chest(bodyInfoParams.getChest())
-                .thigh(bodyInfoParams.getThigh())
-                .weight(bodyInfoParams.getWeight())
-                .shoulder(bodyInfoParams.getShoulder())
+                .height(params.getHeight())
+                .hip(params.getHip())
+                .lower(params.getLower())
+                .upper(params.getUpper())
+                .waist(params.getWaist())
+                .chest(params.getChest())
+                .thigh(params.getThigh())
+                .weight(params.getWeight())
+                .shoulder(params.getShoulder())
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public void modifyBodyInfo(Long memberId, BodyInfoModifyParams params) {
+        Member member = retrieveById(memberId);
+
+        BodyInfo.builder()
+                .member(member)
+                .height(params.getHeight())
+                .hip(params.getHip())
+                .lower(params.getLower())
+                .upper(params.getUpper())
+                .waist(params.getWaist())
+                .chest(params.getChest())
+                .thigh(params.getThigh())
+                .weight(params.getWeight())
+                .shoulder(params.getShoulder())
                 .build();
     }
 }
