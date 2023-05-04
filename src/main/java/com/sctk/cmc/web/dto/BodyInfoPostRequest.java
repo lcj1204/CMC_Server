@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class BodyInfoRegisterRequest {
+public class BodyInfoPostRequest {
     private float height;
     private float upper;
     private float lower;
