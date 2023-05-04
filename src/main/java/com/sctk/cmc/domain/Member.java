@@ -18,6 +18,8 @@ public class Member extends BaseTimeEntity {
     private String nickname;
     private String email;
     private String password;
+    private String role = "MEMBER";
+    private String profileImgUrl;
     private String introduce;
 
     @OneToMany(mappedBy = "member")
@@ -26,7 +28,7 @@ public class Member extends BaseTimeEntity {
     private int likeCount;
     private Boolean active;
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, orphanRemoval = true)
     private BodyInfo bodyInfo;
 
     @OneToMany(mappedBy = "member")
@@ -44,5 +46,9 @@ public class Member extends BaseTimeEntity {
         this.introduce = introduce;
         this.likeCount = 0;
         active = true;
+    }
+
+    public void setBodyInfo(BodyInfo bodyInfo) {
+        this.bodyInfo = bodyInfo;
     }
 }

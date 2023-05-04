@@ -1,7 +1,7 @@
 package com.sctk.cmc.service;
 
 import com.sctk.cmc.domain.Member;
-import com.sctk.cmc.dto.member.MemberJoinParam;
+import com.sctk.cmc.service.dto.member.MemberJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.MemberRepository;
 import com.sctk.cmc.service.abstractions.MemberService;

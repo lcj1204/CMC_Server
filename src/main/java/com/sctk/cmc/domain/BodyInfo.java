@@ -1,5 +1,6 @@
 package com.sctk.cmc.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -24,4 +25,20 @@ public class BodyInfo extends BaseTimeEntity{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    // Constructor
+    @Builder
+    public BodyInfo(Member member, float height, float upper, float lower, float weight, float shoulder, float chest, float waist, float hip, float thigh) {
+        this.member = member;
+        member.setBodyInfo(this);
+        this.height = height;
+        this.upper = upper;
+        this.lower = lower;
+        this.weight = weight;
+        this.shoulder = shoulder;
+        this.chest = chest;
+        this.waist = waist;
+        this.hip = hip;
+        this.thigh = thigh;
+    }
 }

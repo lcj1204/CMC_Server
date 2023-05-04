@@ -3,7 +3,7 @@ package com.sctk.cmc.service.abstractions;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.HighCategory;
 import com.sctk.cmc.domain.LowCategory;
-import com.sctk.cmc.dto.designer.DesignerJoinParam;
+import com.sctk.cmc.service.dto.designer.DesignerJoinParam;
 
 import java.util.List;
 
