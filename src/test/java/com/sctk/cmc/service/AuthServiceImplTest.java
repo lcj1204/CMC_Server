@@ -6,6 +6,7 @@ import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.service.abstractions.AuthService;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.abstractions.MemberService;
+import com.sctk.cmc.service.dto.member.MemberDetails;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
