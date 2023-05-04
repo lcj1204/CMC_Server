@@ -89,6 +89,7 @@ public class MemberController {
 
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
+
     private Long getMemberId() {
         return Long.parseLong(SecurityContextHolder.getContext()
                 .getAuthentication()

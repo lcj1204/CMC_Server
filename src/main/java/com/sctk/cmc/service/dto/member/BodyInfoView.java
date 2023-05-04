@@ -1,9 +1,13 @@
 package com.sctk.cmc.service.dto.member;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class BodyInfoView {
     private float height;
     private float weight;
