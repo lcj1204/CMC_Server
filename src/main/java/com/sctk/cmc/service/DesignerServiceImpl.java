@@ -3,6 +3,7 @@ package com.sctk.cmc.service;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.HighCategory;
 import com.sctk.cmc.domain.LowCategory;
+import com.sctk.cmc.service.dto.designer.DesignerInfo;
 import com.sctk.cmc.service.dto.designer.DesignerJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.DesignerRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL;
 import static com.sctk.cmc.common.exception.ResponseStatus.DESIGNERS_ILLEGAL_ID;
@@ -36,6 +38,28 @@ public class DesignerServiceImpl implements DesignerService {
     }
 
     @Override
+    public DesignerInfo retrieveInfoById(Long designerId) {
+        Designer designer = retrieveById(designerId);
+
+        List<String> highCategoryNames = designer.getHighCategories().stream()
+                .map(category -> category.getName())
+                .collect(Collectors.toUnmodifiableList());
+
+        List<String> lowCategoryNames = designer.getLowCategories().stream()
+                .map(category -> category.getName())
+                .collect(Collectors.toUnmodifiableList());
+
+        return new DesignerInfo(
+                designer.getName(),
+                designer.getProfileImgUrl(),
+                designer.getIntroduce(),
+                designer.getLikeCount(),
+                highCategoryNames,
+                lowCategoryNames
+        );
+    }
+
+
     public Designer retrieveById(Long designerId) {
         return designerRepository.findById(designerId)
                 .orElseThrow(() -> new CMCException(DESIGNERS_ILLEGAL_ID));
