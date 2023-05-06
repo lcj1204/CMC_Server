@@ -4,14 +4,14 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
+import com.sctk.cmc.domain.SizesByPart;
 import com.sctk.cmc.service.abstractions.MemberService;
 import com.sctk.cmc.service.dto.member.BodyInfoView;
-import com.sctk.cmc.service.dto.member.MemberDetails;
+import com.sctk.cmc.service.dto.member.MemberDetail;
 import com.sctk.cmc.service.dto.member.MemberInfo;
 import com.sctk.cmc.web.dto.BodyInfoPostRequest;
-import com.sctk.cmc.web.dto.MemberDetailsResponse;
+import com.sctk.cmc.web.dto.MemberDetailResponse;
 import com.sctk.cmc.web.dto.MemberInfoResponse;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
@@ -58,7 +57,7 @@ class MemberControllerTest {
     @Test
     public void member_detail_조회_테스트() throws Exception {
         // given
-        MemberDetails mockDetails = new MemberDetails(
+        MemberDetail mockDetail = new MemberDetail(
                 "name",
                 "nickname",
                 "email",
@@ -66,15 +65,15 @@ class MemberControllerTest {
                 "introduce"
         );
 
-        MemberDetailsResponse expectedResponse = new MemberDetailsResponse(
-                mockDetails.getName(),
-                mockDetails.getNickname(),
-                mockDetails.getEmail(),
-                mockDetails.getProfileImgUrl(),
-                mockDetails.getIntroduce()
+        MemberDetailResponse expectedResponse = new MemberDetailResponse(
+                mockDetail.getName(),
+                mockDetail.getNickname(),
+                mockDetail.getEmail(),
+                mockDetail.getProfileImgUrl(),
+                mockDetail.getIntroduce()
         );
 
-        when(memberService.retrieveDetailsById(anyLong())).thenReturn(mockDetails);
+        when(memberService.retrieveDetailById(anyLong())).thenReturn(mockDetail);
 
         // when
         MvcResult result = mvc.perform(get(REQUEST_URI.MEMBER_DETAIL))
@@ -83,9 +82,9 @@ class MemberControllerTest {
                 .andReturn();
 
         // then
-        JavaType javaType = om.getTypeFactory().constructParametricType(BaseResponse.class, MemberDetailsResponse.class);
-        BaseResponse<MemberDetailsResponse> baseResponse = om.readValue(result.getResponse().getContentAsString(), javaType);
-        MemberDetailsResponse response = baseResponse.getData();
+        JavaType javaType = om.getTypeFactory().constructParametricType(BaseResponse.class, MemberDetailResponse.class);
+        BaseResponse<MemberDetailResponse> baseResponse = om.readValue(result.getResponse().getContentAsString(), javaType);
+        MemberDetailResponse response = baseResponse.getData();
 
         assertThat(response).isEqualTo(expectedResponse);
     }
@@ -96,9 +95,7 @@ class MemberControllerTest {
         MemberInfo mockInfo = new MemberInfo(
                 "name",
                 "profileImgUrl",
-                BodyInfoView.builder()
-                        .height(170)
-                        .build()
+                new BodyInfoView()
         );
 
         MemberInfoResponse expectedResponse = new MemberInfoResponse(
@@ -127,7 +124,7 @@ class MemberControllerTest {
     public void member_bodyInfo_등록_테스트() throws Exception {
         //given
         BodyInfoPostRequest request = new BodyInfoPostRequest(
-                1, 2, 3, 4, 5, 6, 7, 8, 9
+                new SizesByPart(1, 2, 3, 4, 5, 6, 7, 8, 9)
         );
 
         //when
