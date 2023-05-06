@@ -22,6 +22,7 @@ public class Designer extends BaseTimeEntity {
     private String email;
     private String password;
     private String role = "DESIGNER";
+    private String profileImgUrl;
 
     @OneToOne(mappedBy = "designer")
     private Portfolio portfolio;
