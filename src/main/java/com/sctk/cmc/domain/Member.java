@@ -18,7 +18,6 @@ public class Member extends BaseTimeEntity {
     private String nickname;
     private String email;
     private String password;
-    private String role = "MEMBER";
     private String profileImgUrl;
     private String introduce;
 
@@ -27,8 +26,11 @@ public class Member extends BaseTimeEntity {
 
     private int likeCount;
     private Boolean active;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "body_info_id")
     private BodyInfo bodyInfo;
 
     @OneToMany(mappedBy = "member")
@@ -45,6 +47,7 @@ public class Member extends BaseTimeEntity {
         this.password = password;
         this.introduce = introduce;
         this.likeCount = 0;
+        this.role = Role.MEMBER;
         active = true;
     }
 

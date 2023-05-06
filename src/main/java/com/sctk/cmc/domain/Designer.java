@@ -21,7 +21,6 @@ public class Designer extends BaseTimeEntity {
     private String nickname;
     private String email;
     private String password;
-    private String role = "DESIGNER";
 
     @OneToOne(mappedBy = "designer")
     private Portfolio portfolio;
@@ -39,6 +38,8 @@ public class Designer extends BaseTimeEntity {
 
     private int likeCount;
     private Boolean active;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Builder
     public Designer(String name, String nickname, String email, String password, String introduce, String contact) {
@@ -49,6 +50,7 @@ public class Designer extends BaseTimeEntity {
         this.introduce = introduce;
         this.contact = contact;
         this.likeCount = 0;
+        this.role = Role.DESIGNER;
         active = true;
     }
 
