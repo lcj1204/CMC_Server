@@ -12,15 +12,9 @@ public class BodyInfo extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "body_info_id")
     private Long id;
-    private float height;
-    private float upper;
-    private float lower;
-    private float weight;
-    private float shoulder;
-    private float chest;
-    private float waist;
-    private float hip;
-    private float thigh;
+
+    @Embedded
+    private SizesByPart sizes;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -28,17 +22,9 @@ public class BodyInfo extends BaseTimeEntity{
 
     // Constructor
     @Builder
-    public BodyInfo(Member member, float height, float upper, float lower, float weight, float shoulder, float chest, float waist, float hip, float thigh) {
+    public BodyInfo(Member member, SizesByPart sizes) {
         this.member = member;
         member.setBodyInfo(this);
-        this.height = height;
-        this.upper = upper;
-        this.lower = lower;
-        this.weight = weight;
-        this.shoulder = shoulder;
-        this.chest = chest;
-        this.waist = waist;
-        this.hip = hip;
-        this.thigh = thigh;
+        this.sizes = sizes;
     }
 }
