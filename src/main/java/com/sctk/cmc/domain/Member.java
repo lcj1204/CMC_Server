@@ -18,7 +18,6 @@ public class Member extends BaseTimeEntity {
     private String nickname;
     private String email;
     private String password;
-    private String role = "MEMBER";
     private String profileImgUrl;
     private String introduce;
 
