@@ -38,6 +38,7 @@ dependencies {
 
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
 }
 
 tasks.named('test') {

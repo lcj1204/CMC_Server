@@ -34,7 +34,7 @@ class DesignerServiceImplTest {
     public void designer_회원가입_테스트() throws Exception {
         //given
         when(designerRepository.save(any())).thenReturn(1L);
-        DesignerJoinParam param = new DesignerJoinParam("nameA", "nicknameA", "emailA", "passwordA");
+        DesignerJoinParam param = new DesignerJoinParam("nameA", "nicknameA", "emailA", "passwordA", "contactA");
 
         //when
         Long joinedMemberId = designerService.join(param);

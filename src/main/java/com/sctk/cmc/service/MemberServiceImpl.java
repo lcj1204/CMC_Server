@@ -36,10 +36,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDetails retrieveDetailsById(Long memberId) {
+    public MemberDetail retrieveDetailById(Long memberId) {
         Member member = retrieveById(memberId);
 
-        return new MemberDetails(
+        return new MemberDetail(
                 member.getName(),
                 member.getNickname(),
                 member.getEmail(),
@@ -56,17 +56,7 @@ public class MemberServiceImpl implements MemberService {
         return new MemberInfo(
                 member.getName(),
                 member.getProfileImgUrl(),
-                BodyInfoView.builder()
-                        .height(info.getHeight())
-                        .weight(info.getWeight())
-                        .shoulder(info.getShoulder())
-                        .chest(info.getChest())
-                        .waist(info.getWaist())
-                        .hip(info.getHip())
-                        .thigh(info.getThigh())
-                        .upper(info.getUpper())
-                        .lower(info.getLower())
-                        .build()
+                new BodyInfoView(info.getSizes())
         );
     }
 
@@ -87,18 +77,7 @@ public class MemberServiceImpl implements MemberService {
     public void registerBodyInfo(Long memberId, BodyInfoParams params) {
         Member member = retrieveById(memberId);
 
-        BodyInfo.builder()
-                .member(member)
-                .height(params.getHeight())
-                .hip(params.getHip())
-                .lower(params.getLower())
-                .upper(params.getUpper())
-                .waist(params.getWaist())
-                .chest(params.getChest())
-                .thigh(params.getThigh())
-                .weight(params.getWeight())
-                .shoulder(params.getShoulder())
-                .build();
+        new BodyInfo(member, params.getSizes());
     }
 
     @Transactional
@@ -106,17 +85,6 @@ public class MemberServiceImpl implements MemberService {
     public void modifyBodyInfo(Long memberId, BodyInfoModifyParams params) {
         Member member = retrieveById(memberId);
 
-        BodyInfo.builder()
-                .member(member)
-                .height(params.getHeight())
-                .hip(params.getHip())
-                .lower(params.getLower())
-                .upper(params.getUpper())
-                .waist(params.getWaist())
-                .chest(params.getChest())
-                .thigh(params.getThigh())
-                .weight(params.getWeight())
-                .shoulder(params.getShoulder())
-                .build();
+        new BodyInfo(member, params.getSizes());
     }
 }

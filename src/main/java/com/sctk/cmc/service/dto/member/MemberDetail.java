@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MemberDetails {
+public class MemberDetail {
     private String name;
     private String nickname;
     private String email;

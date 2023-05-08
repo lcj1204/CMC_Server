@@ -1,9 +1,11 @@
 package com.sctk.cmc.domain;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @NoArgsConstructor
 @Entity
 public class LowCategory extends BaseTimeEntity {
@@ -16,6 +18,9 @@ public class LowCategory extends BaseTimeEntity {
     @JoinColumn(name = "designer_id")
     private Designer designer;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "highCategory")
+    private HighCategory highCategory;
     private String name;
 
     public LowCategory(Designer designer, String name) {

@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class MemberDetailsResponse {
+public class MemberDetailResponse {
     private String name;
     private String nickname;
     private String email;

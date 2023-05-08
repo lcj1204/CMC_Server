@@ -7,7 +7,7 @@ import com.sctk.cmc.service.dto.member.*;
 public interface MemberService {
     Long join(MemberJoinParam param);
 
-    MemberDetails retrieveDetailsById(Long memberId);
+    MemberDetail retrieveDetailById(Long memberId);
 
     MemberInfo retrieveInfoById(Long memberId);
 
