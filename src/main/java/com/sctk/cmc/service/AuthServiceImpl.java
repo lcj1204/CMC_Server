@@ -4,7 +4,7 @@ import com.sctk.cmc.auth.domain.Token;
 import com.sctk.cmc.auth.dto.CommonUser;
 import com.sctk.cmc.auth.dto.LoginResponseDto;
 import com.sctk.cmc.auth.jwt.JwtProvider;
-import com.sctk.cmc.auth.redis.RedisService;
+import com.sctk.cmc.redis.service.RedisService;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.domain.Designer;
