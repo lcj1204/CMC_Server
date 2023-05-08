@@ -4,26 +4,31 @@ import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.service.dto.member.BodyInfoParams;
 import com.sctk.cmc.service.dto.member.BodyInfoModifyParams;
-import com.sctk.cmc.service.dto.member.MemberDetails;
+import com.sctk.cmc.service.dto.member.MemberDetail;
 import com.sctk.cmc.service.abstractions.MemberService;
 import com.sctk.cmc.service.dto.member.MemberInfo;
 import com.sctk.cmc.web.dto.BodyInfoPostRequest;
 import com.sctk.cmc.web.dto.BodyInfoPutRequest;
-import com.sctk.cmc.web.dto.MemberDetailsResponse;
+import com.sctk.cmc.web.dto.MemberDetailResponse;
 import com.sctk.cmc.web.dto.MemberInfoResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/api/v1/member")
+@RequiredArgsConstructor
+@Tag(name = "Member", description = "구매자 API Document")
 public class MemberController {
 
     private final MemberService memberService;
 
     // 구매자 간단 정보 조회
     @GetMapping("/{memberId}/info")
+    @Operation(summary = "구매자 간단 정보 조회", description = "디자이너가 요청으로 연결된 구매자의 간단 정보를 조회합니다.")
     public BaseResponse<MemberInfoResponse> getMemberInfo(@PathVariable("memberId") Long memberId) {
         MemberInfo memberInfo = memberService.retrieveInfoById(memberId);
 
@@ -35,60 +40,41 @@ public class MemberController {
         );
     }
 
-    // 구매자 상세 정보 조회
     @GetMapping("/detail")
-    public BaseResponse<MemberDetailsResponse> getMemberDetails() {
-        MemberDetails memberDetails = memberService.retrieveDetailsById(getMemberId());
+    @Operation(summary = "구매자 상세 정보 조회", description = "구매자가 자신의 상세 정보를 조회합니다.")
+    public BaseResponse<MemberDetailResponse> getMemberDetail() {
+        MemberDetail memberDetail = memberService.retrieveDetailById(getMemberId());
 
-        return new BaseResponse<>(new MemberDetailsResponse(
-                memberDetails.getName(),
-                memberDetails.getNickname(),
-                memberDetails.getEmail(),
-                memberDetails.getProfileImgUrl(),
-                memberDetails.getIntroduce()
+        return new BaseResponse<>(new MemberDetailResponse(
+                memberDetail.getName(),
+                memberDetail.getNickname(),
+                memberDetail.getEmail(),
+                memberDetail.getProfileImgUrl(),
+                memberDetail.getIntroduce()
             )
         );
     }
 
-    // 구매자 신체 정보 등록
     @PostMapping("/body-info")
+    @Operation(summary = "구매자 신체 정보 등록", description = "구매자의 신체 정보를 등록합니다.")
     public BaseResponse<ResponseStatus> postBodyInfo(@RequestBody BodyInfoPostRequest request) {
-        BodyInfoParams bodyInfoParams = BodyInfoParams.builder()
-                .height(request.getHeight())
-                .hip(request.getHip())
-                .lower(request.getLower())
-                .upper(request.getUpper())
-                .waist(request.getWaist())
-                .chest(request.getChest())
-                .thigh(request.getThigh())
-                .weight(request.getWeight())
-                .shoulder(request.getShoulder())
-                .build();
+        BodyInfoParams bodyInfoParams = new BodyInfoParams(request.getSizes());
 
         memberService.registerBodyInfo(getMemberId(), bodyInfoParams);
 
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
 
-    // 구매자 신체 정보 수정
     @PutMapping("/body-info")
+    @Operation(summary = "구매자 신체 정보 수정", description = "구매자 신체 정보를 수정합니다.")
     public BaseResponse<ResponseStatus> putBodyInfo(@RequestBody BodyInfoPutRequest request) {
-        BodyInfoModifyParams bodyInfoModifyParams = BodyInfoModifyParams.builder()
-                .height(request.getHeight())
-                .hip(request.getHip())
-                .lower(request.getLower())
-                .upper(request.getUpper())
-                .waist(request.getWaist())
-                .chest(request.getChest())
-                .thigh(request.getThigh())
-                .weight(request.getWeight())
-                .shoulder(request.getShoulder())
-                .build();
+        BodyInfoModifyParams bodyInfoModifyParams = new BodyInfoModifyParams(request.getSizes());
 
         memberService.modifyBodyInfo(getMemberId(), bodyInfoModifyParams);
 
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
+
     private Long getMemberId() {
         return Long.parseLong(SecurityContextHolder.getContext()
                 .getAuthentication()

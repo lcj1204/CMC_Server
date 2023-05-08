@@ -3,6 +3,7 @@ package com.sctk.cmc.service.abstractions;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.HighCategory;
 import com.sctk.cmc.domain.LowCategory;
+import com.sctk.cmc.service.dto.designer.DesignerInfo;
 import com.sctk.cmc.service.dto.designer.DesignerJoinParam;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface DesignerService {
     Long join(DesignerJoinParam param);
 
-    Designer retrieveById(Long designerId);
+    DesignerInfo retrieveInfoById(Long designerId);
 
     Designer retrieveByEmail(String email);
 
