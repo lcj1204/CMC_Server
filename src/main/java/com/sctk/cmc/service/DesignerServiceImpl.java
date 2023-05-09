@@ -3,8 +3,9 @@ package com.sctk.cmc.service;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.HighCategory;
 import com.sctk.cmc.domain.LowCategory;
+import com.sctk.cmc.common.dto.designer.CategoryParams;
 import com.sctk.cmc.service.dto.designer.DesignerInfo;
-import com.sctk.cmc.service.dto.designer.DesignerJoinParam;
+import com.sctk.cmc.common.dto.designer.DesignerJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.DesignerRepository;
 import com.sctk.cmc.service.abstractions.DesignerService;
@@ -84,17 +85,17 @@ public class DesignerServiceImpl implements DesignerService {
 
     @Transactional
     @Override
-    public int registerHighCategories(Long designerId, List<HighCategory> highCategories) {
+    public int registerCategories(Long designerId, List<CategoryParams> categoryParams) {
         Designer designer = retrieveById(designerId);
-        designer.setHighCategories(highCategories);
-        return highCategories.size();
-    }
 
-    @Transactional
-    @Override
-    public int registerLowCategories(Long designerId, List<LowCategory> lowCategories) {
-        Designer designer = retrieveById(designerId);
-        designer.setLowCategories(lowCategories);
-        return lowCategories.size();
+        for (CategoryParams params : categoryParams) {
+            HighCategory highCategory = new HighCategory(designer, params.getHighCategoryName());
+
+            for (String lowCategoryName : params.getLowCategoryNames()) {
+                LowCategory lowCategory = new LowCategory(designer, highCategory, lowCategoryName);
+            }
+        }
+
+        return designer.getHighCategories().size();
     }
 }
