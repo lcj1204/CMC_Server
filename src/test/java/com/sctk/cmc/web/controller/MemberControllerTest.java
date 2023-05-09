@@ -145,7 +145,7 @@ class MemberControllerTest {
 
     static class REQUEST_URI {
         static String URI_PREFIX = "/api/v1";
-        static String BASE = "/member";
+        static String BASE = "/members";
         static String MEMBER_DETAIL = URI_PREFIX + BASE + "/detail";
         static String MEMBER_INFO = URI_PREFIX + BASE + "/" + mockMemberId + "/info";
         static String BODY_INFO = URI_PREFIX + BASE + "/body-info";

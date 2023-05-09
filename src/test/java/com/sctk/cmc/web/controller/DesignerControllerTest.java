@@ -82,7 +82,7 @@ class DesignerControllerTest {
 
     static class REQUEST_URI {
         static String URI_PREFIX = "/api/v1";
-        static String BASE = "/designer";
+        static String BASE = "/designers";
         static String DESIGNER_INFO = URI_PREFIX + BASE + "/" + mockDesignerId + "/info";
     }
 }
