@@ -23,12 +23,14 @@ public class LowCategory extends BaseTimeEntity {
     private HighCategory highCategory;
     private String name;
 
-    public LowCategory(Designer designer, String name) {
+    // Constructor
+    public LowCategory(Designer designer, HighCategory highCategory,String name) {
         this.designer = designer;
-        this.name = name;
-    }
+        designer.addLowCategory(this);
 
-    public void setDesigner(Designer designer) {
-        this.designer = designer;
+        this.highCategory = highCategory;
+        highCategory.addLowCategory(this);
+
+        this.name = name;
     }
 }

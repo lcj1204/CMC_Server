@@ -20,17 +20,18 @@ public class HighCategory extends BaseTimeEntity {
     @JoinColumn(name = "designer_id")
     private Designer designer;
 
-    @OneToMany(mappedBy = "highCategory")
+    @OneToMany(mappedBy = "highCategory", cascade = CascadeType.ALL)
     private List<LowCategory> lowCategories = new ArrayList<>(3);
 
     private String name;
 
     public HighCategory(Designer designer, String name) {
         this.designer = designer;
+        designer.addHighCategory(this);
         this.name = name;
     }
 
-    public void setDesigner(Designer designer) {
-        this.designer = designer;
+    public void addLowCategory(LowCategory lowCategory) {
+        this.lowCategories.add(lowCategory);
     }
 }
