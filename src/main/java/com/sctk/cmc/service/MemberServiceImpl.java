@@ -1,5 +1,6 @@
 package com.sctk.cmc.service;
 
+import com.sctk.cmc.common.dto.member.MemberJoinParam;
 import com.sctk.cmc.domain.BodyInfo;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.service.dto.member.*;

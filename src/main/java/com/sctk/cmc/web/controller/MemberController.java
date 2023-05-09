@@ -1,5 +1,6 @@
 package com.sctk.cmc.web.controller;
 
+import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.service.dto.member.BodyInfoParams;
@@ -7,10 +8,10 @@ import com.sctk.cmc.service.dto.member.BodyInfoModifyParams;
 import com.sctk.cmc.service.dto.member.MemberDetail;
 import com.sctk.cmc.service.abstractions.MemberService;
 import com.sctk.cmc.service.dto.member.MemberInfo;
-import com.sctk.cmc.web.dto.BodyInfoPostRequest;
-import com.sctk.cmc.web.dto.BodyInfoPutRequest;
-import com.sctk.cmc.web.dto.MemberDetailResponse;
-import com.sctk.cmc.web.dto.MemberInfoResponse;
+import com.sctk.cmc.web.dto.member.BodyInfoPostRequest;
+import com.sctk.cmc.web.dto.member.BodyInfoPutRequest;
+import com.sctk.cmc.web.dto.member.MemberDetailResponse;
+import com.sctk.cmc.web.dto.member.MemberInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/member")
+@RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
 @Tag(name = "Member", description = "구매자 API Document")
 public class MemberController {
@@ -76,8 +77,10 @@ public class MemberController {
     }
 
     private Long getMemberId() {
-        return Long.parseLong(SecurityContextHolder.getContext()
+        SecurityMemberDetails memberDetails = (SecurityMemberDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
-                .getName());
+                .getPrincipal();
+
+        return memberDetails.getId();
     }
 }
