@@ -1,10 +1,12 @@
-package com.sctk.cmc.service.dto.member;
+package com.sctk.cmc.common.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberJoinParam {
     private String name;
     private String nickname;

@@ -1,21 +1,19 @@
-package com.sctk.cmc.web.dto;
+package com.sctk.cmc.web.dto.member;
 
+import com.sctk.cmc.service.dto.member.BodyInfoView;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class DesignerInfoResponse {
+public class MemberInfoResponse {
     private String name;
     private String profileImgUrl;
-    private String introduce;
-    private int likes;
-    private List<String> highCategoryNames;
-    private List<String> lowCategoryNames;
+    private BodyInfoView bodyInfoView;
 }
+
+

@@ -5,11 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.dto.designer.DesignerInfo;
-import com.sctk.cmc.web.dto.DesignerInfoResponse;
-import org.assertj.core.api.Assertions;
+import com.sctk.cmc.web.dto.designer.DesignerInfoResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,10 +16,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
