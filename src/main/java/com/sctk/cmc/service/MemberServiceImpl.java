@@ -2,15 +2,21 @@ package com.sctk.cmc.service;
 
 import com.sctk.cmc.common.dto.member.MemberJoinParam;
 import com.sctk.cmc.domain.BodyInfo;
+import com.sctk.cmc.domain.Designer;
+import com.sctk.cmc.domain.LikeDesigner;
 import com.sctk.cmc.domain.Member;
+import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.dto.member.*;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.MemberRepository;
 import com.sctk.cmc.service.abstractions.MemberService;
+import com.sctk.cmc.web.dto.member.LikeDesignerResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
@@ -19,10 +25,15 @@ import static com.sctk.cmc.common.exception.ResponseStatus.*;
 public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
+    private final DesignerService designerService;
 
     @Transactional
     @Override
     public Long join(MemberJoinParam param) {
+        if (existsByEmail(param.getEmail())) {
+            throw new CMCException(AUTHENTICATION_DUPLICATE_EMAIL);
+        }
+
         return memberRepository.save(Member.builder()
                 .name(param.getName())
                 .nickname(param.getNickname())
@@ -87,5 +98,41 @@ public class MemberServiceImpl implements MemberService {
         Member member = retrieveById(memberId);
 
         new BodyInfo(member, params.getSizes());
+    }
+
+    @Transactional
+    @Override
+    public LikeDesignerResponse like(Long memberId, Long designerId) {
+        LikeDesigner like = retrieveLike(memberId, designerId);
+
+        if (like != null) {
+            return cancelLike(like);
+        }
+
+        Member member = retrieveById(memberId);
+        Designer designer = designerService.retrieveById(designerId);
+
+        // 생성자를 통해 연관관계 매핑
+        new LikeDesigner(member, designer);
+
+        return new LikeDesignerResponse(designer.getLikeCount());
+    }
+
+    @Override
+    public LikeDesignerResponse cancelLike(LikeDesigner like) {
+        Designer designer = like.getDesigner();
+        like.remove();
+
+        return new LikeDesignerResponse(designer.getLikeCount());
+    }
+
+    public LikeDesigner retrieveLike(Long memberId, Long designerId) {
+        Member member = retrieveById(memberId);
+
+        return member.getDesignerLikes()
+                .stream()
+                .filter(likeDesigner -> likeDesigner.getDesigner().getId() == designerId)
+                .findAny()
+                .orElse(null);
     }
 }
