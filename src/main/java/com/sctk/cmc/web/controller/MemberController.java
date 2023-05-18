@@ -8,10 +8,7 @@ import com.sctk.cmc.service.dto.member.BodyInfoModifyParams;
 import com.sctk.cmc.service.dto.member.MemberDetail;
 import com.sctk.cmc.service.abstractions.MemberService;
 import com.sctk.cmc.service.dto.member.MemberInfo;
-import com.sctk.cmc.web.dto.member.BodyInfoPostRequest;
-import com.sctk.cmc.web.dto.member.BodyInfoPutRequest;
-import com.sctk.cmc.web.dto.member.MemberDetailResponse;
-import com.sctk.cmc.web.dto.member.MemberInfoResponse;
+import com.sctk.cmc.web.dto.member.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -76,6 +73,12 @@ public class MemberController {
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
 
+    @PostMapping("/likes")
+    public BaseResponse<LikeDesignerResponse> postLikeForDesigner(@RequestParam(name = "designer-id") Long designerId) {
+        LikeDesignerResponse response = memberService.like(getMemberId(), designerId);
+
+        return new BaseResponse<>(response);
+    }
     private Long getMemberId() {
         SecurityMemberDetails memberDetails = (SecurityMemberDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
