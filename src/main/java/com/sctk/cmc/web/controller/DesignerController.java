@@ -1,8 +1,6 @@
 package com.sctk.cmc.web.controller;
 
 import com.sctk.cmc.auth.domain.SecurityDesignerDetails;
-import com.sctk.cmc.common.exception.CMCException;
-import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.common.dto.designer.CategoryView;
@@ -15,8 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
-
-import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
 @RestController
 @RequestMapping("/api/v1/designers")
