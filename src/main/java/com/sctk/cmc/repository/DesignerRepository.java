@@ -43,7 +43,7 @@ public class DesignerRepository {
         return em.createQuery(
                 "select d from Designer d " +
                         "where d.createdAt >= :targetDateTime " +
-                        "order by d.createdAt asc", Designer.class)
+                        "order by d.createdAt desc", Designer.class)
                 .setParameter("targetDateTime", LocalDateTime.of(targetDate, LocalTime.MIN))
                 .setMaxResults(limit)
                 .getResultList();
