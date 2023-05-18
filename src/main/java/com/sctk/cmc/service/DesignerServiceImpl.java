@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sctk.cmc.common.exception.ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL;
-import static com.sctk.cmc.common.exception.ResponseStatus.DESIGNERS_ILLEGAL_ID;
+import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -34,6 +33,10 @@ public class DesignerServiceImpl implements DesignerService {
     @Transactional
     @Override
     public Long join(DesignerJoinParam param) {
+        if (existsByEmail(param.getEmail())) {
+            throw new CMCException(AUTHENTICATION_DUPLICATE_EMAIL);
+        }
+
         return designerRepository.save(Designer.builder()
                 .name(param.getName())
                 .nickname(param.getNickname())
@@ -65,7 +68,7 @@ public class DesignerServiceImpl implements DesignerService {
         );
     }
 
-
+    @Override
     public Designer retrieveById(Long designerId) {
         return designerRepository.findById(designerId)
                 .orElseThrow(() -> new CMCException(DESIGNERS_ILLEGAL_ID));

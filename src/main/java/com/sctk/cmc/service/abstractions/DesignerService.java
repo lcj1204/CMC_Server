@@ -13,9 +13,11 @@ import java.util.List;
 public interface DesignerService {
     Long join(DesignerJoinParam param);
 
-    DesignerInfo retrieveInfoById(Long designerId);
+    Designer retrieveById(Long designerId);
 
     Designer retrieveByEmail(String email);
+
+    DesignerInfo retrieveInfoById(Long designerId);
 
     boolean existsByEmail(String email);
 
