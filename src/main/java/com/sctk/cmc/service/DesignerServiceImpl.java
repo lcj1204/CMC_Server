@@ -12,6 +12,7 @@ import com.sctk.cmc.repository.DesignerRepository;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.dto.designer.FilteredDesignerInfo;
 import com.sctk.cmc.service.dto.designer.FreshDesignerInfo;
+import com.sctk.cmc.service.dto.designer.PopularDesignerInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -123,11 +124,6 @@ public class DesignerServiceImpl implements DesignerService {
     }
 
     @Override
-    public List<FilteredDesignerInfo> retrievePopularsByCriteria(String criteria, int limit) {
-        return null;
-    }
-
-    @Override
     public List<FilteredDesignerInfo> retrieveSortedBy(String criteria, int limit) {
         return null;
     }
@@ -142,5 +138,28 @@ public class DesignerServiceImpl implements DesignerService {
                         designer.getProfileImgUrl(),
                         designer.getHighCategoryNames()))
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrievePopularByLike(int limit) {
+        List<FilteredDesignerInfo> popularDesigners = new ArrayList<>();
+
+        List<Designer> orderedDesigners = designerRepository.findAllOrderByLikeCount(limit);
+
+        orderedDesigners.stream()
+                .map(designer ->
+                        new PopularDesignerInfo(
+                                designer.getName(),
+                                designer.getProfileImgUrl(),
+                                designer.getHighCategoryNames(),
+                                designer.getLikeCount())
+                ).forEach(info -> popularDesigners.add(info));
+
+        return popularDesigners;
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrievePopularByCategory(int limit) {
+        return null;
     }
 }

@@ -27,9 +27,12 @@ public interface DesignerService {
 
     List<CategoryView> retrieveAllCategoryViewById(Long designerId);
 
-    List<FilteredDesignerInfo> retrievePopularsByCriteria(String criteria, int limit);
 
     List<FilteredDesignerInfo> retrieveSortedBy(String criteria, int limit);
 
     List<FilteredDesignerInfo> retrieveAllFreshFrom(LocalDate targetDate, int limit);
+
+    List<FilteredDesignerInfo> retrievePopularByLike(int limit);
+
+    List<FilteredDesignerInfo> retrievePopularByCategory(int limit);
 }

@@ -48,4 +48,10 @@ public class DesignerRepository {
                 .setMaxResults(limit)
                 .getResultList();
     }
+
+    public List<Designer> findAllOrderByLikeCount(int limit) {
+        return em.createQuery("select d from Designer d order by d.likeCount desc", Designer.class)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }

@@ -74,6 +74,7 @@ public class MemberController {
     }
 
     @PostMapping("/likes")
+    @Operation(summary = "디자니어 좋아요 처리", description = "디자이너에 좋아요 처리를 합니다.")
     public BaseResponse<LikeDesignerResponse> postLikeForDesigner(@RequestParam(name = "designer-id") Long designerId) {
         LikeDesignerResponse response = memberService.like(getMemberId(), designerId);
 

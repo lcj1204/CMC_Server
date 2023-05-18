@@ -1,6 +1,8 @@
 package com.sctk.cmc.web.controller;
 
 import com.sctk.cmc.auth.domain.SecurityDesignerDetails;
+import com.sctk.cmc.common.exception.CMCException;
+import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.common.dto.designer.CategoryView;
@@ -13,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
+
+import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
 @RestController
 @RequestMapping("/api/v1/designers")
@@ -54,37 +58,33 @@ public class DesignerController {
         return new BaseResponse<>(new CategoryPostResponse(registeredHighCategories));
     }
 
-//    @GetMapping("/rank")
-//    @Operation(
-//            summary = "인기 디자이너 조회",
-//            description = "인기 디자이너를 조회합니다. \n" +
-//                    "## Query String\n" +
-//                    "  - 범주 : criteria( 카테고리 : \"high-category\" / " + "소재 : \"low-category\") \n" +
-//                    "  - 조회 갯수 : limit( int value )"
-//    )
-//    public BaseResponse<PopularDesignersGetResponse> getPopularDesigners(
-//            @RequestParam("criteria") String criteria,
-//            @RequestParam("limit") int limit
-//    ) {
-//        List<PopularDesignerInfo> popularDesignerInfos = designerService.retrievePopularsByCriteria(criteria, limit);
-//
-//        return new BaseResponse<>(new PopularDesignersGetResponse(popularDesignerInfos));
-//        return null;
-//    }
-
-    @GetMapping("")
+    @GetMapping("/ranks/like")
     @Operation(
-            summary = "신규 디자이너 조회",
-            description = "신규 디자이너를 조회합니다. \n" +
+            summary = "좋아요 순 디자이너 조회",
+            description = "좋아요가 많은 순으로 디자이너를 조회합니다. \n" +
+                    "## Query String\n" +
+                    "  - 조회 갯수 : limit( int value )"
+    )
+    public BaseResponse<PopularDesignersGetResponse> getPopularDesigners(
+            @RequestParam int limit
+    ) {
+        List<FilteredDesignerInfo> popularDesignerInfos = designerService.retrievePopularByLike(limit);
+        return new BaseResponse<>(new PopularDesignersGetResponse(popularDesignerInfos));
+    }
+
+    @GetMapping("/ranks/fresh")
+    @Operation(
+            summary = "신규 순 디자이너 조회",
+            description = "최근 가입 순으로 신규 디자이너를 조회합니다. \n" +
             "## Query String\n" +
-            "  - 신규 처리 기간 : joinedlessthan( int value )\n" +
+            "  - 신규 처리 기간 : duration( int value )\n" +
             "  - 조회 갯수 : limit( int value )"
     )
     public BaseResponse<FreshDesignersGetResponse> getFreshDesigners(
-            @RequestParam("joinedlessthan") int joinedLessThan,
-            @RequestParam("limit") int limit
+            @RequestParam int duration,
+            @RequestParam int limit
     ) {
-        LocalDate freshOffset = LocalDate.now().minusMonths(1);
+        LocalDate freshOffset = LocalDate.now().minusDays(duration);
         List<FilteredDesignerInfo> freshDesignerInfos = designerService.retrieveAllFreshFrom(freshOffset, limit);
 
         return new BaseResponse<>(new FreshDesignersGetResponse(freshDesignerInfos));
