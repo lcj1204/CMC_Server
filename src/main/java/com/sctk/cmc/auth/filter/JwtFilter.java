@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
