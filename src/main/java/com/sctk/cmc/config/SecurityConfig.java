@@ -1,6 +1,8 @@
 package com.sctk.cmc.config;
 
 import com.sctk.cmc.auth.filter.JwtFilter;
+import com.sctk.cmc.auth.jwt.JwtProvider;
+import com.sctk.cmc.auth.service.SecurityUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
-    private final JwtFilter jwtFilter;
+    private final JwtProvider jwtProvider;
+    private final SecurityUserDetailsService securityUserDetailsService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -29,6 +33,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/members/**").hasRole("MEMBER")
+                .antMatchers("/api/v1/designers/ranks/**").hasAnyRole("MEMBER", "DESIGNER")
                 .antMatchers("/api/v1/designers/**").hasRole("DESIGNER")
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/api-docs/**").permitAll()
@@ -36,7 +41,10 @@ public class SecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(
+                        new JwtFilter(jwtProvider, securityUserDetailsService)
+                        , UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }

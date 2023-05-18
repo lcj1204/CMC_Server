@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -23,12 +24,14 @@ public class LowCategory extends BaseTimeEntity {
     private HighCategory highCategory;
     private String name;
 
-    public LowCategory(Designer designer, String name) {
-        this.designer = designer;
-        this.name = name;
-    }
+    // Constructor
+    public LowCategory(Designer designer, HighCategory highCategory,String name) {
+        this.highCategory = highCategory;
+        highCategory.addLowCategory(this);
 
-    public void setDesigner(Designer designer) {
         this.designer = designer;
+        designer.addLowCategory(this);
+
+        this.name = name;
     }
 }

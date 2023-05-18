@@ -1,9 +1,10 @@
 package com.sctk.cmc.service;
 
+import com.sctk.cmc.common.dto.designer.CategoryParam;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.HighCategory;
 import com.sctk.cmc.domain.LowCategory;
-import com.sctk.cmc.service.dto.designer.DesignerJoinParam;
+import com.sctk.cmc.common.dto.designer.DesignerJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.DesignerRepository;
 import com.sctk.cmc.service.abstractions.DesignerService;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -137,20 +139,15 @@ class DesignerServiceImplTest {
         Designer designer = createDesignerHasNameEmail(designerName, designerEmail);
         setId(designer, 1L);
 
-        List<HighCategory> highCategories = List.of(
-                new HighCategory(designer, "highCategory1"),
-                new HighCategory(designer, "highCategory2"),
-                new HighCategory(designer, "highCategory3")
-        );
-
+        List<CategoryParam> categoryParams = createCategoryParams(3);
 
         when(designerRepository.findById(any())).thenReturn(Optional.of(designer));
 
         //when
-        int registered = designerService.registerHighCategories(1L, highCategories);
+        int registered = designerService.registerCategories(1L, categoryParams);
 
         //then
-        assertThat(registered).isEqualTo(highCategories.size());
+        assertThat(registered).isEqualTo(categoryParams.size());
     }
 
     @Test
@@ -161,44 +158,14 @@ class DesignerServiceImplTest {
         Designer designer = createDesignerHasNameEmail(designerName, designerEmail);
         setId(designer, 1L);
 
-        List<HighCategory> highCategories = List.of(
-                new HighCategory(designer, "highCategory1"),
-                new HighCategory(designer, "highCategory2"),
-                new HighCategory(designer, "highCategory3"),
-                new HighCategory(designer, "highCategory4")
-        );
-
+        List<CategoryParam> categoryParams = createCategoryParams(4);
 
         when(designerRepository.findById(any())).thenReturn(Optional.of(designer));
 
         //then
-        assertThatThrownBy(() -> designerService.registerHighCategories(1L, highCategories))
+        assertThatThrownBy(() -> designerService.registerCategories(1L, categoryParams))
                 .isInstanceOf(CMCException.class)
                 .hasMessage(DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT.name());
-    }
-
-    @Test
-    public void 하위카테고리_등록_테스트() throws Exception {
-        //given
-        String designerName = "designer";
-        String designerEmail = "email";
-        Designer designer = createDesignerHasNameEmail(designerName, designerEmail);
-        setId(designer, 1L);
-
-        List<LowCategory> lowCategories = List.of(
-                new LowCategory(designer, "lowCategory1"),
-                new LowCategory(designer, "lowCategory2"),
-                new LowCategory(designer, "lowCategory3")
-        );
-
-
-        when(designerRepository.findById(any())).thenReturn(Optional.of(designer));
-
-        //when
-        int registered = designerService.registerLowCategories(1L, lowCategories);
-
-        //then
-        assertThat(registered).isEqualTo(lowCategories.size());
     }
 
     @Test
@@ -209,18 +176,12 @@ class DesignerServiceImplTest {
         Designer designer = createDesignerHasNameEmail(designerName, designerEmail);
         setId(designer, 1L);
 
-        List<LowCategory> lowCategories = List.of(
-                new LowCategory(designer, "lowCategory1"),
-                new LowCategory(designer, "lowCategory2"),
-                new LowCategory(designer, "lowCategory3"),
-                new LowCategory(designer, "lowCategory4")
-        );
-
+        List<CategoryParam> categoryParams = createCategoryParamsLowCategoryFlooded(3);
 
         when(designerRepository.findById(any())).thenReturn(Optional.of(designer));
 
         //then
-        assertThatThrownBy(() -> designerService.registerLowCategories(1L, lowCategories))
+        assertThatThrownBy(() -> designerService.registerCategories(1L, categoryParams))
                 .isInstanceOf(CMCException.class)
                 .hasMessage(DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT.name());
     }
@@ -234,6 +195,29 @@ class DesignerServiceImplTest {
                 .name(name)
                 .email(email)
                 .build();
+    }
+
+    private List<CategoryParam> createCategoryParams(int count) {
+        List<CategoryParam> categoryParams = new ArrayList<>();
+
+        for (int i = 1; i <= count; i++) {
+            categoryParams.add(
+                    new CategoryParam("high" + i,
+                            new ArrayList<>(List.of("low" + i + "-1", "low" + i + "-2", "low" + i + "-3"))
+                    )
+            );
+        }
+        return categoryParams;
+    }
+
+    private List<CategoryParam> createCategoryParamsLowCategoryFlooded(int count) {
+        List<CategoryParam> params = createCategoryParams(count);
+
+        for (CategoryParam param : params) {
+            param.getLowCategoryNames().add("flooded");
+        }
+
+        return params;
     }
 
     void setId(Designer designer, Long id) throws NoSuchFieldException, IllegalAccessException {

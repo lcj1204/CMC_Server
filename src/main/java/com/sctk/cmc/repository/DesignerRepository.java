@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,5 +37,21 @@ public class DesignerRepository {
                 .setParameter("email", email)
                 .getResultStream()
                 .findAny();
+    }
+
+    public List<Designer> findLastSavedAfter(LocalDate targetDate, int limit) {
+        return em.createQuery(
+                "select d from Designer d " +
+                        "where d.createdAt >= :targetDateTime " +
+                        "order by d.createdAt desc", Designer.class)
+                .setParameter("targetDateTime", LocalDateTime.of(targetDate, LocalTime.MIN))
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    public List<Designer> findAllOrderByLikeCount(int limit) {
+        return em.createQuery("select d from Designer d order by d.likeCount desc", Designer.class)
+                .setMaxResults(limit)
+                .getResultList();
     }
 }

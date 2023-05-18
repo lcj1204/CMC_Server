@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
@@ -26,7 +26,7 @@ public class Designer extends BaseTimeEntity {
     @OneToOne(mappedBy = "designer")
     private Portfolio portfolio;
 
-    @OneToMany(mappedBy = "designer")
+    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL)
     private List<HighCategory> highCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "designer")
@@ -35,7 +35,7 @@ public class Designer extends BaseTimeEntity {
     private String contact;
 
     @OneToMany(mappedBy = "designer")
-    private List<LikeDesigner> memberLikes;
+    private Set<LikeDesigner> memberLikes = new HashSet<>();
 
     private int likeCount;
     private Boolean active;
@@ -55,21 +55,47 @@ public class Designer extends BaseTimeEntity {
         active = true;
     }
 
-    public void setHighCategories(List<HighCategory> highCategories) {
-        if (highCategories.size() > 3) {
-            throw new CMCException(DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT);
-        }
-        this.highCategories = highCategories;
-        highCategories.stream()
-                .forEach(category -> category.setDesigner(this));
+    // Getter
+    public List<HighCategory> getHighCategories() {
+        return Collections.unmodifiableList(this.highCategories);
     }
 
-    public void setLowCategories(List<LowCategory> lowCategories) {
-        if (lowCategories.size() > 3) {
-            throw new CMCException(DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT);
+    public List<LowCategory> getLowCategories() {
+        return Collections.unmodifiableList(this.lowCategories);
+    }
+
+    public List<String> getHighCategoryNames() {
+        return highCategories.stream()
+                .map(category -> category.getName())
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public List<String> getLowCategoryNames() {
+        return lowCategories.stream()
+                .map(category -> category.getName())
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    // Setter
+    public void addHighCategory(HighCategory highCategory) {
+        if (this.highCategories.size() >= 3) {
+            throw new CMCException(DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT);
         }
-        this.lowCategories = lowCategories;
-        lowCategories.stream()
-                .forEach(category -> category.setDesigner(this));
+
+        this.highCategories.add(highCategory);
+    }
+
+    public void addLowCategory(LowCategory lowCategory) {
+        this.lowCategories.add(lowCategory);
+    }
+
+    public void addMemberLike(LikeDesigner like) {
+        this.memberLikes.add(like);
+        likeCount++;
+    }
+
+    public void removeMemberLike(LikeDesigner like) {
+        this.memberLikes.remove(like);
+        likeCount--;
     }
 }

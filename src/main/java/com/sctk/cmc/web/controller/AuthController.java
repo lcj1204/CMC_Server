@@ -1,18 +1,19 @@
-package com.sctk.cmc.controller;
+package com.sctk.cmc.web.controller;
 
 import com.sctk.cmc.auth.dto.LoginResponseDto;
 import com.sctk.cmc.auth.dto.TokenReissueRequestDto;
 import com.sctk.cmc.auth.dto.TokenReissueResponseDto;
 import com.sctk.cmc.auth.jwt.JwtService;
 import com.sctk.cmc.common.response.BaseResponse;
-import com.sctk.cmc.dto.designer.DesignerJoinResponseDto;
-import com.sctk.cmc.dto.member.MemberJoinResponseDto;
-import com.sctk.cmc.dto.member.MemberLoginParam;
+import com.sctk.cmc.web.dto.designer.DesignerJoinResponseDto;
+import com.sctk.cmc.common.dto.designer.DesignerLoginParam;
+import com.sctk.cmc.web.dto.member.MemberJoinResponseDto;
+import com.sctk.cmc.common.dto.member.MemberLoginParam;
 import com.sctk.cmc.service.abstractions.AuthService;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.abstractions.MemberService;
-import com.sctk.cmc.service.dto.designer.DesignerJoinParam;
-import com.sctk.cmc.service.dto.member.MemberJoinParam;
+import com.sctk.cmc.common.dto.designer.DesignerJoinParam;
+import com.sctk.cmc.common.dto.member.MemberJoinParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,7 +59,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin/designer")
-    public BaseResponse<LoginResponseDto> signinDesigner(@RequestBody DesignerJoinParam param) {
+    public BaseResponse<LoginResponseDto> signinDesigner(@RequestBody DesignerLoginParam param) {
 
         LoginResponseDto responseDto = authService.loginDesigner(param.getEmail(), param.getPassword());
 

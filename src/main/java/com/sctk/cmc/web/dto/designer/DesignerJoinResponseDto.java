@@ -1,4 +1,4 @@
-package com.sctk.cmc.dto.designer;
+package com.sctk.cmc.web.dto.designer;
 
 import lombok.Builder;
 import lombok.Getter;

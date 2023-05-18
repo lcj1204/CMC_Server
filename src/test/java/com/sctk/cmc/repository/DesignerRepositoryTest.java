@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -92,6 +93,26 @@ class DesignerRepositoryTest {
         assertThat(findDesigner).isNotNull();
         assertThat(findDesigner.getId().equals(designer.getId())).isTrue();
         assertThat(findDesigner.getEmail().equals(designer.getEmail())).isTrue();
+    }
+
+    @Test
+    public void fresh_designer_조회() throws Exception {
+        //given
+        Designer designer1 = createDesignerWithNameEmail("name1", "email1");
+        Designer designer2 = createDesignerWithNameEmail("name2", "email2");
+        Designer designer3 = createDesignerWithNameEmail("name3", "email3");
+
+        designerRepository.save(designer1);
+        designerRepository.save(designer2);
+        designerRepository.save(designer3);
+
+        LocalDate date = LocalDate.now().minusMonths(1);
+        int limit = 3;
+        //when
+        List<Designer> lastSavedAfter = designerRepository.findLastSavedAfter(date, limit);
+
+        //then
+        assertThat(lastSavedAfter.size()).isEqualTo(limit);
     }
 
     public Designer createDesigner() {

@@ -14,11 +14,14 @@ public enum ResponseStatus {
     // Members
     MEMBERS_ILLEGAL_ID(2001, "존재하지 않는 회원 ID입니다."),
     MEMBERS_ILLEGAL_EMAIL(2002, "존재하지 않는 회원 이메일입니다."),
+    MEMBERS_ALREADY_LIKING_DESIGNER(2003, "이미 좋아요 처리가 된 디자이너입니다."),
+    MEMBERS_NOT_LIKED_DESIGNER(2004, "좋아요 처리한 적이 없는 디자이너입니다."),
 
     // Designers
     DESIGNERS_ILLEGAL_ID(3001, "존재하지 않는 디자이너 ID입니다."),
-    DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT(3002, "등록할 수 있는 상위 카테고리는 최대 3개입니다."),
-    DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT(3003, "등록할 수 있는 하위 카테고리는 최대 3개입니다."),
+    DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT(3002, "등록할 수 있는 카테고리는 최대 3개입니다."),
+    DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT(3003, "한 카테고리에 등록할 수 있는 소재는 최대 3개입니다."),
+    DESIGNERS_NON_EXISTING_CRITERIA(3004, "디자이너 검색에 존재하지 않는 기준입니다."),
 
     // jwt
     INVALID_TOKEN(4000, "잘못된 Token 입니다."),

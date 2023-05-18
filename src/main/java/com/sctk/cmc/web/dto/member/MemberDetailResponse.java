@@ -1,4 +1,4 @@
-package com.sctk.cmc.web.dto;
+package com.sctk.cmc.web.dto.member;
 
 import lombok.*;
 

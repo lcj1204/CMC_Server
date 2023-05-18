@@ -2,16 +2,19 @@ package com.sctk.cmc.web.controller;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
+import com.sctk.cmc.config.SecurityConfig;
+import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.domain.SizesByPart;
 import com.sctk.cmc.service.abstractions.MemberService;
 import com.sctk.cmc.service.dto.member.BodyInfoView;
 import com.sctk.cmc.service.dto.member.MemberDetail;
 import com.sctk.cmc.service.dto.member.MemberInfo;
-import com.sctk.cmc.web.dto.BodyInfoPostRequest;
-import com.sctk.cmc.web.dto.MemberDetailResponse;
-import com.sctk.cmc.web.dto.MemberInfoResponse;
+import com.sctk.cmc.web.dto.member.BodyInfoPostRequest;
+import com.sctk.cmc.web.dto.member.MemberDetailResponse;
+import com.sctk.cmc.web.dto.member.MemberInfoResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +24,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import java.util.List;
-
+import java.lang.reflect.Field;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
@@ -39,19 +41,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // MvcResult 한글 깨짐
 @Import(HttpEncodingAutoConfiguration.class)
 class MemberControllerTest {
-    static Long mockMemberId = 1L;
-
     @Autowired
     MockMvc mvc;
 
     @MockBean
     MemberService memberService;
 
+    static Long mockMemberId = 1L;
     ObjectMapper om = new ObjectMapper();
+    UserDetails mockMemberDetails = getMockMemberDetails();
 
     @BeforeEach
     void setup() {
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(mockMemberId, "", List.of(new SimpleGrantedAuthority("MEMBER"))));
+        SecurityContextHolder.getContext()
+                .setAuthentication(
+                        new UsernamePasswordAuthenticationToken(
+                                mockMemberDetails,
+                                null,
+                                mockMemberDetails.getAuthorities()
+                        )
+                );
     }
 
     @Test
@@ -143,9 +152,27 @@ class MemberControllerTest {
         assertThat(response.getCode()).isEqualTo(ResponseStatus.SUCCESS.getCode());
     }
 
+    UserDetails getMockMemberDetails() {
+        Member mockMember = Member.builder()
+                .email("mockEmail")
+                .build();
+
+        // set id 1L
+        try {
+            Class<? extends Member> memberClass = mockMember.getClass();
+            Field idField = memberClass.getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(mockMember, mockMemberId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new SecurityMemberDetails(mockMember);
+    }
+
     static class REQUEST_URI {
         static String URI_PREFIX = "/api/v1";
-        static String BASE = "/member";
+        static String BASE = "/members";
         static String MEMBER_DETAIL = URI_PREFIX + BASE + "/detail";
         static String MEMBER_INFO = URI_PREFIX + BASE + "/" + mockMemberId + "/info";
         static String BODY_INFO = URI_PREFIX + BASE + "/body-info";

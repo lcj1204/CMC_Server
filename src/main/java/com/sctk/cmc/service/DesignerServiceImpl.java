@@ -1,23 +1,29 @@
 package com.sctk.cmc.service;
 
+import com.sctk.cmc.common.dto.designer.CategoryView;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.HighCategory;
 import com.sctk.cmc.domain.LowCategory;
+import com.sctk.cmc.common.dto.designer.CategoryParam;
 import com.sctk.cmc.service.dto.designer.DesignerInfo;
-import com.sctk.cmc.service.dto.designer.DesignerJoinParam;
+import com.sctk.cmc.common.dto.designer.DesignerJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.DesignerRepository;
 import com.sctk.cmc.service.abstractions.DesignerService;
+import com.sctk.cmc.service.dto.designer.FilteredDesignerInfo;
+import com.sctk.cmc.service.dto.designer.FreshDesignerInfo;
+import com.sctk.cmc.service.dto.designer.PopularDesignerInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sctk.cmc.common.exception.ResponseStatus.AUTHENTICATION_ILLEGAL_EMAIL;
-import static com.sctk.cmc.common.exception.ResponseStatus.DESIGNERS_ILLEGAL_ID;
+import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +34,10 @@ public class DesignerServiceImpl implements DesignerService {
     @Transactional
     @Override
     public Long join(DesignerJoinParam param) {
+        if (existsByEmail(param.getEmail())) {
+            throw new CMCException(AUTHENTICATION_DUPLICATE_EMAIL);
+        }
+
         return designerRepository.save(Designer.builder()
                 .name(param.getName())
                 .nickname(param.getNickname())
@@ -59,7 +69,7 @@ public class DesignerServiceImpl implements DesignerService {
         );
     }
 
-
+    @Override
     public Designer retrieveById(Long designerId) {
         return designerRepository.findById(designerId)
                 .orElseThrow(() -> new CMCException(DESIGNERS_ILLEGAL_ID));
@@ -84,17 +94,72 @@ public class DesignerServiceImpl implements DesignerService {
 
     @Transactional
     @Override
-    public int registerHighCategories(Long designerId, List<HighCategory> highCategories) {
+    public int registerCategories(Long designerId, List<CategoryParam> categoryParams) {
         Designer designer = retrieveById(designerId);
-        designer.setHighCategories(highCategories);
-        return highCategories.size();
+
+        for (CategoryParam params : categoryParams) {
+            HighCategory highCategory = new HighCategory(designer, params.getHighCategoryName());
+
+            for (String lowCategoryName : params.getLowCategoryNames()) {
+                LowCategory lowCategory = new LowCategory(designer, highCategory, lowCategoryName);
+            }
+        }
+
+        return designer.getHighCategories().size();
     }
 
-    @Transactional
     @Override
-    public int registerLowCategories(Long designerId, List<LowCategory> lowCategories) {
+    public List<CategoryView> retrieveAllCategoryViewById(Long designerId) {
         Designer designer = retrieveById(designerId);
-        designer.setLowCategories(lowCategories);
-        return lowCategories.size();
+
+        List<CategoryView> categoryViews = new ArrayList<>();
+
+        designer.getHighCategories()
+                .stream()
+                .forEach(highCategory -> categoryViews.add(
+                                new CategoryView(highCategory.getName(), highCategory.getLowCategoryNames())
+                        )
+                );
+        return categoryViews;
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrieveSortedBy(String criteria, int limit) {
+        return null;
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrieveAllFreshFrom(LocalDate targetDate, int limit) {
+        List<Designer> designers = designerRepository.findLastSavedAfter(targetDate, limit);
+
+        return designers.stream()
+                .map(designer -> new FreshDesignerInfo(
+                        designer.getName(),
+                        designer.getProfileImgUrl(),
+                        designer.getHighCategoryNames()))
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrievePopularByLike(int limit) {
+        List<FilteredDesignerInfo> popularDesigners = new ArrayList<>();
+
+        List<Designer> orderedDesigners = designerRepository.findAllOrderByLikeCount(limit);
+
+        orderedDesigners.stream()
+                .map(designer ->
+                        new PopularDesignerInfo(
+                                designer.getName(),
+                                designer.getProfileImgUrl(),
+                                designer.getHighCategoryNames(),
+                                designer.getLikeCount())
+                ).forEach(info -> popularDesigners.add(info));
+
+        return popularDesigners;
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrievePopularByCategory(int limit) {
+        return null;
     }
 }

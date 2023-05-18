@@ -1,4 +1,4 @@
-package com.sctk.cmc.web.dto;
+package com.sctk.cmc.web.dto.member;
 
 import com.sctk.cmc.domain.SizesByPart;
 import lombok.AllArgsConstructor;
