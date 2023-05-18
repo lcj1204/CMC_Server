@@ -1,19 +1,24 @@
 package com.sctk.cmc.service;
 
+import com.sctk.cmc.common.dto.designer.CategoryView;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.HighCategory;
 import com.sctk.cmc.domain.LowCategory;
-import com.sctk.cmc.common.dto.designer.CategoryParams;
+import com.sctk.cmc.common.dto.designer.CategoryParam;
 import com.sctk.cmc.service.dto.designer.DesignerInfo;
 import com.sctk.cmc.common.dto.designer.DesignerJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.DesignerRepository;
 import com.sctk.cmc.service.abstractions.DesignerService;
+import com.sctk.cmc.service.dto.designer.FilteredDesignerInfo;
+import com.sctk.cmc.service.dto.designer.FreshDesignerInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,10 +90,10 @@ public class DesignerServiceImpl implements DesignerService {
 
     @Transactional
     @Override
-    public int registerCategories(Long designerId, List<CategoryParams> categoryParams) {
+    public int registerCategories(Long designerId, List<CategoryParam> categoryParams) {
         Designer designer = retrieveById(designerId);
 
-        for (CategoryParams params : categoryParams) {
+        for (CategoryParam params : categoryParams) {
             HighCategory highCategory = new HighCategory(designer, params.getHighCategoryName());
 
             for (String lowCategoryName : params.getLowCategoryNames()) {
@@ -97,5 +102,42 @@ public class DesignerServiceImpl implements DesignerService {
         }
 
         return designer.getHighCategories().size();
+    }
+
+    @Override
+    public List<CategoryView> retrieveAllCategoryViewById(Long designerId) {
+        Designer designer = retrieveById(designerId);
+
+        List<CategoryView> categoryViews = new ArrayList<>();
+
+        designer.getHighCategories()
+                .stream()
+                .forEach(highCategory -> categoryViews.add(
+                                new CategoryView(highCategory.getName(), highCategory.getLowCategoryNames())
+                        )
+                );
+        return categoryViews;
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrievePopularsByCriteria(String criteria, int limit) {
+        return null;
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrieveSortedBy(String criteria, int limit) {
+        return null;
+    }
+
+    @Override
+    public List<FilteredDesignerInfo> retrieveAllFreshFrom(LocalDate targetDate, int limit) {
+        List<Designer> designers = designerRepository.findLastSavedAfter(targetDate, limit);
+
+        return designers.stream()
+                .map(designer -> new FreshDesignerInfo(
+                        designer.getName(),
+                        designer.getProfileImgUrl(),
+                        designer.getHighCategoryNames()))
+                .collect(Collectors.toUnmodifiableList());
     }
 }

@@ -17,8 +17,8 @@ public enum ResponseStatus {
 
     // Designers
     DESIGNERS_ILLEGAL_ID(3001, "존재하지 않는 디자이너 ID입니다."),
-    DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT(3002, "등록할 수 있는 상위 카테고리는 최대 3개입니다."),
-    DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT(3003, "등록할 수 있는 하위 카테고리는 최대 3개입니다."),
+    DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT(3002, "등록할 수 있는 카테고리는 최대 3개입니다."),
+    DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT(3003, "한 카테고리에 등록할 수 있는 소재는 최대 3개입니다."),
 
     // jwt
     INVALID_TOKEN(4000, "잘못된 Token 입니다."),
