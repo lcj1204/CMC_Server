@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
@@ -65,8 +66,24 @@ public class Designer extends BaseTimeEntity {
         return Collections.unmodifiableList(this.lowCategories);
     }
 
+    public List<String> getHighCategoryNames() {
+        return highCategories.stream()
+                .map(category -> category.getName())
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public List<String> getLowCategoryNames() {
+        return lowCategories.stream()
+                .map(category -> category.getName())
+                .collect(Collectors.toUnmodifiableList());
+    }
+
     // Setter
     public void addHighCategory(HighCategory highCategory) {
+        if (this.highCategories.size() >= 3) {
+            throw new CMCException(DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT);
+        }
+
         this.highCategories.add(highCategory);
     }
 
