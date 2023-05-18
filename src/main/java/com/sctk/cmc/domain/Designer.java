@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.*;
@@ -37,7 +35,7 @@ public class Designer extends BaseTimeEntity {
     private String contact;
 
     @OneToMany(mappedBy = "designer")
-    private List<LikeDesigner> memberLikes;
+    private Set<LikeDesigner> memberLikes = new HashSet<>();
 
     private int likeCount;
     private Boolean active;
@@ -89,5 +87,15 @@ public class Designer extends BaseTimeEntity {
 
     public void addLowCategory(LowCategory lowCategory) {
         this.lowCategories.add(lowCategory);
+    }
+
+    public void addMemberLike(LikeDesigner like) {
+        this.memberLikes.add(like);
+        likeCount++;
+    }
+
+    public void removeMemberLike(LikeDesigner like) {
+        this.memberLikes.remove(like);
+        likeCount--;
     }
 }
