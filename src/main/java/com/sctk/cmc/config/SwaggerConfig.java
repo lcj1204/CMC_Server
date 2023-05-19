@@ -13,12 +13,12 @@ import org.springframework.http.HttpHeaders;
 public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
-        String authorizeTitle = "Authentication";
+        String authorizeTitle = "Authorization";
 
         SecurityScheme bearerAuth = new SecurityScheme()
                 .name(authorizeTitle)
                 .type(SecurityScheme.Type.HTTP)
-                .scheme("Bearer")
+                .scheme("bearer")
                 .bearerFormat("Authorization")
                 .in(SecurityScheme.In.HEADER)
                 .name(HttpHeaders.AUTHORIZATION);
