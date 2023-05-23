@@ -25,4 +25,8 @@ public class ProductionProgress extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "productionProgress")
     private List<ProductionProgressImg> imgs = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "custom_id")
+    private Custom custom;
 }
