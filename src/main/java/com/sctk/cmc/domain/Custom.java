@@ -32,13 +32,17 @@ public class Custom extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "custom")
     private CustomReference reference;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "custom_result_id")
+    private CustomResult customResult;
 
     @Enumerated(EnumType.STRING)
     private CustomStatus accepted;
     private Boolean active;
 
     @Builder
-    public Custom(Member member, Designer designer, String highCategory, String lowCategory, String title, Integer desiredPrice, String requirement, CustomReference reference) {
+    public Custom(Member member, Designer designer, String highCategory, String lowCategory, String title,
+                  Integer desiredPrice, String requirement, CustomReference reference, CustomResult customResult) {
         this.member = member;
         this.designer = designer;
         this.highCategory = highCategory;
@@ -47,6 +51,7 @@ public class Custom extends BaseTimeEntity {
         this.desiredPrice = desiredPrice;
         this.requirement = requirement;
         this.reference = reference;
+        this.customResult = customResult;
         this.accepted = CustomStatus.REQUESTING;
         this.active = true;
     }
