@@ -33,9 +33,6 @@ public class ProductionProgress extends BaseTimeEntity {
 
     private LocalDate expectEndDate;
 
-    @OneToOne(mappedBy = "productionProgress", fetch = FetchType.LAZY)
-    private Product product;
-
     @OneToMany(mappedBy = "productionProgress")
     private List<ProductionProgressImg> imgs = new ArrayList<>();
 }
