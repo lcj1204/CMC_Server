@@ -33,8 +33,8 @@ public class Product extends BaseTimeEntity {
     private ProductionProgress productionProgress;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "production_request_id")
-    private ProductionRequest productionRequest;
+    @JoinColumn(name = "custom_id")
+    private Custom custom;
 
     /**
      * 양방향 매핑

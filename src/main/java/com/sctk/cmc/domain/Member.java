@@ -1,14 +1,14 @@
 package com.sctk.cmc.domain;
 
-import com.sctk.cmc.common.exception.CMCException;
-import com.sctk.cmc.common.exception.ResponseStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
-import java.util.*;
 
-import static com.sctk.cmc.common.exception.ResponseStatus.*;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -40,7 +40,7 @@ public class Member extends BaseTimeEntity {
     private List<LikeProduct> likeProducts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<ProductionRequest> productionRequest = new ArrayList<>();
+    private List<Custom> custom = new ArrayList<>();
 
 
     @Builder

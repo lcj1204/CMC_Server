@@ -8,19 +8,19 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class RequestReferenceImg extends BaseTimeEntity {
+public class CustomReferenceImg extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "request_reference_img_id")
+    @Column(name = "custom_reference_img_id")
     private Long id;
 
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_reference_id")
-    private RequestReference reference;
+    @JoinColumn(name = "custom_reference_id")
+    private CustomReference reference;
 
-    public RequestReferenceImg(String url) {
+    public CustomReferenceImg(String url) {
         this.url = url;
     }
 }
