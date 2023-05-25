@@ -77,7 +77,14 @@ public class CustomServiceImpl implements CustomService {
 
     @Override
     public CustomGetInfoResponse retrieveInfoById(Long designerId, Long customId) {
-        return null;
+
+        Custom custom = customRepository.findWithMemberById(customId)
+                .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
+
+        //해당 커스텀 요청이 로그인한 디자이너 소유인지 검증
+        validateDesignerAuthority(designerId, custom);
+
+        return CustomGetInfoResponse.of(custom);
     }
 
     @Override
