@@ -1,9 +1,7 @@
 package com.sctk.cmc.service;
 
 import com.sctk.cmc.common.exception.CMCException;
-import com.sctk.cmc.domain.Custom;
-import com.sctk.cmc.domain.Designer;
-import com.sctk.cmc.domain.Member;
+import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.CustomRepository;
 import com.sctk.cmc.repository.DesignerRepository;
 import com.sctk.cmc.repository.MemberRepository;
@@ -101,9 +99,23 @@ public class CustomServiceImpl implements CustomService {
         return CustomIdResponse.of(custom.getId());
     }
 
+    @Transactional
     @Override
-    public CustomResultIdResponse acceptCustom(Long designerId, Long customId, CustomResultAcceptParams customResultAcceptParams) {
-        return null;
+    public CustomResultIdResponse acceptCustom(Long designerId, Long customId,
+                                               CustomResultAcceptParams customResultAcceptParams) {
+
+        Custom custom = customRepository.findWithMemberById(customId)
+                .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
+
+        validateDesignerAuthority(designerId, custom);
+
+        // accepted 가 REQUESTING 인지 검증
+        validateAcceptedIsRequesting(custom);
+
+        CustomResult.ofAcceptance(custom, customResultAcceptParams);
+        custom.changeStatusTo(CustomStatus.APPROVAL);
+
+        return CustomResultIdResponse.of(custom.getId());
     }
 
     @Override
@@ -114,6 +126,12 @@ public class CustomServiceImpl implements CustomService {
     private void validateDesignerAuthority(Long designerId, Custom custom) {
         if ( !custom.getDesigner().getId().equals(designerId) ) {
             throw new CMCException(NOT_HAVE_DESIGNERS_AUTHORITY);
+        }
+    }
+
+    private void validateAcceptedIsRequesting(Custom custom) {
+        if (custom.getAccepted() != CustomStatus.REQUESTING) {
+            throw new CMCException(ALREADY_RESPONDED_CUSTOM);
         }
     }
 
