@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.DESIGNERS_ILLEGAL_ID;
 import static com.sctk.cmc.common.exception.ResponseStatus.MEMBERS_ILLEGAL_ID;
@@ -53,7 +54,14 @@ public class CustomServiceImpl implements CustomService {
 
     @Override
     public List<CustomGetInfoResponse> retrieveAllInfo(Long designerId) {
-        return null;
+
+        List<Custom> allCustoms = customRepository.findAllByDesignerId(designerId);
+
+        List<CustomGetInfoResponse> responseList = allCustoms.stream()
+                .map(CustomGetInfoResponse::of)
+                .collect(Collectors.toList());
+
+        return responseList;
     }
 
     @Override
