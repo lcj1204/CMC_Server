@@ -15,7 +15,7 @@ public class CustomResult extends BaseTimeEntity  {
     @Column(name = "custom_result_id")
     private Long id;
 
-    @OneToOne(mappedBy = "custom_result_id")
+    @OneToOne(mappedBy = "customResult")
     private Custom custom;
 
     private LocalDate expectStartDate;
