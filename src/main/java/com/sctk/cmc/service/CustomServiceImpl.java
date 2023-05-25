@@ -1,5 +1,12 @@
 package com.sctk.cmc.service;
 
+import com.sctk.cmc.common.exception.CMCException;
+import com.sctk.cmc.domain.Custom;
+import com.sctk.cmc.domain.Designer;
+import com.sctk.cmc.domain.Member;
+import com.sctk.cmc.repository.CustomRepository;
+import com.sctk.cmc.repository.DesignerRepository;
+import com.sctk.cmc.repository.MemberRepository;
 import com.sctk.cmc.service.abstractions.CustomService;
 import com.sctk.cmc.service.dto.custom.CustomParams;
 import com.sctk.cmc.service.dto.customResult.CustomResultAcceptParams;
@@ -15,15 +22,33 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.sctk.cmc.common.exception.ResponseStatus.DESIGNERS_ILLEGAL_ID;
+import static com.sctk.cmc.common.exception.ResponseStatus.MEMBERS_ILLEGAL_ID;
+
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class CustomServiceImpl implements CustomService {
+    private final CustomRepository customRepository;
+    private final MemberRepository memberRepository;
+    private final DesignerRepository designerRepository;
+
     @Override
     public CustomIdResponse register(Long memberId, CustomParams customParams) {
-        return null;
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_ID));
+
+        Designer designer = designerRepository.findById(customParams.getDesignerId())
+                .orElseThrow(() -> new CMCException(DESIGNERS_ILLEGAL_ID));
+
+        Custom createdcCustom = Custom.create(member, designer, customParams);
+
+        Custom saveCustom = customRepository.save(createdcCustom);
+
+        return CustomIdResponse.of(saveCustom.getId());
     }
 
     @Override
