@@ -81,4 +81,8 @@ public class Custom extends BaseTimeEntity {
         // 이렇게 하는게 맞나..
         this.customResult = customResult;
     }
+
+    public void changeStatusTo(CustomStatus status) {
+        this.accepted = status;
+    }
 }
