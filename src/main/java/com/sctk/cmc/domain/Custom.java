@@ -76,4 +76,9 @@ public class Custom extends BaseTimeEntity {
     public void changeActiveToFalse() {
         this.active = false;
     }
+
+    public void addCustomResult(CustomResult customResult) {
+        // 이렇게 하는게 맞나..
+        this.customResult = customResult;
+    }
 }
