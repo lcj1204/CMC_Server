@@ -1,6 +1,6 @@
 package com.sctk.cmc.domain;
 
-import com.sctk.cmc.service.dto.custom.CustomParams;
+import com.sctk.cmc.service.dto.custom.CustomRegisterParams;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,15 +58,15 @@ public class Custom extends BaseTimeEntity {
         this.active = active;
     }
 
-    public static Custom create(Member member, Designer designer, CustomParams customParams) {
+    public static Custom create(Member member, Designer designer, CustomRegisterParams customRegisterParams) {
         return Custom.builder()
                 .member(member)
                 .designer(designer)
-                .highCategory(customParams.getHighCategory())
-                .lowCategory(customParams.getLowCategory())
-                .title(customParams.getTitle())
-                .desiredPrice(customParams.getDesiredPrice())
-                .requirement(customParams.getRequirement())
+                .highCategory(customRegisterParams.getHighCategory())
+                .lowCategory(customRegisterParams.getLowCategory())
+                .title(customRegisterParams.getTitle())
+                .desiredPrice(customRegisterParams.getDesiredPrice())
+                .requirement(customRegisterParams.getRequirement())
                 // 이미지 빠짐
                 .accepted(CustomStatus.REQUESTING)
                 .active(true)

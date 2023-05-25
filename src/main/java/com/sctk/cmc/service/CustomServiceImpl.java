@@ -6,7 +6,7 @@ import com.sctk.cmc.repository.CustomRepository;
 import com.sctk.cmc.repository.DesignerRepository;
 import com.sctk.cmc.repository.MemberRepository;
 import com.sctk.cmc.service.abstractions.CustomService;
-import com.sctk.cmc.service.dto.custom.CustomParams;
+import com.sctk.cmc.service.dto.custom.CustomRegisterParams;
 import com.sctk.cmc.service.dto.customResult.CustomResultAcceptParams;
 import com.sctk.cmc.service.dto.customResult.CustomResultRejectParams;
 import com.sctk.cmc.web.dto.custom.CustomGetDetailResponse;
@@ -34,15 +34,15 @@ public class CustomServiceImpl implements CustomService {
     private final DesignerRepository designerRepository;
 
     @Override
-    public CustomIdResponse register(Long memberId, CustomParams customParams) {
+    public CustomIdResponse register(Long memberId, CustomRegisterParams customRegisterParams) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_ID));
 
-        Designer designer = designerRepository.findById(customParams.getDesignerId())
+        Designer designer = designerRepository.findById(customRegisterParams.getDesignerId())
                 .orElseThrow(() -> new CMCException(DESIGNERS_ILLEGAL_ID));
 
-        Custom createdcCustom = Custom.create(member, designer, customParams);
+        Custom createdcCustom = Custom.create(member, designer, customRegisterParams);
 
         Custom saveCustom = customRepository.save(createdcCustom);
 

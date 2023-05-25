@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 
 @Getter
 @Builder
-public class CustomParams {
+public class CustomRegisterParams {
     @NotBlank(message = "[request] 요청서 제목을 입력해 주세요.")
     @Size(min = 2, max = 20, message = "[request] 요청서 제목은 2 - 20글자로 입력해 주세요.")
     private String title;

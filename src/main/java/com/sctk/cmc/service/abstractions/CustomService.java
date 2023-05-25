@@ -1,6 +1,6 @@
 package com.sctk.cmc.service.abstractions;
 
-import com.sctk.cmc.service.dto.custom.CustomParams;
+import com.sctk.cmc.service.dto.custom.CustomRegisterParams;
 import com.sctk.cmc.service.dto.customResult.CustomResultAcceptParams;
 import com.sctk.cmc.service.dto.customResult.CustomResultRejectParams;
 import com.sctk.cmc.web.dto.custom.CustomGetDetailResponse;
@@ -11,7 +11,7 @@ import com.sctk.cmc.web.dto.custom.CustomResultIdResponse;
 import java.util.List;
 
 public interface CustomService {
-    CustomIdResponse register(Long memberId, CustomParams customParams);
+    CustomIdResponse register(Long memberId, CustomRegisterParams customRegisterParams);
 
     List<CustomGetInfoResponse> retrieveAllInfo(Long designerId);
 

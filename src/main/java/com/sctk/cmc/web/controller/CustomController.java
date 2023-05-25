@@ -4,7 +4,7 @@ import com.sctk.cmc.auth.domain.SecurityDesignerDetails;
 import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.service.abstractions.CustomService;
-import com.sctk.cmc.service.dto.custom.CustomParams;
+import com.sctk.cmc.service.dto.custom.CustomRegisterParams;
 import com.sctk.cmc.service.dto.customResult.CustomResultAcceptParams;
 import com.sctk.cmc.service.dto.customResult.CustomResultRejectParams;
 import com.sctk.cmc.web.dto.custom.CustomGetDetailResponse;
@@ -31,10 +31,10 @@ public class CustomController {
     @PostMapping("/custom")
     @Operation(summary = "커스텀 요청 생성 API", description = "디자이너에게 커스텀 제작 요청을 생성합니다.")
     public BaseResponse<CustomIdResponse> register(@AuthenticationPrincipal SecurityMemberDetails memberDetails,
-                                                   @Valid @RequestBody CustomParams customParams) {
+                                                   @Valid @RequestBody CustomRegisterParams customRegisterParams) {
 
         Long memberId = memberDetails.getId();
-        CustomIdResponse response = customService.register(memberId, customParams);
+        CustomIdResponse response = customService.register(memberId, customRegisterParams);
 
         return new BaseResponse<>(response);
     }
