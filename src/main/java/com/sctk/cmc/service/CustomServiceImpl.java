@@ -87,9 +87,18 @@ public class CustomServiceImpl implements CustomService {
         return CustomGetInfoResponse.of(custom);
     }
 
+    @Transactional
     @Override
     public CustomIdResponse deleteSoft(Long designerId, Long customId) {
-        return null;
+
+        Custom custom = customRepository.findWithMemberById(customId)
+                .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
+
+        validateDesignerAuthority(designerId, custom);
+
+        custom.changeActiveToFalse();
+
+        return CustomIdResponse.of(custom.getId());
     }
 
     @Override
