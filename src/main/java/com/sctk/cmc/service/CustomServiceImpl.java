@@ -23,8 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sctk.cmc.common.exception.ResponseStatus.DESIGNERS_ILLEGAL_ID;
-import static com.sctk.cmc.common.exception.ResponseStatus.MEMBERS_ILLEGAL_ID;
+import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
 
 @Service
@@ -66,7 +65,14 @@ public class CustomServiceImpl implements CustomService {
 
     @Override
     public CustomGetDetailResponse retrieveDetailById(Long designerId, Long customId) {
-        return null;
+
+        Custom custom = customRepository.findWithMemberById(customId)
+                .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
+
+        //해당 커스텀 요청이 로그인한 디자이너 소유인지 검증
+        validateDesignerAuthority(designerId, custom);
+
+        return CustomGetDetailResponse.of(custom);
     }
 
     @Override
@@ -88,4 +94,11 @@ public class CustomServiceImpl implements CustomService {
     public CustomResultIdResponse rejectCustom(Long designerId, Long customId, CustomResultRejectParams customResultRejectParams) {
         return null;
     }
+
+    private void validateDesignerAuthority(Long designerId, Custom custom) {
+        if ( !custom.getDesigner().getId().equals(designerId) ) {
+            throw new CMCException(NOT_HAVE_DESIGNERS_AUTHORITY);
+        }
+    }
+
 }
