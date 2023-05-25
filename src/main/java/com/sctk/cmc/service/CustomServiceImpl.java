@@ -118,9 +118,21 @@ public class CustomServiceImpl implements CustomService {
         return CustomResultIdResponse.of(custom.getId());
     }
 
+    @Transactional
     @Override
     public CustomResultIdResponse rejectCustom(Long designerId, Long customId, CustomResultRejectParams customResultRejectParams) {
-        return null;
+
+        Custom custom = customRepository.findWithMemberById(customId)
+                .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
+
+        validateDesignerAuthority(designerId, custom);
+
+        validateAcceptedIsRequesting(custom);
+
+        CustomResult.ofRejection(custom, customResultRejectParams);
+        custom.changeStatusTo(CustomStatus.REFUSAL);
+
+        return CustomResultIdResponse.of(custom.getId());
     }
 
     private void validateDesignerAuthority(Long designerId, Custom custom) {
