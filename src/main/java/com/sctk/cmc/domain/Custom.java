@@ -1,5 +1,6 @@
 package com.sctk.cmc.domain;
 
+import com.sctk.cmc.service.dto.custom.CustomParams;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +43,8 @@ public class Custom extends BaseTimeEntity {
 
     @Builder
     public Custom(Member member, Designer designer, String highCategory, String lowCategory, String title,
-                  Integer desiredPrice, String requirement, CustomReference reference, CustomResult customResult) {
+                  Integer desiredPrice, String requirement, CustomReference reference, CustomResult customResult,
+                  CustomStatus accepted, Boolean active) {
         this.member = member;
         this.designer = designer;
         this.highCategory = highCategory;
@@ -52,8 +54,23 @@ public class Custom extends BaseTimeEntity {
         this.requirement = requirement;
         this.reference = reference;
         this.customResult = customResult;
-        this.accepted = CustomStatus.REQUESTING;
-        this.active = true;
+        this.accepted = accepted;
+        this.active = active;
+    }
+
+    public static Custom create(Member member, Designer designer, CustomParams customParams) {
+        return Custom.builder()
+                .member(member)
+                .designer(designer)
+                .highCategory(customParams.getHighCategory())
+                .lowCategory(customParams.getLowCategory())
+                .title(customParams.getTitle())
+                .desiredPrice(customParams.getDesiredPrice())
+                .requirement(customParams.getRequirement())
+                // 이미지 빠짐
+                .accepted(CustomStatus.REQUESTING)
+                .active(true)
+                .build();
     }
 
     public void changeActiveToFalse() {
