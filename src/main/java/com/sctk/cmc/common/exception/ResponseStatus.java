@@ -33,7 +33,8 @@ public enum ResponseStatus {
     INVALID_ROLE(4003, "잘못된 ROLE 입니다."),
 
     // custom
-    CUSTOM_ILLEGAL_ID(5000, "존재 하지 않는 custom ID 입니다.");
+    CUSTOM_ILLEGAL_ID(5000, "존재 하지 않는 custom ID 입니다."),
+    ALREADY_RESPONDED_CUSTOM(5001, "이미 응답한 custom 요청 입니다.");
 
 
     private int code;
