@@ -30,7 +30,10 @@ public enum ResponseStatus {
     INCONSISTENCY_REFRESH_TOKEN(4002, "Refresh Token 이 일치하지 않습니다."),
 
     // redis
-    INVALID_ROLE(4003, "잘못된 ROLE 입니다.");
+    INVALID_ROLE(4003, "잘못된 ROLE 입니다."),
+
+    // custom
+    CUSTOM_ILLEGAL_ID(5000, "존재 하지 않는 custom ID 입니다.");
 
 
     private int code;
