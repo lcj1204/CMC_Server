@@ -1,5 +1,8 @@
 package com.sctk.cmc.domain;
 
+import com.sctk.cmc.service.dto.customResult.CustomResultAcceptParams;
+import com.sctk.cmc.service.dto.customResult.CustomResultRejectParams;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +18,7 @@ public class CustomResult extends BaseTimeEntity  {
     @Column(name = "custom_result_id")
     private Long id;
 
-    @OneToOne(mappedBy = "custom_result_id")
+    @OneToOne(mappedBy = "customResult")
     private Custom custom;
 
     private LocalDate expectStartDate;
@@ -27,4 +30,32 @@ public class CustomResult extends BaseTimeEntity  {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    @Builder
+    public CustomResult(Custom custom, LocalDate expectStartDate, LocalDate expectEndDate, int expectPrice, String message) {
+        this.custom = custom;
+        if (custom != null) {
+            custom.addCustomResult(this);
+        }
+        this.expectStartDate = expectStartDate;
+        this.expectEndDate = expectEndDate;
+        this.expectPrice = expectPrice;
+        this.message = message;
+    }
+
+    public static CustomResult ofAcceptance(Custom custom, CustomResultAcceptParams customResultAcceptParams) {
+        return CustomResult.builder()
+                .custom(custom)
+                .expectStartDate(customResultAcceptParams.getExpectStartDate())
+                .expectEndDate(customResultAcceptParams.getExpectEndDate())
+                .expectPrice(customResultAcceptParams.getExpectPrice())
+                .message(customResultAcceptParams.getMessage())
+                .build();
+    }
+
+    public static CustomResult ofRejection(Custom custom, CustomResultRejectParams customResultRejectParams) {
+        return CustomResult.builder()
+                .custom(custom)
+                .message(customResultRejectParams.getMessage())
+                .build();
+    }
 }

@@ -22,6 +22,7 @@ public enum ResponseStatus {
     DESIGNERS_HIGH_CATEGORY_MORE_THAN_LIMIT(3002, "등록할 수 있는 카테고리는 최대 3개입니다."),
     DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT(3003, "한 카테고리에 등록할 수 있는 소재는 최대 3개입니다."),
     DESIGNERS_NON_EXISTING_CRITERIA(3004, "디자이너 검색에 존재하지 않는 기준입니다."),
+    NOT_HAVE_DESIGNERS_AUTHORITY(3004, "디자이너 권한이 없습니다."),
 
     // jwt
     INVALID_TOKEN(4000, "잘못된 Token 입니다."),
@@ -29,7 +30,11 @@ public enum ResponseStatus {
     INCONSISTENCY_REFRESH_TOKEN(4002, "Refresh Token 이 일치하지 않습니다."),
 
     // redis
-    INVALID_ROLE(4003, "잘못된 ROLE 입니다.");
+    INVALID_ROLE(4003, "잘못된 ROLE 입니다."),
+
+    // custom
+    CUSTOM_ILLEGAL_ID(5000, "존재 하지 않는 custom ID 입니다."),
+    ALREADY_RESPONDED_CUSTOM(5001, "이미 응답한 custom 요청 입니다.");
 
 
     private int code;
