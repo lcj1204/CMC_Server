@@ -32,9 +32,14 @@ public enum ResponseStatus {
     // redis
     INVALID_ROLE(4003, "잘못된 ROLE 입니다."),
 
+<<<<<<< HEAD
+    // AWS
+    S3_TEMP_FILE_CONVERT_FAIL(5001, "이미지를 임시 파일로 변환하는데 실패했습니다.");
+=======
     // custom
     CUSTOM_ILLEGAL_ID(5000, "존재 하지 않는 custom ID 입니다."),
     ALREADY_RESPONDED_CUSTOM(5001, "이미 응답한 custom 요청 입니다.");
+>>>>>>> Develop
 
 
     private int code;

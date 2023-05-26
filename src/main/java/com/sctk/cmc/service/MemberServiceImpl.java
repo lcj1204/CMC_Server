@@ -10,11 +10,13 @@ import com.sctk.cmc.service.dto.member.*;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.MemberRepository;
 import com.sctk.cmc.service.abstractions.MemberService;
+import com.sctk.cmc.web.dto.ProfileImgPostResponse;
 import com.sctk.cmc.web.dto.member.LikeDesignerResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -26,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final DesignerService designerService;
+    private final AmazonS3Service amazonS3Service;
 
     @Transactional
     @Override
@@ -124,6 +127,16 @@ public class MemberServiceImpl implements MemberService {
         like.remove();
 
         return new LikeDesignerResponse(designer.getLikeCount());
+    }
+
+    @Override
+    public ProfileImgPostResponse registerProfileImg(Long memberId, MultipartFile profileImg) {
+        Member member = retrieveById(memberId);
+
+        String uploadedUrl = amazonS3Service.upload(profileImg, memberId, member.getRole());
+
+        member.setProfileImgUrl(uploadedUrl);
+        return new ProfileImgPostResponse(uploadedUrl);
     }
 
     public LikeDesigner retrieveLike(Long memberId, Long designerId) {

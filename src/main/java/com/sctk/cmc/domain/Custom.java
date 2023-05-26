@@ -33,6 +33,7 @@ public class Custom extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "custom")
     private CustomReference reference;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "custom_result_id")
     private CustomResult customResult;

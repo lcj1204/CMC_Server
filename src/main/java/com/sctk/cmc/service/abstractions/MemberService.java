@@ -5,7 +5,9 @@ import com.sctk.cmc.common.dto.member.MemberJoinParam;
 import com.sctk.cmc.domain.LikeDesigner;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.service.dto.member.*;
+import com.sctk.cmc.web.dto.ProfileImgPostResponse;
 import com.sctk.cmc.web.dto.member.LikeDesignerResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
     Long join(MemberJoinParam param);
@@ -25,4 +27,6 @@ public interface MemberService {
     LikeDesignerResponse like(Long memberId, Long designerId);
 
     LikeDesignerResponse cancelLike(LikeDesigner like);
+
+    ProfileImgPostResponse registerProfileImg(Long memberId, MultipartFile profileImg);
 }

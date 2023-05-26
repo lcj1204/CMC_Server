@@ -8,12 +8,14 @@ import com.sctk.cmc.service.dto.member.BodyInfoModifyParams;
 import com.sctk.cmc.service.dto.member.MemberDetail;
 import com.sctk.cmc.service.abstractions.MemberService;
 import com.sctk.cmc.service.dto.member.MemberInfo;
+import com.sctk.cmc.web.dto.ProfileImgPostResponse;
 import com.sctk.cmc.web.dto.member.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -77,6 +79,14 @@ public class MemberController {
     @Operation(summary = "디자니어 좋아요 처리", description = "디자이너에 좋아요 처리를 합니다.")
     public BaseResponse<LikeDesignerResponse> postLikeForDesigner(@RequestParam(name = "designer-id") Long designerId) {
         LikeDesignerResponse response = memberService.like(getMemberId(), designerId);
+
+        return new BaseResponse<>(response);
+    }
+
+    @PostMapping("/profiles/image")
+    @Operation(summary = "구매자 프로필 사진 등록", description = "구매자 프로필 사진을 등록합니다.")
+    public BaseResponse<ProfileImgPostResponse> postProfileImg(@RequestPart("image") MultipartFile profileImg) {
+        ProfileImgPostResponse response = memberService.registerProfileImg(getMemberId(), profileImg);
 
         return new BaseResponse<>(response);
     }
