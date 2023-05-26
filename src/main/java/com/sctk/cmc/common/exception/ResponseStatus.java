@@ -29,7 +29,10 @@ public enum ResponseStatus {
     INCONSISTENCY_REFRESH_TOKEN(4002, "Refresh Token 이 일치하지 않습니다."),
 
     // redis
-    INVALID_ROLE(4003, "잘못된 ROLE 입니다.");
+    INVALID_ROLE(4003, "잘못된 ROLE 입니다."),
+
+    // AWS
+    S3_TEMP_FILE_CONVERT_FAIL(5001, "이미지를 임시 파일로 변환하는데 실패했습니다.");
 
 
     private int code;

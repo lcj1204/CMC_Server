@@ -68,4 +68,8 @@ public class Member extends BaseTimeEntity {
         this.designerLikes.remove(likeDesigner);
         this.likeCount--;
     }
+
+    public void setProfileImgUrl(String profileImgUrl) {
+        this.profileImgUrl = profileImgUrl;
+    }
 }
