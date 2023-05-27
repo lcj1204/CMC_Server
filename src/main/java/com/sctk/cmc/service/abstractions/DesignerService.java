@@ -6,6 +6,10 @@ import com.sctk.cmc.common.dto.designer.CategoryView;
 import com.sctk.cmc.service.dto.designer.FilteredDesignerInfo;
 import com.sctk.cmc.service.dto.designer.DesignerInfo;
 import com.sctk.cmc.common.dto.designer.DesignerJoinParam;
+import com.sctk.cmc.web.dto.ProfileImgPostResponse;
+import com.sctk.cmc.web.dto.designer.PortfolioImgGetResponse;
+import com.sctk.cmc.web.dto.designer.PortfolioImgPostResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,4 +39,10 @@ public interface DesignerService {
     List<FilteredDesignerInfo> retrievePopularByLike(int limit);
 
     List<FilteredDesignerInfo> retrievePopularByCategory(int limit);
+
+    ProfileImgPostResponse registerProfileImg(Long designerId, MultipartFile profileImg);
+
+    PortfolioImgPostResponse registerPortfolioImg(Long designerId, MultipartFile portfolioImg);
+
+    PortfolioImgGetResponse retrieveAllPortfolioImgById(Long designerId);
 }

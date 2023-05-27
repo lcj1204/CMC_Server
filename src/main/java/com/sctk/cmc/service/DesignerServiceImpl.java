@@ -1,9 +1,7 @@
 package com.sctk.cmc.service;
 
 import com.sctk.cmc.common.dto.designer.CategoryView;
-import com.sctk.cmc.domain.Designer;
-import com.sctk.cmc.domain.HighCategory;
-import com.sctk.cmc.domain.LowCategory;
+import com.sctk.cmc.domain.*;
 import com.sctk.cmc.common.dto.designer.CategoryParam;
 import com.sctk.cmc.service.dto.designer.DesignerInfo;
 import com.sctk.cmc.common.dto.designer.DesignerJoinParam;
@@ -13,10 +11,15 @@ import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.service.dto.designer.FilteredDesignerInfo;
 import com.sctk.cmc.service.dto.designer.FreshDesignerInfo;
 import com.sctk.cmc.service.dto.designer.PopularDesignerInfo;
+import com.sctk.cmc.web.dto.ProfileImgPostResponse;
+import com.sctk.cmc.web.dto.designer.PortfolioImgGetResponse;
+import com.sctk.cmc.web.dto.designer.PortfolioImgPostResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +33,9 @@ import static com.sctk.cmc.common.exception.ResponseStatus.*;
 public class DesignerServiceImpl implements DesignerService {
     private final PasswordEncoder passwordEncoder;
     private final DesignerRepository designerRepository;
+    private final AmazonS3Service amazonS3Service;
+    @Value("${cmc.designer.profile.default-img-url}")
+    private String DESIGNER_DEFAULT_PROFILE_IMG_URL;
 
     @Transactional
     @Override
@@ -43,6 +49,7 @@ public class DesignerServiceImpl implements DesignerService {
                 .nickname(param.getNickname())
                 .email(param.getEmail())
                 .password(passwordEncoder.encode(param.getPassword()))
+                .profileImgUrl(DESIGNER_DEFAULT_PROFILE_IMG_URL)
                 .contact(param.getContact())
                 .build());
     }
@@ -161,5 +168,45 @@ public class DesignerServiceImpl implements DesignerService {
     @Override
     public List<FilteredDesignerInfo> retrievePopularByCategory(int limit) {
         return null;
+    }
+
+    @Transactional
+    @Override
+    public ProfileImgPostResponse registerProfileImg(Long designerId, MultipartFile profileImg) {
+        Designer designer = retrieveById(designerId);
+
+        if (!designer.getProfileImgUrl().equals(DESIGNER_DEFAULT_PROFILE_IMG_URL)) {
+            amazonS3Service.delete(designer.getProfileImgUrl());
+        }
+
+        String uploadedUrl = amazonS3Service.uploadProfileImg(profileImg, designerId, designer.getRole());
+        designer.setProfileImgUrl(uploadedUrl);
+        return new ProfileImgPostResponse(uploadedUrl);
+    }
+
+    @Transactional
+    @Override
+    public PortfolioImgPostResponse registerPortfolioImg(Long designerId, MultipartFile portfolioImg) {
+        Designer designer = retrieveById(designerId);
+        Portfolio portfolio = designer.getPortfolio();
+
+        if (portfolio == null) {
+            portfolio = new Portfolio(designer);
+        }
+
+        String imgUrl = amazonS3Service.uploadPortfolioImg(portfolioImg, designerId);
+
+        PortfolioImg img = new PortfolioImg(portfolio, imgUrl, portfolio.getPortfolioImgs().size());
+
+        return new PortfolioImgPostResponse(img.getUrl(), img.getOrderInRow());
+    }
+
+    @Override
+    public PortfolioImgGetResponse retrieveAllPortfolioImgById(Long designerId) {
+        Designer designer = retrieveById(designerId);
+
+        List<String> imgUrls = designer.getPortfolio().getPortfolioImgUrls();
+
+        return new PortfolioImgGetResponse(imgUrls);
     }
 }
