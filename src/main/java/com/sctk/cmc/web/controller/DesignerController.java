@@ -5,12 +5,16 @@ import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.service.abstractions.DesignerService;
 import com.sctk.cmc.common.dto.designer.CategoryView;
 import com.sctk.cmc.service.dto.designer.*;
+import com.sctk.cmc.web.dto.ProfileImgPostResponse;
 import com.sctk.cmc.web.dto.designer.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -86,7 +90,33 @@ public class DesignerController {
         return new BaseResponse<>(new FreshDesignersGetResponse(freshDesignerInfos));
     }
 
+    @PostMapping(value = "/profiles/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "디자이너 프로필 사진 등록", description = "디자이너 프로필 사진을 등록합니다.")
+    public BaseResponse<ProfileImgPostResponse> postProfileImg(@RequestPart("file") MultipartFile profileImg) {
+        ProfileImgPostResponse response = designerService.registerProfileImg(getDesignerId(), profileImg);
+
+        return new BaseResponse<>(response);
+    }
+
+    @GetMapping("/{designerId}/profiles/portfolios")
+    @Operation(summary = "디자이너 포트폴리오 사진 전체 조회", description = "디자이너 포트폴리오 사진 전체를 조회합니다. 등록된 순으로 조회됩니다.")
+    public BaseResponse<PortfolioImgGetResponse> getAllPortfolioImg(@PathVariable("designerId") Long designerId) {
+        PortfolioImgGetResponse response = designerService.retrieveAllPortfolioImgById(designerId);
+
+        return new BaseResponse<>(response);
+    }
+
+
+    @PostMapping(value = "/profiles/portfolios/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "디자이너 포트폴리오 사진 등록", description = "디자이너 포트폴리오 사진을 등록합니다. 등록된 순으로 조회됩니다.")
+    public BaseResponse<PortfolioImgPostResponse> postPortfolioImg(@RequestPart("file") MultipartFile portfolioImg) {
+        PortfolioImgPostResponse response = designerService.registerPortfolioImg(getDesignerId(), portfolioImg);
+
+        return new BaseResponse<>(response);
+    }
+
     private Long getDesignerId() {
+
         SecurityDesignerDetails designerDetails = (SecurityDesignerDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();

@@ -14,12 +14,22 @@ public class PortfolioImg extends BaseTimeEntity {
     private Long id;
 
     private String url;
+    private int orderInRow;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    public PortfolioImg(String url) {
+    // Constructor
+    public PortfolioImg(Portfolio portfolio, String url, int orderInRow) {
+        this.portfolio = portfolio;
+        portfolio.addImg(this);
         this.url = url;
+        this.orderInRow = orderInRow;
+    }
+
+    // Setter
+    public void changeOrderInRow(int orderInRow) {
+        this.orderInRow = orderInRow;
     }
 }

@@ -23,7 +23,7 @@ public class Designer extends BaseTimeEntity {
     private String password;
     private String profileImgUrl;
 
-    @OneToOne(mappedBy = "designer")
+    @OneToOne(mappedBy = "designer", cascade = CascadeType.ALL)
     private Portfolio portfolio;
 
     @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL)
@@ -43,13 +43,14 @@ public class Designer extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public Designer(String name, String nickname, String email, String password, String introduce, String contact) {
+    public Designer(String name, String nickname, String email, String password, String introduce, String profileImgUrl, String contact) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.introduce = introduce;
         this.contact = contact;
+        this.profileImgUrl = profileImgUrl;
         this.likeCount = 0;
         this.role = Role.DESIGNER;
         active = true;
@@ -97,5 +98,13 @@ public class Designer extends BaseTimeEntity {
     public void removeMemberLike(LikeDesigner like) {
         this.memberLikes.remove(like);
         likeCount--;
+    }
+
+    public void setProfileImgUrl(String profileImgUrl) {
+        this.profileImgUrl = profileImgUrl;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 }

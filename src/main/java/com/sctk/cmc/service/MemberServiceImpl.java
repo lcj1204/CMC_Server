@@ -13,6 +13,7 @@ import com.sctk.cmc.service.abstractions.MemberService;
 import com.sctk.cmc.web.dto.ProfileImgPostResponse;
 import com.sctk.cmc.web.dto.member.LikeDesignerResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,9 @@ public class MemberServiceImpl implements MemberService {
     private final DesignerService designerService;
     private final AmazonS3Service amazonS3Service;
 
+    @Value("${cmc.member.profile.default-img-url}")
+    private String MEMBER_DEFAULT_PROFILE_IMG_URL;
+
     @Transactional
     @Override
     public Long join(MemberJoinParam param) {
@@ -42,6 +46,7 @@ public class MemberServiceImpl implements MemberService {
                 .nickname(param.getNickname())
                 .email(param.getEmail())
                 .password(passwordEncoder.encode(param.getPassword()))
+                .profileImgUrl(MEMBER_DEFAULT_PROFILE_IMG_URL)
                 .build());
     }
 
@@ -129,12 +134,16 @@ public class MemberServiceImpl implements MemberService {
         return new LikeDesignerResponse(designer.getLikeCount());
     }
 
+    @Transactional
     @Override
     public ProfileImgPostResponse registerProfileImg(Long memberId, MultipartFile profileImg) {
         Member member = retrieveById(memberId);
 
-        String uploadedUrl = amazonS3Service.upload(profileImg, memberId, member.getRole());
+        if (!member.getProfileImgUrl().equals(MEMBER_DEFAULT_PROFILE_IMG_URL)) {
+            amazonS3Service.delete(member.getProfileImgUrl());
+        }
 
+        String uploadedUrl = amazonS3Service.uploadProfileImg(profileImg, memberId, member.getRole());
         member.setProfileImgUrl(uploadedUrl);
         return new ProfileImgPostResponse(uploadedUrl);
     }
