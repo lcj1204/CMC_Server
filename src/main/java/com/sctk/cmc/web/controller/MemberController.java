@@ -11,8 +11,11 @@ import com.sctk.cmc.service.dto.member.MemberInfo;
 import com.sctk.cmc.web.dto.ProfileImgPostResponse;
 import com.sctk.cmc.web.dto.member.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -83,13 +86,14 @@ public class MemberController {
         return new BaseResponse<>(response);
     }
 
-    @PostMapping("/profiles/image")
+    @PostMapping(value = "/profiles/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "구매자 프로필 사진 등록", description = "구매자 프로필 사진을 등록합니다.")
-    public BaseResponse<ProfileImgPostResponse> postProfileImg(@RequestPart("image") MultipartFile profileImg) {
+    public BaseResponse<ProfileImgPostResponse> postProfileImg(@RequestPart("file") MultipartFile profileImg) {
         ProfileImgPostResponse response = memberService.registerProfileImg(getMemberId(), profileImg);
 
         return new BaseResponse<>(response);
     }
+
     private Long getMemberId() {
         SecurityMemberDetails memberDetails = (SecurityMemberDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
