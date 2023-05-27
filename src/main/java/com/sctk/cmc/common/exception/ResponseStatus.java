@@ -35,7 +35,9 @@ public enum ResponseStatus {
     CUSTOM_ILLEGAL_ID(5000, "존재 하지 않는 custom ID 입니다."),
     ALREADY_RESPONDED_CUSTOM(5001, "이미 응답한 custom 요청 입니다."),
 
-    S3_TEMP_FILE_CONVERT_FAIL(6001, "이미지를 임시 파일로 변환하는데 실패했습니다."),;
+    // AWS
+    AWS_FILE_NOT_FOUND(6000, "AWS에 존재하지 않는 파일입니다."),
+    S3_TEMP_FILE_CONVERT_FAIL(6001, "이미지를 임시 파일로 변환하는데 실패했습니다.");
 
 
     private int code;
