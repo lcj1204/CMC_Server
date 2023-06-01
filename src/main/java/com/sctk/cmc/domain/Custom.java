@@ -1,6 +1,6 @@
 package com.sctk.cmc.domain;
 
-import com.sctk.cmc.service.dto.custom.CustomRegisterParams;
+import com.sctk.cmc.service.member.custom.dto.CustomRegisterParams;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
