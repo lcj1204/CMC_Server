@@ -2,11 +2,13 @@ package com.sctk.cmc.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+@NoArgsConstructor
 @Getter
+@Entity
 public class BodyInfo extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,16 +16,16 @@ public class BodyInfo extends BaseTimeEntity{
     private Long id;
 
     @Embedded
-    private SizesByPart sizes;
+    private SizesByPart sizesByPart;
 
     @OneToOne(mappedBy = "bodyInfo", fetch = FetchType.LAZY)
     private Member member;
 
     // Constructor
     @Builder
-    public BodyInfo(Member member, SizesByPart sizes) {
+    public BodyInfo(Member member, SizesByPart sizesByPart) {
         this.member = member;
         member.setBodyInfo(this);
-        this.sizes = sizes;
+        this.sizesByPart = sizesByPart;
     }
 }
