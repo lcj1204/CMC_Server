@@ -35,7 +35,9 @@ jobs:
         
     - name: Create TEST YML
       run: |
-        cd ./src/test/resources
+        cd ./src/test
+        mkdir resources
+        cd ./resources
         touch ./application.yml
         echo "${{ secrets.CMC_TEST_YML }}" > ./application.yml
         
