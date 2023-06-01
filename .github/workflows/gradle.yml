@@ -8,8 +8,6 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ "feat/*", "refactor/*", "fix/*", "test/*", "rename/*", "remove/*" ]
   pull_request:
     branches: [ "Develop" ]
 
@@ -42,7 +40,7 @@ jobs:
             
     - name: Create DEVELOP YML
       run: |
-        cd ./src/test/resources
+        cd ./src/main/resources
         touch ./application.yml
         echo "${{ secrets.CMC_DEVELOP_YML }}" > ./application.yml
         
