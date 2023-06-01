@@ -73,4 +73,4 @@ jobs:
         aws s3 cp \
         --region ap-northeast-2 \
         --acl private \ 
-	  ./cmc-build.zip s3://cmc-build/
+	./cmc-build.zip s3://cmc-build/
