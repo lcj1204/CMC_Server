@@ -1,9 +1,7 @@
 package com.sctk.cmc.service.member;
 
-import com.sctk.cmc.domain.BodyInfo;
-import com.sctk.cmc.domain.Designer;
-import com.sctk.cmc.domain.LikeDesigner;
-import com.sctk.cmc.domain.Member;
+import com.sctk.cmc.common.exception.ResponseStatus;
+import com.sctk.cmc.domain.*;
 import com.sctk.cmc.service.designer.DesignerService;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.member.MemberRepository;
@@ -73,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
         return new MemberInfo(
                 member.getName(),
                 member.getProfileImgUrl(),
-                new BodyInfoView(info.getSizes())
+                new BodyInfoView(info.getSizesByPart())
         );
     }
 
@@ -87,6 +85,18 @@ public class MemberServiceImpl implements MemberService {
     public boolean existsByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .isPresent();
+    }
+
+    @Override
+    public BodyInfoView retrieveBodyInfoById(Long memberId) {
+        Member member = retrieveById(memberId);
+
+        BodyInfo bodyInfo = member.getBodyInfo();
+        if (bodyInfo == null) {
+            throw new CMCException(ResponseStatus.MEMBERS_EMPTY_BODY_INFO);
+        }
+
+        return new BodyInfoView(bodyInfo.getSizesByPart());
     }
 
     @Transactional
@@ -143,6 +153,18 @@ public class MemberServiceImpl implements MemberService {
         String uploadedUrl = amazonS3Service.uploadProfileImg(profileImg, memberId, member.getRole());
         member.setProfileImgUrl(uploadedUrl);
         return new ProfileImgPostResponse(uploadedUrl);
+    }
+
+    @Override
+    public void checkRequirements(Long memberId) {
+        // body-info 작성 여부
+        BodyInfoView infoView = retrieveBodyInfoById(memberId);
+
+        if (infoView == null) {
+            throw new CMCException(MEMBERS_EMPTY_BODY_INFO);
+        }
+
+        // 추후 추가 가능
     }
 
     public LikeDesigner retrieveLike(Long memberId, Long designerId) {

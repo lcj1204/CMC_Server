@@ -16,6 +16,7 @@ public enum ResponseStatus {
     MEMBERS_ILLEGAL_EMAIL(2002, "존재하지 않는 회원 이메일입니다."),
     MEMBERS_ALREADY_LIKING_DESIGNER(2003, "이미 좋아요 처리가 된 디자이너입니다."),
     MEMBERS_NOT_LIKED_DESIGNER(2004, "좋아요 처리한 적이 없는 디자이너입니다."),
+    MEMBERS_EMPTY_BODY_INFO(2005, "신체 정보가 등록되지 않았습니다."),
 
     // Designers
     DESIGNERS_ILLEGAL_ID(3001, "존재하지 않는 디자이너 ID입니다."),
