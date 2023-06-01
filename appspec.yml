@@ -3,4 +3,9 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/CMC_Server/
+    destination: /home/ubuntu/drcloud-deploy
+permissions:
+  - object: /home/ubuntu/drcloud-deploy
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
