@@ -19,6 +19,7 @@ public interface MemberService {
 
     boolean existsByEmail(String email);
 
+    BodyInfoView retrieveBodyInfoById(Long memberId);
     void registerBodyInfo(Long memberId, BodyInfoParams bodyInfoParams);
 
     void modifyBodyInfo(Long memberId, BodyInfoModifyParams bodyInfoModifyParams);
@@ -28,4 +29,6 @@ public interface MemberService {
     LikeDesignerResponse cancelLike(LikeDesigner like);
 
     ProfileImgPostResponse registerProfileImg(Long memberId, MultipartFile profileImg);
+
+    void checkRequirements(Long memberId);
 }

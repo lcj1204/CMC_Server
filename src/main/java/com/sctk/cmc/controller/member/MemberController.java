@@ -4,11 +4,8 @@ import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.controller.member.dto.*;
-import com.sctk.cmc.service.member.dto.BodyInfoParams;
-import com.sctk.cmc.service.member.dto.BodyInfoModifyParams;
-import com.sctk.cmc.service.member.dto.MemberDetail;
+import com.sctk.cmc.service.member.dto.*;
 import com.sctk.cmc.service.member.MemberService;
-import com.sctk.cmc.service.member.dto.MemberInfo;
 import com.sctk.cmc.controller.common.ProfileImgPostResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -56,6 +53,13 @@ public class MemberController {
         );
     }
 
+    @GetMapping("/body-info")
+    @Operation(summary = "구매자 신체 정보 조회", description = "구매자의 신체 정보를 조회합니다.")
+    public BaseResponse<BodyInfoView> getBodyInfo() {
+        BodyInfoView infoView = memberService.retrieveBodyInfoById(getMemberId());
+
+        return new BaseResponse<>(infoView);
+    }
     @PostMapping("/body-info")
     @Operation(summary = "구매자 신체 정보 등록", description = "구매자의 신체 정보를 등록합니다.")
     public BaseResponse<ResponseStatus> postBodyInfo(@RequestBody BodyInfoPostRequest request) {
@@ -76,6 +80,13 @@ public class MemberController {
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
 
+    @GetMapping("/profiles/status")
+    @Operation(summary = "구매자 필수 프로필 작성 여부 조회", description = "구매자의 필수 프로필 작성 여부를 조회합니다.")
+    public BaseResponse<ResponseStatus> getMemberProfileStatus() {
+        memberService.checkRequirements(getMemberId());
+
+        return new BaseResponse<>(ResponseStatus.SUCCESS);
+    }
     @PostMapping("/likes")
     @Operation(summary = "디자니어 좋아요 처리", description = "디자이너에 좋아요 처리를 합니다.")
     public BaseResponse<LikeDesignerResponse> postLikeForDesigner(@RequestParam(name = "designer-id") Long designerId) {
