@@ -46,7 +46,6 @@ jobs:
         cd ./src/main/resources
         touch ./application-develop.yml
         echo "${{ secrets.CMC_DEVELOP_YML }}" > ./application-develop.yml
-        cp ./src/main/resources/application-develop.yml ./deploy/
         
     - name: Create TEST YML
       run: |
