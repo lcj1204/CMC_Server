@@ -104,6 +104,6 @@ jobs:
         --application-name $CODE_DEPLOY_APP_NAME \
         --deployment-group-name $DEPLOYMENT_GROUP_NAME \
         --file-exists-behavior OVERWRITE \
-        --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$ZIP_NAME.zip \
+        --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=cmc-build.zip \
         --region ap-northeast-2
       shell: bash
