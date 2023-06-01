@@ -3,4 +3,4 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/app/CMC-develop
+    destination: /home/ubuntu/CMC_Server/
