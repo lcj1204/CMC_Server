@@ -26,7 +26,7 @@ public class Designer extends BaseTimeEntity {
     @OneToOne(mappedBy = "designer", cascade = CascadeType.ALL)
     private Portfolio portfolio;
 
-    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HighCategory> highCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "designer")
@@ -106,5 +106,10 @@ public class Designer extends BaseTimeEntity {
 
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
+    }
+
+    public void clearCategories() {
+        highCategories.clear();
+        lowCategories.clear();
     }
 }

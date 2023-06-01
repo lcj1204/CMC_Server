@@ -24,6 +24,7 @@ public enum ResponseStatus {
     DESIGNERS_LOW_CATEGORY_MORE_THAN_LIMIT(3003, "한 카테고리에 등록할 수 있는 소재는 최대 3개입니다."),
     DESIGNERS_NON_EXISTING_CRITERIA(3004, "디자이너 검색에 존재하지 않는 기준입니다."),
     NOT_HAVE_DESIGNERS_AUTHORITY(3004, "디자이너 권한이 없습니다."),
+    DESIGNERS_EMPTY_CATEGORY(3005, "등록된 카테고리가 없습니다."),
 
     // jwt
     INVALID_TOKEN(4000, "잘못된 Token 입니다."),
