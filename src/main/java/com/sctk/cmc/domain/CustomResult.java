@@ -1,7 +1,7 @@
 package com.sctk.cmc.domain;
 
-import com.sctk.cmc.service.dto.customResult.CustomResultAcceptParams;
-import com.sctk.cmc.service.dto.customResult.CustomResultRejectParams;
+import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
+import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

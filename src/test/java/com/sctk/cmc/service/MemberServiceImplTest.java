@@ -1,10 +1,10 @@
 package com.sctk.cmc.service;
 
 import com.sctk.cmc.domain.Member;
-import com.sctk.cmc.common.dto.member.MemberJoinParam;
+import com.sctk.cmc.service.member.dto.MemberJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
-import com.sctk.cmc.repository.MemberRepository;
-import com.sctk.cmc.service.abstractions.MemberService;
+import com.sctk.cmc.repository.member.MemberRepository;
+import com.sctk.cmc.service.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,12 +1,11 @@
 package com.sctk.cmc.repository;
 
 import com.sctk.cmc.domain.Member;
+import com.sctk.cmc.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 

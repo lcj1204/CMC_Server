@@ -1,13 +1,11 @@
 package com.sctk.cmc.service;
 
-import com.sctk.cmc.common.dto.designer.CategoryParam;
+import com.sctk.cmc.controller.designer.dto.CategoryParam;
 import com.sctk.cmc.domain.Designer;
-import com.sctk.cmc.domain.HighCategory;
-import com.sctk.cmc.domain.LowCategory;
-import com.sctk.cmc.common.dto.designer.DesignerJoinParam;
+import com.sctk.cmc.service.designer.dto.DesignerJoinParam;
 import com.sctk.cmc.common.exception.CMCException;
-import com.sctk.cmc.repository.DesignerRepository;
-import com.sctk.cmc.service.abstractions.DesignerService;
+import com.sctk.cmc.repository.designer.DesignerRepository;
+import com.sctk.cmc.service.designer.DesignerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
