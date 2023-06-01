@@ -1,6 +1,7 @@
 package com.sctk.cmc.controller.designer;
 
 import com.sctk.cmc.auth.domain.SecurityDesignerDetails;
+import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.controller.designer.dto.*;
 import com.sctk.cmc.service.designer.DesignerService;
@@ -45,8 +46,16 @@ public class DesignerController {
 
     @GetMapping("/{designerId}/categories")
     @Operation(summary = "디자이너 전체 카테고리 조회", description = "디자이너의 카테고리 전체(카테고리, 소재)를 등록합니다.")
-    public BaseResponse<CategoryGetResponse> postCategories(@PathVariable("designerId") Long designerId) {
+    public BaseResponse<CategoryGetResponse> getCategories(@PathVariable("designerId") Long designerId) {
         List<CategoryView> categoryViews = designerService.retrieveAllCategoryViewById(designerId);
+
+        return new BaseResponse<>(new CategoryGetResponse(categoryViews));
+    }
+
+    @GetMapping("/categories")
+    @Operation(summary = "디자이너 자신의 전체 카테고리 조회", description = "디자이너가 자신의 카테고리 전체(카테고리, 소재)를 등록합니다.")
+    public BaseResponse<CategoryGetResponse> getOwnCategories() {
+        List<CategoryView> categoryViews = designerService.retrieveOwnCategoryViewById(getDesignerId());
 
         return new BaseResponse<>(new CategoryGetResponse(categoryViews));
     }
@@ -59,6 +68,13 @@ public class DesignerController {
         return new BaseResponse<>(new CategoryPostResponse(registeredHighCategories));
     }
 
+    @PatchMapping("/categories")
+    @Operation(summary = "디자이너 카테고리 수정", description = "디자이너가 자신의 카테고리를 수정합니다.")
+    public BaseResponse<ResponseStatus> postCategories(@RequestBody CategoryPatchRequest request) {
+        designerService.modifyCategories(getDesignerId(), request.getCategoryParams());
+
+        return new BaseResponse<>(ResponseStatus.SUCCESS);
+    }
     @GetMapping("/ranks/like")
     @Operation(
             summary = "좋아요 순 디자이너 조회",

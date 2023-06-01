@@ -25,7 +25,7 @@ public class HighCategory extends BaseTimeEntity {
     @JoinColumn(name = "designer_id")
     private Designer designer;
 
-    @OneToMany(mappedBy = "highCategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "highCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LowCategory> lowCategories = new ArrayList<>();
 
     private String name;

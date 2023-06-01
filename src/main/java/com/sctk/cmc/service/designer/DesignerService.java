@@ -31,6 +31,7 @@ public interface DesignerService {
 
     List<CategoryView> retrieveAllCategoryViewById(Long designerId);
 
+    List<CategoryView> retrieveOwnCategoryViewById(Long designerId);
 
     List<FilteredDesignerInfo> retrieveSortedBy(String criteria, int limit);
 
@@ -45,4 +46,8 @@ public interface DesignerService {
     PortfolioImgPostResponse registerPortfolioImg(Long designerId, MultipartFile portfolioImg);
 
     PortfolioImgGetResponse retrieveAllPortfolioImgById(Long designerId);
+
+    void modifyCategories(Long designerId, List<CategoryParam> categoryParams);
+
+
 }

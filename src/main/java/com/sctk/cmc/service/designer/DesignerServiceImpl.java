@@ -1,5 +1,6 @@
 package com.sctk.cmc.service.designer;
 
+import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.controller.designer.dto.CategoryView;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.controller.designer.dto.CategoryParam;
@@ -104,6 +105,21 @@ public class DesignerServiceImpl implements DesignerService {
     public int registerCategories(Long designerId, List<CategoryParam> categoryParams) {
         Designer designer = retrieveById(designerId);
 
+        createCategories(categoryParams, designer);
+
+        return designer.getHighCategories().size();
+    }
+
+    @Transactional
+    @Override
+    public void modifyCategories(Long designerId, List<CategoryParam> categoryParams) {
+        Designer designer = retrieveById(designerId);
+
+        designer.clearCategories();
+        createCategories(categoryParams, designer);
+    }
+
+    private static void createCategories(List<CategoryParam> categoryParams, Designer designer) {
         for (CategoryParam params : categoryParams) {
             HighCategory highCategory = new HighCategory(designer, params.getHighCategoryName());
 
@@ -111,14 +127,29 @@ public class DesignerServiceImpl implements DesignerService {
                 LowCategory lowCategory = new LowCategory(designer, highCategory, lowCategoryName);
             }
         }
-
-        return designer.getHighCategories().size();
     }
 
     @Override
     public List<CategoryView> retrieveAllCategoryViewById(Long designerId) {
         Designer designer = retrieveById(designerId);
 
+        List<CategoryView> categoryViews = createCategoryViews(designer);
+        return categoryViews;
+    }
+
+    @Override
+    public List<CategoryView> retrieveOwnCategoryViewById(Long designerId) {
+        Designer designer = retrieveById(designerId);
+
+        List<CategoryView> categoryViews = createCategoryViews(designer);
+
+        if (categoryViews.size() == 0) {
+            throw new CMCException(ResponseStatus.DESIGNERS_EMPTY_CATEGORY);
+        }
+        return categoryViews;
+    }
+
+    private static List<CategoryView> createCategoryViews(Designer designer) {
         List<CategoryView> categoryViews = new ArrayList<>();
 
         designer.getHighCategories()
@@ -129,6 +160,8 @@ public class DesignerServiceImpl implements DesignerService {
                 );
         return categoryViews;
     }
+
+
 
     @Override
     public List<FilteredDesignerInfo> retrieveSortedBy(String criteria, int limit) {
