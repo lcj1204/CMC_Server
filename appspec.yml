@@ -3,10 +3,15 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/app/CMC-develop
-    
+    destination: /home/ubuntu/CMC-Server
+
 permissions:
-  - object: /home/ubuntu/app/CMC-develop
+  - object: /home/ubuntu/CMC-Server
     owner: ubuntu
     group: ubuntu
-    mode: 755
+
+hooks:
+  AfterInstall:
+    - location: /home/ubuntu/CMC-Server/scripts/deploy.sh
+      timeout: 100
+      runas: ubuntu
