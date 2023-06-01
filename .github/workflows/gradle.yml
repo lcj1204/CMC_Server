@@ -8,9 +8,6 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ "feat/*", "refactor/*", "fix/*", "test/*", "rename/*", "remove/*", "Feature/*" ]
-  pull_request:
     branches: [ "Develop" ]
 
 permissions:
@@ -39,6 +36,12 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+            
+    - name: Create DEVELOP YML
+      run: |
+        cd ./src/main/resources
+        touch ./application.yml
+        echo "${{ secrets.CMC_DEVELOP_YML }}" > ./application.yml
         
     - name: Create TEST YML
       run: |
