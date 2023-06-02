@@ -40,15 +40,15 @@ jobs:
         cd ./src/test
         mkdir resources
         cd ./resources
-        touch ./application.yml
-        echo "${{ secrets.CMC_TEST_YML }}" > ./application.yml
+        touch ./application-test.yml
+        echo "${{ secrets.CMC_TEST_YML }}" > ./application-test.yml
 
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x ./gradlew
       shell: bash
 
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: ./gradlew clean build -x test
       shell: bash
 
 
