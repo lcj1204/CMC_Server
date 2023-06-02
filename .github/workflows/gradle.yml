@@ -92,7 +92,7 @@ jobs:
         aws s3 cp \
         --region ap-northeast-2 \
         --acl private \
-        ./$ZIP_NAME.zip s3://$BUCKET_NAME/
+        ./deploy/$ZIP_NAME.zip s3://$BUCKET_NAME/
       shell: bash
 
     # Deploy
