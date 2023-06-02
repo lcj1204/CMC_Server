@@ -30,6 +30,9 @@ public class BaseResponse<T> {
     // 실패시 반환되는 Response
     public BaseResponse(ResponseStatus status) {
         this.isSuccess = false;
+        if (status == ResponseStatus.SUCCESS) {
+            this.isSuccess = true;
+        }
         this.code = status.getCode();
         this.message = status.getMessage();
     }
