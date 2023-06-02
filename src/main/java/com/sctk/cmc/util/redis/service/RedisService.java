@@ -20,7 +20,7 @@ import static com.sctk.cmc.common.exception.ResponseStatus.AUTHENTICATION_ILLEGA
 public class RedisService {
     private final RedisMemberRepository redisMemberRepository;
     private final RedisDesignerRepository redisDesignerRepository;
-    @Value("${spring.jwt.token.refresh-token.expiredTimeMs}")
+    @Value("${jwt.token.refresh-token.expiredTimeMs}")
     private Long refreshTokenExpiredTimeMs;
 
     @Transactional

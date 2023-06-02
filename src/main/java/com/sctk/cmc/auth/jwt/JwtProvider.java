@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,11 +22,11 @@ public class JwtProvider {
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String PREFIX_TOKEN = "Bearer ";
 
-    @Value("${spring.jwt.token.secret-key}")
+    @Value("${jwt.token.secret-key}")
     private String secretKey;
-    @Value("${spring.jwt.token.access-token.expiredTimeMs}")
+    @Value("${jwt.token.access-token.expiredTimeMs}")
     private Long accessTokenExpiredTimeMs;
-    @Value("${spring.jwt.token.refresh-token.expiredTimeMs}")
+    @Value("${jwt.token.refresh-token.expiredTimeMs}")
     private Long refreshTokenExpiredTimeMs;
 
     public Token generateToken(CommonUser user) {
