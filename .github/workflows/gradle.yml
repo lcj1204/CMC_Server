@@ -83,6 +83,17 @@ jobs:
       run: zip -r -qq -j ./$ZIP_NAME.zip ./deploy
       shell: bash
 
+      # 압축파일 형태로 전달
+    - name: Value check
+      run: |
+        echo ${{ secrets.AWS_ACCESS_KEY_ID }}
+        echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        echo $BUCKET_NAME
+        echo $PROJECT_NAME
+        echo $ZIP_NAME
+
+      shell: bash
+
     #aws 접근 id, key
 #    - name: Configure AWS credentials
 #      uses: aws-actions/configure-aws-credentials@v1
