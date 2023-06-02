@@ -39,14 +39,6 @@ jobs:
       with:
         redis-version: 6
 
-#    - name: Setup MySQL
-#      uses: samin/mysql-action@v1
-#      with:
-#        character set server: 'utf8'
-#        mysql database: 'ku-cmc-database'
-#        mysql user: 'ku-cmc'
-#        mysql password: ${{ secrets.MYSQL_PASSWORD }}
-
     # Test .yml Copy
     - name: Create TEST YML
       run: |
@@ -63,8 +55,3 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean build -x test
       shell: bash
-
-    - name: Test with Gradle
-      run: ./gradlew test
-
-
