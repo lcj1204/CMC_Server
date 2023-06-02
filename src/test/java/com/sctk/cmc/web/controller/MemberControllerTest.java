@@ -108,9 +108,7 @@ class MemberControllerTest {
         );
 
         MemberInfoResponse expectedResponse = new MemberInfoResponse(
-                mockInfo.getName(),
-                mockInfo.getProfileImgUrl(),
-                mockInfo.getBodyInfoView()
+                mockInfo
         );
 
         when(memberService.retrieveInfoById(anyLong())).thenReturn(mockInfo);
