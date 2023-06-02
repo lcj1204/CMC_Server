@@ -47,7 +47,7 @@ public interface DesignerService {
 
     PortfolioImgGetResponse retrieveAllPortfolioImgById(Long designerId);
 
+    PortfolioImgGetResponse retrieveAllOwnPortfolioImgById(Long designerId);
+
     void modifyCategories(Long designerId, List<CategoryParam> categoryParams);
-
-
 }
