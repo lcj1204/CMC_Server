@@ -32,9 +32,17 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
+
+                .antMatchers("/api/v1/members/**/info/**").hasRole("DESIGNER")
                 .antMatchers("/api/v1/members/**").hasRole("MEMBER")
+
+
                 .antMatchers("/api/v1/designers/ranks/**").hasAnyRole("MEMBER", "DESIGNER")
+                .antMatchers("/api/v1/designers/**/categories/**").hasAnyRole("MEMBER", "DESIGNER")
+                .antMatchers("/api/v1/designers/**/info/**").hasAnyRole("MEMBER", "DESIGNER")
+                .antMatchers("/api/v1/designers/**/profiles/**").hasAnyRole("MEMBER", "DESIGNER")
                 .antMatchers("/api/v1/designers/**").hasRole("DESIGNER")
+
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/api-docs/**").permitAll()
                 .antMatchers("/api/v1/auth/**").permitAll()

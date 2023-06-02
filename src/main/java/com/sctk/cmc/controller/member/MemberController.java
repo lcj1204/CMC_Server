@@ -30,12 +30,7 @@ public class MemberController {
     public BaseResponse<MemberInfoResponse> getMemberInfo(@PathVariable("memberId") Long memberId) {
         MemberInfo memberInfo = memberService.retrieveInfoById(memberId);
 
-        return new BaseResponse<>(new MemberInfoResponse(
-                memberInfo.getName(),
-                memberInfo.getProfileImgUrl(),
-                memberInfo.getBodyInfoView()
-            )
-        );
+        return new BaseResponse<>(new MemberInfoResponse(memberInfo));
     }
 
     @GetMapping("/detail")

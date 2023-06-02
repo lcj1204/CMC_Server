@@ -237,9 +237,25 @@ public class DesignerServiceImpl implements DesignerService {
     @Override
     public PortfolioImgGetResponse retrieveAllPortfolioImgById(Long designerId) {
         Designer designer = retrieveById(designerId);
+        Portfolio portfolio = designer.getPortfolio();
 
-        List<String> imgUrls = designer.getPortfolio().getPortfolioImgUrls();
+        List<String> imgUrls = new ArrayList<>();
+        if (portfolio != null) {
+            imgUrls = portfolio.getPortfolioImgUrls();
+        }
 
         return new PortfolioImgGetResponse(imgUrls);
+    }
+
+    @Override
+    public PortfolioImgGetResponse retrieveAllOwnPortfolioImgById(Long designerId) {
+        Designer designer = retrieveById(designerId);
+        Portfolio portfolio = designer.getPortfolio();
+
+        if (portfolio == null) {
+            throw new CMCException(ResponseStatus.DESIGNERS_EMPTY_PORTFOLIO);
+        }
+
+        return new PortfolioImgGetResponse(portfolio.getPortfolioImgUrls());
     }
 }

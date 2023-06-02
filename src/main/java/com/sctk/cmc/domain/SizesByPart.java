@@ -22,6 +22,10 @@ public class SizesByPart {
     private float waist;
     private float hip;
     private float thigh;
+
+    public static SizesByPart getEmpty() {
+        return new SizesByPart(0,0,0,0,0,0,0,0,0);
+    }
 }
 
 

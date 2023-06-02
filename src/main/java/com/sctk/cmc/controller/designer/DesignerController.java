@@ -123,6 +123,14 @@ public class DesignerController {
         return new BaseResponse<>(response);
     }
 
+    @GetMapping("/profiles/portfolios")
+    @Operation(summary = "디자이너 자신의 포트폴리오 사진 전체 조회", description = "디자이너가 자신의 포트폴리오 사진 전체를 조회합니다. 등록된 순으로 조회됩니다.")
+    public BaseResponse<PortfolioImgGetResponse> getAllOwnPortfolioImg() {
+        PortfolioImgGetResponse response = designerService.retrieveAllOwnPortfolioImgById(getDesignerId());
+
+        return new BaseResponse<>(response);
+    }
+
 
     @PostMapping(value = "/profiles/portfolios/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "디자이너 포트폴리오 사진 등록", description = "디자이너 포트폴리오 사진을 등록합니다. 등록된 순으로 조회됩니다.")

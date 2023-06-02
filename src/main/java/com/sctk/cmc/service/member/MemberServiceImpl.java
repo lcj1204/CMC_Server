@@ -68,10 +68,15 @@ public class MemberServiceImpl implements MemberService {
         Member member = retrieveById(memberId);
         BodyInfo info = member.getBodyInfo();
 
+        BodyInfoView infoView = new BodyInfoView(SizesByPart.getEmpty());
+        if (info != null) {
+            infoView = new BodyInfoView(info.getSizesByPart());
+        }
+
         return new MemberInfo(
                 member.getName(),
                 member.getProfileImgUrl(),
-                new BodyInfoView(info.getSizesByPart())
+                infoView
         );
     }
 
