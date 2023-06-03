@@ -31,7 +31,7 @@ public class Custom extends BaseTimeEntity {
     private Integer desiredPrice;
     private String requirement;
 
-    @OneToOne(mappedBy = "custom")
+    @OneToOne(mappedBy = "custom", cascade = CascadeType.ALL, orphanRemoval = true)
     private CustomReference reference;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -44,7 +44,7 @@ public class Custom extends BaseTimeEntity {
 
     @Builder
     public Custom(Member member, Designer designer, String highCategory, String lowCategory, String title,
-                  Integer desiredPrice, String requirement, CustomReference reference, CustomResult customResult,
+                  Integer desiredPrice, String requirement, CustomResult customResult,
                   CustomStatus accepted, Boolean active) {
         this.member = member;
         if (member != null) {
@@ -56,7 +56,6 @@ public class Custom extends BaseTimeEntity {
         this.title = title;
         this.desiredPrice = desiredPrice;
         this.requirement = requirement;
-        this.reference = reference;
         this.customResult = customResult;
         this.accepted = accepted;
         this.active = active;
@@ -71,7 +70,6 @@ public class Custom extends BaseTimeEntity {
                 .title(customRegisterParams.getTitle())
                 .desiredPrice(customRegisterParams.getDesiredPrice())
                 .requirement(customRegisterParams.getRequirement())
-                // 이미지 빠짐
                 .accepted(CustomStatus.REQUESTING)
                 .active(true)
                 .build();
@@ -88,5 +86,9 @@ public class Custom extends BaseTimeEntity {
 
     public void changeStatusTo(CustomStatus status) {
         this.accepted = status;
+    }
+
+    public void setReference(CustomReference customReference) {
+        this.reference = customReference;
     }
 }
