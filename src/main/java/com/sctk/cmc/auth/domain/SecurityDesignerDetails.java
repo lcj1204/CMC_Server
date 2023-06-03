@@ -1,6 +1,7 @@
 package com.sctk.cmc.auth.domain;
 
 import com.sctk.cmc.domain.Designer;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @RequiredArgsConstructor
+@Hidden
 public class SecurityDesignerDetails implements UserDetails {
 
     private final Designer designer;
