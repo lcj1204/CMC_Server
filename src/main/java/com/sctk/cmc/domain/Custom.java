@@ -47,6 +47,9 @@ public class Custom extends BaseTimeEntity {
                   Integer desiredPrice, String requirement, CustomReference reference, CustomResult customResult,
                   CustomStatus accepted, Boolean active) {
         this.member = member;
+        if (member != null) {
+            member.getCustom().add(this);
+        }
         this.designer = designer;
         this.highCategory = highCategory;
         this.lowCategory = lowCategory;
