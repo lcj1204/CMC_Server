@@ -20,7 +20,11 @@ public class CustomReferenceImg extends BaseTimeEntity {
     @JoinColumn(name = "custom_reference_id")
     private CustomReference reference;
 
-    public CustomReferenceImg(String url) {
+    public CustomReferenceImg(String url, CustomReference reference) {
         this.url = url;
+        this.reference = reference;
+        if (url != null) {
+            reference.getReferenceImgs().add(this);
+        }
     }
 }

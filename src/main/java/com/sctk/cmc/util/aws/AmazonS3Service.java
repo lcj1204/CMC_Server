@@ -4,7 +4,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.sctk.cmc.common.exception.CMCException;
-
 import com.sctk.cmc.domain.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import static com.sctk.cmc.common.exception.ResponseStatus.*;
+import static com.sctk.cmc.common.exception.ResponseStatus.AWS_FILE_NOT_FOUND;
+import static com.sctk.cmc.common.exception.ResponseStatus.S3_TEMP_FILE_CONVERT_FAIL;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -28,9 +30,34 @@ public class AmazonS3Service {
     private String bucketDomain;
     private final String PROFILE_IMG_UPLOAD_PATH_FORMAT = "%s/info/%d/profile-img/%s";
     private final String DESIGNER_PORTFOLIO_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/portfolio-img/%s";
+    private final String CUSTOM_REQUEST_IMG_UPLOAD_PATH_FORMAT = "ROLE_MEMBER/info/%d/custom-request-img/%d/%s";
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;  // S3 버킷 이름
+
+    // 커스텀 요청 이미지 업로드
+    public List<String> uploadCustomImgs(List<MultipartFile> multipartFiles, Long userId, Long customId) {
+        List<File> uploadFiles = multipartFiles.stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
+
+        return uploadFiles.stream()
+                .map(f -> uploadCustomImgs(f, userId, customId))
+                .collect(Collectors.toList());
+    }
+
+    public String uploadCustomImgs(File uploadFile, Long userId, Long customId) {
+        String fileName = String.format(CUSTOM_REQUEST_IMG_UPLOAD_PATH_FORMAT,
+                userId,
+                customId,
+                UUID.randomUUID()
+        );
+
+        String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
+        removeLocalFile(uploadFile);
+        return uploadImageUrl;
+    }
+
 
     // 프로필 사진 업로드
     public String uploadProfileImg(MultipartFile multipartFile, Long userId, Role userRole) {

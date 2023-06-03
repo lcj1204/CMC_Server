@@ -50,17 +50,6 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
         return CustomGetDetailResponse.of(custom);
     }
 
-    @Override
-    public CustomGetInfoResponse retrieveInfoById(Long designerId, Long customId) {
-
-        Custom custom = memberCustomService.retrieveById(customId);
-
-        //해당 커스텀 요청이 로그인한 디자이너 소유인지 검증
-        validateDesignerAuthority(designerId, custom);
-
-        return CustomGetInfoResponse.of(custom);
-    }
-
     @Transactional
     @Override
     public CustomIdResponse deleteSoft(Long designerId, Long customId) {

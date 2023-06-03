@@ -15,8 +15,6 @@ public interface DesignerCustomService {
 
     CustomGetDetailResponse retrieveDetailById(Long designerId, Long customId);
 
-    CustomGetInfoResponse retrieveInfoById(Long designerId, Long customId);
-
     CustomIdResponse deleteSoft(Long designerId, Long customId);
 
     CustomResultIdResponse acceptCustom(Long designerId, Long customId, CustomResultAcceptParams customResultAcceptParams);
