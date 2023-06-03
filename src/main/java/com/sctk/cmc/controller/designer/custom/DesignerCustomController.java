@@ -46,18 +46,6 @@ public class DesignerCustomController {
         return new BaseResponse<>(response);
     }
 
-    //필요 없나?
-    @GetMapping("/custom/{customId}/info")
-    @Operation(summary = "커스텀 요청 간단 조회 API", description = "디자이너가 커스텀 요청을 간단 조회할 때 사용합니다.")
-    public BaseResponse<CustomGetInfoResponse> retrieveInfo(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
-                                                            @PathVariable("customId") Long customId) {
-
-        Long designerId = designerDetails.getId();
-        CustomGetInfoResponse response = designerCustomService.retrieveInfoById(designerId, customId);
-
-        return new BaseResponse<>(response);
-    }
-
     @DeleteMapping("/custom/{customId}")
     @Operation(summary = "커스텀 요청 삭제(soft) API", description = "디자이너가 커스텀 요청을 수락 또는 거절하면 삭제합니다.")
     public BaseResponse<CustomIdResponse> deleteSoft(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
