@@ -11,4 +11,6 @@ public interface MemberCustomService {
     CustomIdResponse register(Long memberId, CustomRegisterParams customRegisterParams, List<MultipartFile> multipartFiles);
 
     Custom retrieveById(Long customId);
+
+    Custom retrieveWithImgsById(Long customId);
 }
