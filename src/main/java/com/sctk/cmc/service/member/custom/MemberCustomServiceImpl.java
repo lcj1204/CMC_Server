@@ -2,10 +2,11 @@ package com.sctk.cmc.service.member.custom;
 
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
+import com.sctk.cmc.controller.member.custom.dto.MemberCustomGetInfoResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.designer.DesignerRepository;
-import com.sctk.cmc.repository.member.custom.MemberCustomRepository;
 import com.sctk.cmc.repository.member.MemberRepository;
+import com.sctk.cmc.repository.member.custom.MemberCustomRepository;
 import com.sctk.cmc.service.member.custom.dto.CustomRegisterParams;
 import com.sctk.cmc.util.aws.AmazonS3Service;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
@@ -47,6 +49,23 @@ public class MemberCustomServiceImpl implements MemberCustomService {
         uploadUrls.forEach(u -> new CustomReferenceImg(u, createdCustomReference));
 
         return CustomIdResponse.of(saveCustom.getId());
+    }
+
+    @Override
+    public List<MemberCustomGetInfoResponse> retrieveAllInfo(Long memberId) {
+
+        List<Custom> allCustoms = memberCustomRepository.findAllByMemberId(memberId);
+        log.info("allCustoms size = {}", allCustoms.size());
+
+        List<MemberCustomGetInfoResponse> responseList = allCustoms.stream()
+                .map(c -> {
+                    // 썸네일 이미지는 첫번째 사진으로 함.
+                    String ThumbnailImgUrl = c.getReference().getReferenceImgs().get(0).getUrl();
+                    return MemberCustomGetInfoResponse.of(c, ThumbnailImgUrl);
+                })
+                .collect(Collectors.toList());
+
+        return responseList;
     }
 
     @Override

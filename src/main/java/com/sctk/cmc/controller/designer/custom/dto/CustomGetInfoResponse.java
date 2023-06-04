@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CustomGetInfoResponse {
+    private Long customId;
     private String title;
     private Long memberId;
     private String memberName;
@@ -20,6 +21,7 @@ public class CustomGetInfoResponse {
         Member member = custom.getMember();
 
         return CustomGetInfoResponse.builder()
+                .customId(custom.getId())
                 .title(custom.getTitle())
                 .memberId(member.getId())
                 .memberName(member.getName())

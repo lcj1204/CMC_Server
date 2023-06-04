@@ -3,16 +3,14 @@ package com.sctk.cmc.controller.member.custom;
 import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
+import com.sctk.cmc.controller.member.custom.dto.MemberCustomGetInfoResponse;
 import com.sctk.cmc.service.member.custom.MemberCustomService;
 import com.sctk.cmc.service.member.custom.dto.CustomRegisterParams;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -34,6 +32,16 @@ public class MemberCustomController {
 
         Long memberId = memberDetails.getId();
         CustomIdResponse response = memberCustomService.register(memberId, customRegisterParams, multipartFiles);
+
+        return new BaseResponse<>(response);
+    }
+
+    @GetMapping("/custom")
+    @Operation(summary = "커스텀 요청 전체 간단조회 API", description = "자신이 보낸 모든 요청들을 간단 조회합니다.")
+    public BaseResponse<List<MemberCustomGetInfoResponse>> retrieveAllInfo(@AuthenticationPrincipal SecurityMemberDetails memberDetails) {
+
+        Long memberId = memberDetails.getId();
+        List<MemberCustomGetInfoResponse> response = memberCustomService.retrieveAllInfo(memberId);
 
         return new BaseResponse<>(response);
     }
