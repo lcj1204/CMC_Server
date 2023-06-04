@@ -22,11 +22,11 @@ public class JwtProvider {
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String PREFIX_TOKEN = "Bearer ";
 
-    @Value("${jwt.token.secret-key}")
+    @Value("${spring.jwt.token.secret-key}")
     private String secretKey;
-    @Value("${jwt.token.access-token.expiredTimeMs}")
+    @Value("${spring.jwt.token.access-token.expiredTimeMs}")
     private Long accessTokenExpiredTimeMs;
-    @Value("${jwt.token.refresh-token.expiredTimeMs}")
+    @Value("${spring.jwt.token.refresh-token.expiredTimeMs}")
     private Long refreshTokenExpiredTimeMs;
 
     public Token generateToken(CommonUser user) {
