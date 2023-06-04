@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Getter
 @Builder
 public class CustomGetDetailResponse {
+    private Long customId;
     private String title;
     private Long memberId;
     private String memberName;
@@ -28,6 +29,7 @@ public class CustomGetDetailResponse {
         Member member = custom.getMember();
 
         return CustomGetDetailResponse.builder()
+                .customId(custom.getId())
                 .title(custom.getTitle())
                 .memberId(member.getId())
                 .memberName(member.getName())
