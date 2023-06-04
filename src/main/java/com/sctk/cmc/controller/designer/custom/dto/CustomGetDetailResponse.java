@@ -1,10 +1,14 @@
 package com.sctk.cmc.controller.designer.custom.dto;
 
 import com.sctk.cmc.domain.Custom;
+import com.sctk.cmc.domain.CustomReferenceImg;
 import com.sctk.cmc.domain.CustomStatus;
 import com.sctk.cmc.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -18,6 +22,7 @@ public class CustomGetDetailResponse {
     private Integer desiredPrice;
     private String requirement;
     private CustomStatus accepted;
+    private List<String> customReferenceImgs;
 
     public static CustomGetDetailResponse of(Custom custom) {
         Member member = custom.getMember();
@@ -32,6 +37,11 @@ public class CustomGetDetailResponse {
                 .desiredPrice(custom.getDesiredPrice())
                 .requirement(custom.getRequirement())
                 .accepted(custom.getAccepted())
+                .customReferenceImgs(
+                        custom.getReference().getReferenceImgs().stream()
+                                .map(CustomReferenceImg::getUrl)
+                                .collect(Collectors.toList())
+                )
                 .build();
     }
 }
