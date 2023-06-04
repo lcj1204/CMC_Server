@@ -42,7 +42,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
     @Override
     public CustomGetDetailResponse retrieveDetailById(Long designerId, Long customId) {
 
-        Custom custom = memberCustomService.retrieveById(customId);
+        Custom custom = memberCustomService.retrieveWithImgsById(customId);
 
         //해당 커스텀 요청이 로그인한 디자이너 소유인지 검증
         validateDesignerAuthority(designerId, custom);
