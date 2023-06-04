@@ -1,14 +1,61 @@
 spring:
   datasource:
-    driver-class-name:
-    url:
-    username:
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://cmc-rds-develop.cy8gc6edzpfg.ap-northeast-2.rds.amazonaws.com:3306/cmc
+    username: root
+    password: cmcproject2023
 
   jpa:
     hibernate:
-      ddl-auto:
+      ddl-auto: update
     properties:
       hibernate:
-        format_sql:
-        show_sql:
+        format_sql: true
+        show_sql: true
+
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+
+  jwt:
+    token:
+      secret-key: 03ab03bd5f2f3480151173381f6413c1c6d920052bd69063b96b15fb0b3107dfab83af65e3b5f0f48d855399ff3fe2a976fd2faabf1894522874204c07128d2b
+      access-token:
+        expiredTimeMs: 300000000 # 3,600,000 : 1hour
+      refresh-token:
+        expiredTimeMs: 3000000000 # 3,600,000 : 1hour
+
+cloud:
+  aws:
+    credentials:
+      instanceProfile: true
+    # AWS S3 bucket Info
+    s3:
+      bucket-domain: https://ku-cmc-bucket.s3.ap-northeast-2.amazonaws.com/
+      bucket: ku-cmc-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+# file upload max size
+servlet:
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+    use-root-path: true
+    operations-sorter: method
+
+cmc:
+  member:
+    profile:
+      default-img-url: https://ku-cmc-bucket.s3.ap-northeast-2.amazonaws.com/common/cmc-default-profileimg.png
+  designer:
+    profile:
+      default-img-url: https://ku-cmc-bucket.s3.ap-northeast-2.amazonaws.com/common/cmc-default-profileimg.png
