@@ -3,15 +3,20 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/CMC-Server
+    destination: /home/ubuntu/cmc/artifact
 
 permissions:
   - object: /home/ubuntu/CMC-Server
+    pattern: "**"
     owner: ubuntu
     group: ubuntu
 
 hooks:
   AfterInstall:
-    - location: /home/ubuntu/CMC-Server/scripts/deploy.sh
-      timeout: 100
+    - location: scripts/stop.sh
+      timeout: 60
+      runas: ubuntu
+  ApplicationStart:
+    - location: scripts/start.sh
+      timeout: 60
       runas: ubuntu
