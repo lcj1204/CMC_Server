@@ -4,7 +4,6 @@ import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetDetailResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetInfoResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
-import com.sctk.cmc.controller.designer.custom.dto.CustomResultIdResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.designer.custom.DesignerCustomRepository;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
@@ -42,7 +41,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
     @Override
     public CustomGetDetailResponse retrieveDetailById(Long designerId, Long customId) {
 
-        Custom custom = memberCustomService.retrieveWithImgsById(customId);
+        Custom custom = memberCustomService.retrieveWithMemberAndImgs(customId);
 
         //해당 커스텀 요청이 로그인한 디자이너 소유인지 검증
         validateDesignerAuthority(designerId, custom);
@@ -54,7 +53,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
     @Override
     public CustomIdResponse deleteSoft(Long designerId, Long customId) {
 
-        Custom custom = memberCustomService.retrieveById(customId);
+        Custom custom = memberCustomService.retrieveWtihMember(customId);
 
         validateDesignerAuthority(designerId, custom);
 
@@ -65,10 +64,10 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
 
     @Transactional
     @Override
-    public CustomResultIdResponse acceptCustom(Long designerId, Long customId,
+    public CustomIdResponse acceptCustom(Long designerId, Long customId,
                                                CustomResultAcceptParams customResultAcceptParams) {
 
-        Custom custom = memberCustomService.retrieveById(customId);
+        Custom custom = memberCustomService.retrieveWtihMember(customId);
 
         validateDesignerAuthority(designerId, custom);
 
@@ -78,14 +77,14 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
         CustomResult.ofAcceptance(custom, customResultAcceptParams);
         custom.changeStatusTo(CustomStatus.APPROVAL);
 
-        return CustomResultIdResponse.of(custom.getId());
+        return CustomIdResponse.of(custom.getId());
     }
 
     @Transactional
     @Override
-    public CustomResultIdResponse rejectCustom(Long designerId, Long customId, CustomResultRejectParams customResultRejectParams) {
+    public CustomIdResponse rejectCustom(Long designerId, Long customId, CustomResultRejectParams customResultRejectParams) {
 
-        Custom custom = memberCustomService.retrieveById(customId);
+        Custom custom = memberCustomService.retrieveWtihMember(customId);
 
         validateDesignerAuthority(designerId, custom);
 
@@ -94,7 +93,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
         CustomResult.ofRejection(custom, customResultRejectParams);
         custom.changeStatusTo(CustomStatus.REFUSAL);
 
-        return CustomResultIdResponse.of(custom.getId());
+        return CustomIdResponse.of(custom.getId());
     }
 
     private void validateDesignerAuthority(Long designerId, Custom custom) {
