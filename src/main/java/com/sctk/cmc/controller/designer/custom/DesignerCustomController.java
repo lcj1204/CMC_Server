@@ -3,7 +3,6 @@ package com.sctk.cmc.controller.designer.custom;
 import com.sctk.cmc.auth.domain.SecurityDesignerDetails;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetInfoResponse;
-import com.sctk.cmc.controller.designer.custom.dto.CustomResultIdResponse;
 import com.sctk.cmc.service.designer.custom.DesignerCustomService;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
@@ -59,24 +58,24 @@ public class DesignerCustomController {
 
     @PostMapping("/custom/{customId}/acceptance")
     @Operation(summary = "커스텀 요청 수락 API", description = "디자이너가 커스텀 요청을 수락합니다.")
-    public BaseResponse<CustomResultIdResponse> acceptCustom(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
+    public BaseResponse<CustomIdResponse> acceptCustom(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
                                                              @PathVariable("customId") Long customId,
                                                              @Valid @RequestBody CustomResultAcceptParams customResultAcceptParams) {
 
         Long designerId = designerDetails.getId();
-        CustomResultIdResponse response = designerCustomService.acceptCustom(designerId, customId, customResultAcceptParams);
+        CustomIdResponse response = designerCustomService.acceptCustom(designerId, customId, customResultAcceptParams);
 
         return new BaseResponse<>(response);
     }
 
     @PostMapping("/custom/{customId}/rejection")
     @Operation(summary = "커스텀 요청 거절 API", description = "디자이너가 커스텀 요청을 거절 합니다.")
-    public BaseResponse<CustomResultIdResponse> rejectCustom(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
+    public BaseResponse<CustomIdResponse> rejectCustom(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
                                                              @PathVariable("customId") Long customId,
                                                              @Valid @RequestBody CustomResultRejectParams customResultRejectParams) {
 
         Long designerId = designerDetails.getId();
-        CustomResultIdResponse response = designerCustomService.rejectCustom(designerId, customId, customResultRejectParams);
+        CustomIdResponse response = designerCustomService.rejectCustom(designerId, customId, customResultRejectParams);
 
         return new BaseResponse<>(response);
     }

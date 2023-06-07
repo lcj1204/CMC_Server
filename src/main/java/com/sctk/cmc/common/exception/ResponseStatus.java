@@ -17,6 +17,7 @@ public enum ResponseStatus {
     MEMBERS_ALREADY_LIKING_DESIGNER(2003, "이미 좋아요 처리가 된 디자이너입니다."),
     MEMBERS_NOT_LIKED_DESIGNER(2004, "좋아요 처리한 적이 없는 디자이너입니다."),
     MEMBERS_EMPTY_BODY_INFO(2005, "신체 정보가 등록되지 않았습니다."),
+    MEMBERS_NOT_OWNER(2006, "해당 회원의 소유가 아닙니다."),
 
     // Designers
     DESIGNERS_ILLEGAL_ID(3001, "존재하지 않는 디자이너 ID입니다."),
@@ -35,8 +36,13 @@ public enum ResponseStatus {
     // redis
     INVALID_ROLE(4003, "잘못된 ROLE 입니다."),
 
+    // custom
     CUSTOM_ILLEGAL_ID(5000, "존재 하지 않는 custom ID 입니다."),
     ALREADY_RESPONDED_CUSTOM(5001, "이미 응답한 custom 요청 입니다."),
+    CUSTOM_RESULT_ILLEGAL_ID(5002, "존재 하지 않는 customResult ID 입니다."),
+    CUSTOM_RESULT_UNMATCH_ID(5003, "일치 하지 않는 customResult ID 입니다."),
+    NOT_APPROVAL_CUSTOM_RESULT(5004, "승인된 Custom 이 아닙니다."),
+    NOT_REFUSAL_CUSTOM_RESULT(5005, "거절된 Custom 이 아닙니다."),
 
     // AWS
     AWS_FILE_NOT_FOUND(6000, "AWS에 존재하지 않는 파일입니다."),
