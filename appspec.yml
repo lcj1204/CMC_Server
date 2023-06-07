@@ -6,7 +6,7 @@ files:
     destination: /home/ubuntu/cmc/artifact
 
 permissions:
-  - object: /home/ubuntu/CMC-Server
+  - object: /
     pattern: "**"
     owner: ubuntu
     group: ubuntu
