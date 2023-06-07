@@ -2,7 +2,10 @@ package com.sctk.cmc.service.member.custom;
 
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
+import com.sctk.cmc.controller.member.custom.dto.MemberCustomGetDetailResponse;
 import com.sctk.cmc.controller.member.custom.dto.MemberCustomGetInfoResponse;
+import com.sctk.cmc.controller.member.custom.dto.MemberCustomResultGetAcceptanceResponse;
+import com.sctk.cmc.controller.member.custom.dto.MemberCustomResultGetRejectionResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.designer.DesignerRepository;
 import com.sctk.cmc.repository.member.MemberRepository;
@@ -55,7 +58,6 @@ public class MemberCustomServiceImpl implements MemberCustomService {
     public List<MemberCustomGetInfoResponse> retrieveAllInfo(Long memberId) {
 
         List<Custom> allCustoms = memberCustomRepository.findAllByMemberId(memberId);
-        log.info("allCustoms size = {}", allCustoms.size());
 
         List<MemberCustomGetInfoResponse> responseList = allCustoms.stream()
                 .map(c -> {
@@ -69,14 +71,64 @@ public class MemberCustomServiceImpl implements MemberCustomService {
     }
 
     @Override
-    public Custom retrieveById(Long customId) {
+    public MemberCustomGetDetailResponse retrieveDetailById(Long memberId, Long customId) {
+
+        Custom custom = retrieveWithImgsByMemberId(memberId, customId);
+
+        return MemberCustomGetDetailResponse.of(custom);
+    }
+
+    @Override
+    public MemberCustomResultGetAcceptanceResponse retrieveAcceptance(Long memberId, Long customId, Long customResultId) {
+
+        Custom custom = retrieveByMemberId(memberId, customId);
+
+        validateCustomResultStatus(custom, customResultId, CustomStatus.APPROVAL);
+
+        return MemberCustomResultGetAcceptanceResponse.of(custom.getCustomResult());
+    }
+
+    @Override
+    public MemberCustomResultGetRejectionResponse retrieveRejection(Long memberId, Long customId, Long customResultId) {
+
+        Custom custom = retrieveByMemberId(memberId, customId);
+
+        validateCustomResultStatus(custom, customResultId, CustomStatus.REFUSAL);
+
+        return MemberCustomResultGetRejectionResponse.of(custom.getCustomResult());
+    }
+
+    @Override
+    public Custom retrieveWtihMember(Long customId) {
         return memberCustomRepository.findWithMemberById(customId)
                 .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
     }
 
     @Override
-    public Custom retrieveWithImgsById(Long customId) {
+    public Custom retrieveWithMemberAndImgs(Long customId) {
         return memberCustomRepository.findWithMemberAndImgsById(customId)
                 .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
+    }
+
+    @Override
+    public Custom retrieveWithImgsByMemberId(Long memberId, Long customId) {
+        return memberCustomRepository.findWithImgsById(memberId, customId)
+                .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
+    }
+
+    @Override
+    public Custom retrieveByMemberId(Long memberId, Long customId) {
+        return memberCustomRepository.findById(memberId, customId)
+                .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
+    }
+
+    private void validateCustomResultStatus(Custom custom, Long customResultId, CustomStatus status) {
+        if (custom.getAccepted() != status) {
+            throw new CMCException(NOT_APPROVAL_CUSTOM_RESULT);
+        }else if (custom.getCustomResult() == null) {
+            throw new CMCException(CUSTOM_RESULT_ILLEGAL_ID);
+        } else if (!custom.getCustomResult().getId().equals(customResultId)) {
+            throw new CMCException(CUSTOM_RESULT_UNMATCH_ID);
+        }
     }
 }
