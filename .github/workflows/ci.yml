@@ -9,7 +9,7 @@ name: CI
 
 on:
   push:
-    branches: ["feature/**", "refactor/**", "deploy/**"]
+    branches: ["feature/**", "refactor/**", "deploy/**", "Deploy/**"]
 #env:
 #  PROJECT_NAME: CMC
 #  BUCKET_NAME: cmc-build-bucket
