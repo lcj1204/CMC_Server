@@ -31,12 +31,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-#    - name: Create DEVELOP YML
-#      run: |
-#        cd ./src/main/resources
-#        touch ./application-develop.yml
-#        echo "{{ secrets.CMC_DEVELOP_YML }}" > ./application-develop.yml
-
     - name: Create TEST YML
       run: |
         cd ./src/test/resources
