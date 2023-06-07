@@ -17,11 +17,10 @@ public interface MemberCustomRepository extends JpaRepository<Custom, Long> {
             "and c.active= true ")
     Optional<Custom> findWithMemberById(@Param("customId") Long customId);
 
-    @Query("select c from Custom c " +
+    @Query("select distinct c from Custom c " +
             "join fetch c.member " +
             "join fetch c.reference cr " +
             "join fetch cr.referenceImgs " +
-            "join c.designer " +
             "where c.id= :customId " +
             "and c.active= true ")
     Optional<Custom> findWithMemberAndImgsById(@Param("customId") Long customId);
@@ -34,4 +33,20 @@ public interface MemberCustomRepository extends JpaRepository<Custom, Long> {
             "where m.id= :memberId " +
             "and c.active= true ")
     List<Custom> findAllByMemberId(@Param("memberId") Long memberId);
+
+    @Query("select c from Custom c " +
+            "join fetch c.reference cr " +
+            "join fetch cr.referenceImgs " +
+            "join c.member m " +
+            "where c.id= :customId " +
+            "and m.id= :memberId " +
+            "and c.active= true ")
+    Optional<Custom> findWithImgsById(@Param("memberId")Long memberId, @Param("customId") Long customId);
+
+    @Query("select c from Custom c " +
+            "join c.member m " +
+            "where c.id= :customId " +
+            "and m.id= :memberId " +
+            "and c.active= true ")
+    Optional<Custom> findById(@Param("memberId")Long memberId, @Param("customId") Long customId);
 }
