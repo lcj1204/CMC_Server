@@ -9,7 +9,7 @@ name: CI
 
 on:
   push:
-    branches: ["feature/**", "refactor/**", "deploy/**", "Deploy/**"]
+    branches: ["feature/**", "refactor/**", "deploy/**", "Feature/**", "Refactor/**", "Deploy/**"]
 
 jobs:
   build:
