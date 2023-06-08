@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class PopularDesignerInfo implements FilteredDesignerInfo {
+    private Long designerId;
     private String name;
     private String profileImgUrl;
     private List<String> categoryNames;

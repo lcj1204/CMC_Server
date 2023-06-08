@@ -174,6 +174,7 @@ public class DesignerServiceImpl implements DesignerService {
 
         return designers.stream()
                 .map(designer -> new FreshDesignerInfo(
+                        designer.getId(),
                         designer.getName(),
                         designer.getProfileImgUrl(),
                         designer.getHighCategoryNames()))
@@ -189,6 +190,7 @@ public class DesignerServiceImpl implements DesignerService {
         orderedDesigners.stream()
                 .map(designer ->
                         new PopularDesignerInfo(
+                                designer.getId(),
                                 designer.getName(),
                                 designer.getProfileImgUrl(),
                                 designer.getHighCategoryNames(),
