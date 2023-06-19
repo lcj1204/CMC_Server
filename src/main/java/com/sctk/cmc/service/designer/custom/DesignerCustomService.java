@@ -3,6 +3,7 @@ package com.sctk.cmc.service.designer.custom;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetDetailResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetInfoResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
+import com.sctk.cmc.controller.designer.custom.dto.CustomPostAcceptanceResponse;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
 
@@ -16,7 +17,7 @@ public interface DesignerCustomService {
 
     CustomIdResponse deleteSoft(Long designerId, Long customId);
 
-    CustomIdResponse acceptCustom(Long designerId, Long customId, CustomResultAcceptParams customResultAcceptParams);
+    CustomPostAcceptanceResponse acceptCustom(Long designerId, Long customId, CustomResultAcceptParams customResultAcceptParams);
 
     CustomIdResponse rejectCustom(Long designerId, Long customId, CustomResultRejectParams customResultRejectParams);
 }

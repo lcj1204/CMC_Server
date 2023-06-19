@@ -3,6 +3,7 @@ package com.sctk.cmc.controller.designer.custom;
 import com.sctk.cmc.auth.domain.SecurityDesignerDetails;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetInfoResponse;
+import com.sctk.cmc.controller.designer.custom.dto.CustomPostAcceptanceResponse;
 import com.sctk.cmc.service.designer.custom.DesignerCustomService;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
@@ -58,12 +59,12 @@ public class DesignerCustomController {
 
     @PostMapping("/custom/{customId}/acceptance")
     @Operation(summary = "커스텀 요청 수락 API", description = "디자이너가 커스텀 요청을 수락합니다.")
-    public BaseResponse<CustomIdResponse> acceptCustom(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
-                                                             @PathVariable("customId") Long customId,
-                                                             @Valid @RequestBody CustomResultAcceptParams customResultAcceptParams) {
+    public BaseResponse<CustomPostAcceptanceResponse> acceptCustom(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
+                                                                   @PathVariable("customId") Long customId,
+                                                                   @Valid @RequestBody CustomResultAcceptParams customResultAcceptParams) {
 
         Long designerId = designerDetails.getId();
-        CustomIdResponse response = designerCustomService.acceptCustom(designerId, customId, customResultAcceptParams);
+        CustomPostAcceptanceResponse response = designerCustomService.acceptCustom(designerId, customId, customResultAcceptParams);
 
         return new BaseResponse<>(response);
     }
