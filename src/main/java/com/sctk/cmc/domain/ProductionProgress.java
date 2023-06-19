@@ -1,6 +1,9 @@
 package com.sctk.cmc.domain;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductionProgress extends BaseTimeEntity {
 
     @Id
@@ -35,4 +39,27 @@ public class ProductionProgress extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "productionProgress")
     private List<ProductionProgressImg> imgs = new ArrayList<>();
+
+    @Builder
+    public ProductionProgress(Custom custom, ProgressType status, String mainImg, String title, int price, LocalDate expectStartDate, LocalDate expectEndDate) {
+        this.custom = custom;
+        this.status = status;
+        this.mainImg = mainImg;
+        this.title = title;
+        this.price = price;
+        this.expectStartDate = expectStartDate;
+        this.expectEndDate = expectEndDate;
+    }
+
+    public static ProductionProgress create(Custom custom) {
+        return ProductionProgress.builder()
+                .custom( custom )
+                .status( ProgressType.ACCEPT )
+                .mainImg( custom.getReference().getReferenceImgs().get(0).getUrl() )
+                .title( custom.getTitle() )
+                .price( custom.getCustomResult().getExpectPrice() )
+                .expectStartDate( custom.getCustomResult().getExpectStartDate() )
+                .expectEndDate( custom.getCustomResult().getExpectEndDate() )
+                .build();
+    }
 }

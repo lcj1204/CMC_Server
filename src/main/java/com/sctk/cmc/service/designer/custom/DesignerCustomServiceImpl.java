@@ -4,8 +4,10 @@ import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetDetailResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetInfoResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
+import com.sctk.cmc.controller.designer.custom.dto.CustomPostAcceptanceResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.designer.custom.DesignerCustomRepository;
+import com.sctk.cmc.repository.designer.productionProgress.ProductionProgressRepository;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
 import com.sctk.cmc.service.member.custom.MemberCustomService;
@@ -25,6 +27,7 @@ import static com.sctk.cmc.common.exception.ResponseStatus.*;
 public class DesignerCustomServiceImpl implements DesignerCustomService {
     private final MemberCustomService memberCustomService;
     private final DesignerCustomRepository designerCustomRepository;
+    private final ProductionProgressRepository productionProgressRepository;
 
     @Override
     public List<CustomGetInfoResponse> retrieveAllInfo(Long designerId) {
@@ -64,10 +67,10 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
 
     @Transactional
     @Override
-    public CustomIdResponse acceptCustom(Long designerId, Long customId,
-                                               CustomResultAcceptParams customResultAcceptParams) {
+    public CustomPostAcceptanceResponse acceptCustom(Long designerId, Long customId,
+                                                     CustomResultAcceptParams customResultAcceptParams) {
 
-        Custom custom = memberCustomService.retrieveWtihMember(customId);
+        Custom custom = memberCustomService.retrieveWithMemberAndImgs(customId);
 
         validateDesignerAuthority(designerId, custom);
 
@@ -77,7 +80,11 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
         CustomResult.ofAcceptance(custom, customResultAcceptParams);
         custom.changeStatusTo(CustomStatus.APPROVAL);
 
-        return CustomIdResponse.of(custom.getId());
+        //Production_Progress 생성
+        ProductionProgress productionProgress = ProductionProgress.create(custom);
+        ProductionProgress saveProductionProgress = productionProgressRepository.save(productionProgress);
+
+        return CustomPostAcceptanceResponse.of( custom.getId(), saveProductionProgress.getId() );
     }
 
     @Transactional
