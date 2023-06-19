@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface DesignerCustomRepository extends JpaRepository<Custom, Long> {
 
@@ -14,6 +13,7 @@ public interface DesignerCustomRepository extends JpaRepository<Custom, Long> {
             "join fetch c.member " +
             "join c.designer d " +
             "where d.id= :designerId " +
-            "and c.active= true ")
+            "and c.active= true " +
+            "and c.accepted= 'REQUESTING' " )
     List<Custom> findAllByDesignerId(@Param("designerId") Long designerId);
 }
