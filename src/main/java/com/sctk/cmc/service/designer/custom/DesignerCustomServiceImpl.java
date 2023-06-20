@@ -7,7 +7,7 @@ import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomPostAcceptanceResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.designer.custom.DesignerCustomRepository;
-import com.sctk.cmc.repository.designer.productionProgress.ProductionProgressRepository;
+import com.sctk.cmc.repository.common.productionProgress.ProductionProgressRepository;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
 import com.sctk.cmc.service.member.custom.MemberCustomService;
