@@ -31,6 +31,8 @@ public class ProductionProgress extends BaseTimeEntity {
 
     private String title;
 
+    private String category;
+
     private int price;
 
     private LocalDate expectStartDate;
@@ -41,11 +43,12 @@ public class ProductionProgress extends BaseTimeEntity {
     private List<ProductionProgressImg> imgs = new ArrayList<>();
 
     @Builder
-    public ProductionProgress(Custom custom, ProgressType status, String mainImg, String title, int price, LocalDate expectStartDate, LocalDate expectEndDate) {
+    public ProductionProgress(Custom custom, ProgressType status, String mainImg, String title, String category, int price, LocalDate expectStartDate, LocalDate expectEndDate) {
         this.custom = custom;
         this.status = status;
         this.mainImg = mainImg;
         this.title = title;
+        this.category = category;
         this.price = price;
         this.expectStartDate = expectStartDate;
         this.expectEndDate = expectEndDate;
@@ -57,6 +60,7 @@ public class ProductionProgress extends BaseTimeEntity {
                 .status( ProgressType.ACCEPT )
                 .mainImg( custom.getReference().getReferenceImgs().get(0).getUrl() )
                 .title( custom.getTitle() )
+                .category( custom.getLowCategory() )
                 .price( custom.getCustomResult().getExpectPrice() )
                 .expectStartDate( custom.getCustomResult().getExpectStartDate() )
                 .expectEndDate( custom.getCustomResult().getExpectEndDate() )
