@@ -42,6 +42,8 @@ public class ProductionProgress extends BaseTimeEntity {
     @OneToMany(mappedBy = "productionProgress")
     private List<ProductionProgressImg> imgs = new ArrayList<>();
 
+    private Boolean active;
+
     @Builder
     public ProductionProgress(Custom custom, ProgressType status, String mainImg, String title, String category, int price, LocalDate expectStartDate, LocalDate expectEndDate) {
         this.custom = custom;
