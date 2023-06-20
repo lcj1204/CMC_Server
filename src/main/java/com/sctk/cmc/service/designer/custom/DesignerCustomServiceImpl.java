@@ -8,6 +8,7 @@ import com.sctk.cmc.controller.designer.custom.dto.CustomPostAcceptanceResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.designer.custom.DesignerCustomRepository;
 import com.sctk.cmc.repository.designer.productionProgress.ProductionProgressRepository;
+import com.sctk.cmc.service.designer.DesignerService;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
 import com.sctk.cmc.service.member.custom.MemberCustomService;
@@ -26,6 +27,7 @@ import static com.sctk.cmc.common.exception.ResponseStatus.*;
 @Slf4j
 public class DesignerCustomServiceImpl implements DesignerCustomService {
     private final MemberCustomService memberCustomService;
+    private final DesignerService designerService;
     private final DesignerCustomRepository designerCustomRepository;
     private final ProductionProgressRepository productionProgressRepository;
 
@@ -81,7 +83,9 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
         custom.changeStatusTo(CustomStatus.APPROVAL);
 
         //Production_Progress 생성
-        ProductionProgress productionProgress = ProductionProgress.create(custom);
+        Designer designer = designerService.retrieveById(designerId);
+
+        ProductionProgress productionProgress = ProductionProgress.create(designer, custom);
         ProductionProgress saveProductionProgress = productionProgressRepository.save(productionProgress);
 
         return CustomPostAcceptanceResponse.of( custom.getId(), saveProductionProgress.getId() );

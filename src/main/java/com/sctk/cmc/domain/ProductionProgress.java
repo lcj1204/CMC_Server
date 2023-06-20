@@ -20,9 +20,9 @@ public class ProductionProgress extends BaseTimeEntity {
     @Column(name = "production_progress_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "custom_id")
-    private Custom custom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "designer_id")
+    private Designer designer;
 
     @Enumerated(EnumType.STRING)
     private ProgressType status;
@@ -45,8 +45,8 @@ public class ProductionProgress extends BaseTimeEntity {
     private Boolean active;
 
     @Builder
-    public ProductionProgress(Custom custom, ProgressType status, String mainImg, String title, String category, int price, LocalDate expectStartDate, LocalDate expectEndDate) {
-        this.custom = custom;
+    public ProductionProgress(Designer designer, ProgressType status, String mainImg, String title, String category, int price, LocalDate expectStartDate, LocalDate expectEndDate, Boolean active) {
+        this.designer = designer;
         this.status = status;
         this.mainImg = mainImg;
         this.title = title;
@@ -54,18 +54,20 @@ public class ProductionProgress extends BaseTimeEntity {
         this.price = price;
         this.expectStartDate = expectStartDate;
         this.expectEndDate = expectEndDate;
+        this.active = active;
     }
 
-    public static ProductionProgress create(Custom custom) {
+    public static ProductionProgress create(Designer designer, Custom custom) {
         return ProductionProgress.builder()
-                .custom( custom )
-                .status( ProgressType.ACCEPT )
-                .mainImg( custom.getReference().getReferenceImgs().get(0).getUrl() )
-                .title( custom.getTitle() )
-                .category( custom.getLowCategory() )
-                .price( custom.getCustomResult().getExpectPrice() )
-                .expectStartDate( custom.getCustomResult().getExpectStartDate() )
-                .expectEndDate( custom.getCustomResult().getExpectEndDate() )
+                .designer(designer)
+                .status(ProgressType.ACCEPT)
+                .mainImg(custom.getReference().getReferenceImgs().get(0).getUrl())
+                .title(custom.getTitle())
+                .category(custom.getLowCategory())
+                .price(custom.getCustomResult().getExpectPrice())
+                .expectStartDate(custom.getCustomResult().getExpectStartDate())
+                .expectEndDate(custom.getCustomResult().getExpectEndDate())
+                .active(true)
                 .build();
     }
 }
