@@ -1,6 +1,5 @@
 package com.sctk.cmc.service.designer.productionProgress;
 
-import com.sctk.cmc.domain.ProgressType;
 import com.sctk.cmc.service.designer.productionProgress.dto.ProductionProgressGetDetailResponse;
 import com.sctk.cmc.service.designer.productionProgress.dto.ProductionProgressGetInfoResponse;
 import com.sctk.cmc.service.designer.productionProgress.dto.ProductionProgressIdResponse;
@@ -17,5 +16,5 @@ public interface ProductionProgressService {
     ProductionProgressGetDetailResponse retrieveDetailById(Long designerId, Long productionProgressId);
 
     // 이미지 추가
-    ProductionProgressIdResponse registerProductionProgressImage(Long designerId, Long productionProgressId, MultipartFile multipartFile, ProgressType type);
+    ProductionProgressIdResponse registerProductionProgressImage(Long designerId, Long productionProgressId, String progressType, List<MultipartFile> multipartFileList);
 }

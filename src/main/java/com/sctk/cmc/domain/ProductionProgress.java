@@ -39,7 +39,7 @@ public class ProductionProgress extends BaseTimeEntity {
 
     private LocalDate expectEndDate;
 
-    @OneToMany(mappedBy = "productionProgress")
+    @OneToMany(mappedBy = "productionProgress", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductionProgressImg> imgs = new ArrayList<>();
 
     private Boolean active;

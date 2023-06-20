@@ -1,6 +1,7 @@
 package com.sctk.cmc.service.designer.productionProgress;
 
 import com.sctk.cmc.common.exception.CMCException;
+import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.domain.ProductionProgress;
 import com.sctk.cmc.domain.ProductionProgressImg;
 import com.sctk.cmc.domain.ProgressType;
@@ -8,6 +9,7 @@ import com.sctk.cmc.repository.designer.productionProgress.ProductionProgressRep
 import com.sctk.cmc.service.designer.productionProgress.dto.ProductionProgressGetDetailResponse;
 import com.sctk.cmc.service.designer.productionProgress.dto.ProductionProgressGetInfoResponse;
 import com.sctk.cmc.service.designer.productionProgress.dto.ProductionProgressIdResponse;
+import com.sctk.cmc.util.aws.AmazonS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import static com.sctk.cmc.common.exception.ResponseStatus.PRODUCTION_PROGRESS_I
 @Slf4j
 public class ProductionProgressServiceImpl implements ProductionProgressService {
     private final ProductionProgressRepository productionProgressRepository;
+    private final AmazonS3Service amazonS3Service;
 
     @Override
     public List<ProductionProgressGetInfoResponse> retrieveAllInfo(Long designerId) {
@@ -46,14 +49,27 @@ public class ProductionProgressServiceImpl implements ProductionProgressService 
         ProductionProgressGetInfoResponse productionProgressInfo
                 = ProductionProgressGetInfoResponse.of(productionProgress);
 
-        Map<ProgressType, String> productionProgressImgMap = retrieveProductionProgressAllImg(productionProgress);
+        Map<ProgressType, List<String>> progressTypeListMap = retrieveProductionProgressAllImg(productionProgress);
 
-        return ProductionProgressGetDetailResponse.of(productionProgressInfo, productionProgressImgMap);
+        return ProductionProgressGetDetailResponse.of(productionProgressInfo, progressTypeListMap);
     }
 
     @Override
-    public ProductionProgressIdResponse registerProductionProgressImage(Long designerId, Long customId, MultipartFile multipartFile, ProgressType type) {
-        return null;
+    @Transactional
+    public ProductionProgressIdResponse registerProductionProgressImage(Long designerId,
+                                                                        Long productionProgressId, String progressType,
+                                                                        List<MultipartFile> multipartFileList) {
+
+        ProductionProgress productionProgress = retrieveProductionProgress(designerId, productionProgressId);
+
+        ProgressType progressTypeEnum = strProgressTypeToEnum(progressType);
+
+        List<String> uploadUrls = amazonS3Service.uploadProductionProgressImgs(multipartFileList, designerId,
+                                                                            productionProgressId, progressType);
+
+        uploadUrls.forEach(url -> ProductionProgressImg.create(url, progressTypeEnum, productionProgress));
+
+        return ProductionProgressIdResponse.of(productionProgress.getId());
     }
 
     private List<ProductionProgress> retrieveAllProductionProgress(Long designerId) {
@@ -65,8 +81,17 @@ public class ProductionProgressServiceImpl implements ProductionProgressService 
         .orElseThrow(() -> new CMCException(PRODUCTION_PROGRESS_ILLEGAL_ID));
     }
 
-    private static Map<ProgressType, String> retrieveProductionProgressAllImg(ProductionProgress productionProgress) {
+    private static Map<ProgressType, List<String>> retrieveProductionProgressAllImg(ProductionProgress productionProgress) {
         return productionProgress.getImgs().stream()
-                .collect(Collectors.toMap(ProductionProgressImg::getType, ProductionProgressImg::getUrl));
+                        .collect(Collectors.groupingBy(ProductionProgressImg::getType,
+                        Collectors.mapping(ProductionProgressImg::getUrl, Collectors.toList())));
+    }
+
+    private ProgressType strProgressTypeToEnum(String progressType) {
+        try {
+            return ProgressType.valueOf(progressType);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new CMCException(ResponseStatus.PRODUCTION_PROGRESS_ILLEGAL_TYPE);
+        }
     }
 }

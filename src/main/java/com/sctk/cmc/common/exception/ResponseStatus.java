@@ -49,7 +49,8 @@ public enum ResponseStatus {
     S3_TEMP_FILE_CONVERT_FAIL(6001, "이미지를 임시 파일로 변환하는데 실패했습니다."),
 
     // Production Progress
-    PRODUCTION_PROGRESS_ILLEGAL_ID(7000, "존재 하지 않는 Production Progress 입니다.")
+    PRODUCTION_PROGRESS_ILLEGAL_ID(7000, "존재 하지 않는 Production Progress 입니다."),
+    PRODUCTION_PROGRESS_ILLEGAL_TYPE(7001, "존재 하지 않는 Production Progress 이미지 타입 입니다.")
     ;
 
 

@@ -31,9 +31,34 @@ public class AmazonS3Service {
     private final String PROFILE_IMG_UPLOAD_PATH_FORMAT = "%s/info/%d/profile-img/%s";
     private final String DESIGNER_PORTFOLIO_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/portfolio-img/%s";
     private final String CUSTOM_REQUEST_IMG_UPLOAD_PATH_FORMAT = "ROLE_MEMBER/info/%d/custom-request-img/%d/%s";
+    private final String PRODUCTION_PROGRESS_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/production-progress-img/%d/%s/%s";
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;  // S3 버킷 이름
+
+    // 커스텀 요청 이미지 업로드
+    public List<String> uploadProductionProgressImgs(List<MultipartFile> multipartFiles, Long userId, Long productionProgressId, String progressType) {
+        List<File> uploadFiles = multipartFiles.stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
+
+        return uploadFiles.stream()
+                .map(f -> uploadProductionProgressImgs(f, userId, productionProgressId, progressType))
+                .collect(Collectors.toList());
+    }
+
+    public String uploadProductionProgressImgs(File uploadFile, Long userId, Long productionProgressId, String progressType) {
+        String fileName = String.format(PRODUCTION_PROGRESS_IMG_UPLOAD_PATH_FORMAT,
+                userId,
+                productionProgressId,
+                progressType,
+                UUID.randomUUID()
+        );
+
+        String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
+        removeLocalFile(uploadFile);
+        return uploadImageUrl;
+    }
 
     // 커스텀 요청 이미지 업로드
     public List<String> uploadCustomImgs(List<MultipartFile> multipartFiles, Long userId, Long customId) {
