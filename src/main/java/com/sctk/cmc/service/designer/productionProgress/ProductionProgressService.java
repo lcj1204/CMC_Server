@@ -14,8 +14,8 @@ public interface ProductionProgressService {
     List<ProductionProgressGetInfoResponse> retrieveAllInfo(Long designerId);
 
     // 제작중 상세 조회
-    ProductionProgressGetDetailResponse retrieveDetailById(Long designerId, Long customId);
+    ProductionProgressGetDetailResponse retrieveDetailById(Long designerId, Long productionProgressId);
 
     // 이미지 추가
-    ProductionProgressIdResponse registerImage(Long designerId, Long customId, MultipartFile multipartFile, ProgressType type);
+    ProductionProgressIdResponse registerProductionProgressImage(Long designerId, Long productionProgressId, MultipartFile multipartFile, ProgressType type);
 }

@@ -46,7 +46,11 @@ public enum ResponseStatus {
 
     // AWS
     AWS_FILE_NOT_FOUND(6000, "AWS에 존재하지 않는 파일입니다."),
-    S3_TEMP_FILE_CONVERT_FAIL(6001, "이미지를 임시 파일로 변환하는데 실패했습니다.");
+    S3_TEMP_FILE_CONVERT_FAIL(6001, "이미지를 임시 파일로 변환하는데 실패했습니다."),
+
+    // Production Progress
+    PRODUCTION_PROGRESS_ILLEGAL_ID(7000, "존재 하지 않는 Production Progress 입니다.")
+    ;
 
 
     private int code;
