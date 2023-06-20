@@ -1,11 +1,15 @@
 package com.sctk.cmc.domain;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductionProgressImg extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +22,22 @@ public class ProductionProgressImg extends BaseTimeEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "production_progress_id")
     private ProductionProgress productionProgress;
+
+    @Builder
+    public ProductionProgressImg(String url, ProgressType type, ProductionProgress productionProgress) {
+        this.url = url;
+        this.type = type;
+        this.productionProgress = productionProgress;
+        if (productionProgress != null) {
+            productionProgress.addProductionProgressImg(this);
+        }
+    }
+
+    public static ProductionProgressImg create(String url, ProgressType type, ProductionProgress productionProgress) {
+        return ProductionProgressImg.builder()
+                .url(url)
+                .type(type)
+                .productionProgress(productionProgress)
+                .build();
+    }
 }
