@@ -29,7 +29,7 @@ public class ProductionProgressImg extends BaseTimeEntity{
         this.type = type;
         this.productionProgress = productionProgress;
         if (productionProgress != null) {
-            productionProgress.getImgs().add(this);
+            productionProgress.addProductionProgressImg(this);
         }
     }
 

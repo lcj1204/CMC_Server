@@ -1,7 +1,6 @@
 package com.sctk.cmc.service.designer.productionProgress;
 
 import com.sctk.cmc.common.exception.CMCException;
-import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.domain.ProductionProgress;
 import com.sctk.cmc.domain.ProductionProgressImg;
 import com.sctk.cmc.domain.ProgressType;
@@ -21,6 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.PRODUCTION_PROGRESS_ILLEGAL_ID;
+import static com.sctk.cmc.common.exception.ResponseStatus.PRODUCTION_PROGRESS_ILLEGAL_TYPE;
 
 @Service
 @Transactional(readOnly = true)
@@ -88,10 +88,10 @@ public class ProductionProgressServiceImpl implements ProductionProgressService 
     }
 
     private ProgressType strProgressTypeToEnum(String progressType) {
-        try {
-            return ProgressType.valueOf(progressType);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new CMCException(ResponseStatus.PRODUCTION_PROGRESS_ILLEGAL_TYPE);
+        ProgressType progressTypeEnum = ProgressType.convertedFromString(progressType);
+        if (progressTypeEnum.equals(ProgressType.ACCEPT)) {
+            throw new CMCException(PRODUCTION_PROGRESS_ILLEGAL_TYPE);
         }
+        return progressTypeEnum;
     }
 }

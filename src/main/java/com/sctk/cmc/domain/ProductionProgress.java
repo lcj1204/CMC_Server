@@ -70,4 +70,11 @@ public class ProductionProgress extends BaseTimeEntity {
                 .active(true)
                 .build();
     }
+
+    public void addProductionProgressImg(ProductionProgressImg productionProgressImg) {
+        imgs.add(productionProgressImg);
+        if (status.getPriority() < productionProgressImg.getType().getPriority()) {
+            status = productionProgressImg.getType();
+        }
+    }
 }
