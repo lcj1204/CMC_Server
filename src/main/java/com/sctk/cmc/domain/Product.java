@@ -25,20 +25,14 @@ public class Product extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    /**
-     * 단방향 매핑
-     */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "production_progress_id")
-    private ProductionProgress productionProgress;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "designer_id")
+    private Designer designer;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "custom_id")
     private Custom custom;
 
-    /**
-     * 양방향 매핑
-     */
     @OneToMany(mappedBy = "product")
     private List<Size> sizes = new ArrayList<>();
     @OneToMany(mappedBy = "product")
