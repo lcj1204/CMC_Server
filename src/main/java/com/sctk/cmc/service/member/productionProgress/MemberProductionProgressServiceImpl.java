@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,7 +48,9 @@ public class MemberProductionProgressServiceImpl implements MemberProductionProg
 
         Map<ProgressType, List<String>> progressTypeListMap = retrieveProductionProgressAllImg(productionProgress);
 
-        return MemberProductionProgressGetDetailResponse.of(productionProgressInfo, progressTypeListMap);
+        Period period = Period.between(LocalDate.now(), productionProgress.getExpectEndDate());
+
+        return MemberProductionProgressGetDetailResponse.of(period.getDays(), productionProgressInfo, progressTypeListMap);
     }
 
     private List<ProductionProgress> retrieveAllProductionProgress(Long memberId) {
