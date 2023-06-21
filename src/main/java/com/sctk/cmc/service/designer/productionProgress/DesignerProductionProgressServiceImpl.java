@@ -34,11 +34,9 @@ public class DesignerProductionProgressServiceImpl implements DesignerProduction
     public List<DesignerProductionProgressGetInfoResponse> retrieveAllInfo(Long designerId) {
         List<ProductionProgress> allProductionProgress = retrieveAllProductionProgress(designerId);
 
-        List<DesignerProductionProgressGetInfoResponse> responseList = allProductionProgress.stream()
+        return allProductionProgress.stream()
                 .map(DesignerProductionProgressGetInfoResponse::of)
                 .collect(Collectors.toList());
-
-        return responseList;
     }
 
     @Override
@@ -69,7 +67,7 @@ public class DesignerProductionProgressServiceImpl implements DesignerProduction
 
         uploadUrls.forEach(url -> ProductionProgressImg.create(url, progressTypeEnum, productionProgress));
 
-        return DesignerProductionProgressIdResponse.of(productionProgress.getId());
+        return DesignerProductionProgressIdResponse.of(productionProgress.getId(), uploadUrls);
     }
 
     private List<ProductionProgress> retrieveAllProductionProgress(Long designerId) {
