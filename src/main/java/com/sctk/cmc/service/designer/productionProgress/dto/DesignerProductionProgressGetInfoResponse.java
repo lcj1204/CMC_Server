@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ProductionProgressGetInfoResponse {
+public class DesignerProductionProgressGetInfoResponse {
     private Long productionProgressId;
     private String mainImg;
     private String title;
@@ -15,8 +15,8 @@ public class ProductionProgressGetInfoResponse {
     private int price;
     private ProgressType status;
 
-    public static ProductionProgressGetInfoResponse of(ProductionProgress productionProgress) {
-        return ProductionProgressGetInfoResponse.builder()
+    public static DesignerProductionProgressGetInfoResponse of(ProductionProgress productionProgress) {
+        return DesignerProductionProgressGetInfoResponse.builder()
                 .productionProgressId(productionProgress.getId())
                 .mainImg(productionProgress.getMainImg())
                 .title(productionProgress.getTitle())

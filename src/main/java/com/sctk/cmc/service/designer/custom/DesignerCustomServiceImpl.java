@@ -7,7 +7,7 @@ import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomPostAcceptanceResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.designer.custom.DesignerCustomRepository;
-import com.sctk.cmc.repository.designer.productionProgress.ProductionProgressRepository;
+import com.sctk.cmc.repository.designer.productionProgress.DesignerProductionProgressRepository;
 import com.sctk.cmc.service.designer.DesignerService;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
@@ -29,7 +29,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
     private final MemberCustomService memberCustomService;
     private final DesignerService designerService;
     private final DesignerCustomRepository designerCustomRepository;
-    private final ProductionProgressRepository productionProgressRepository;
+    private final DesignerProductionProgressRepository designerProductionProgressRepository;
 
     @Override
     public List<CustomGetInfoResponse> retrieveAllInfo(Long designerId) {
@@ -86,7 +86,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
         Designer designer = designerService.retrieveById(designerId);
 
         ProductionProgress productionProgress = ProductionProgress.create(designer, custom);
-        ProductionProgress saveProductionProgress = productionProgressRepository.save(productionProgress);
+        ProductionProgress saveProductionProgress = designerProductionProgressRepository.save(productionProgress);
 
         return CustomPostAcceptanceResponse.of( custom.getId(), saveProductionProgress.getId() );
     }
