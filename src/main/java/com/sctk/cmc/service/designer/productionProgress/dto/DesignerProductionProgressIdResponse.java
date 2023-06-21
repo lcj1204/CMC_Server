@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ProductionProgressIdResponse {
+public class DesignerProductionProgressIdResponse {
     private Long productionProgressId;
 
-    public static ProductionProgressIdResponse of(Long productionProgressId) {
-        return ProductionProgressIdResponse.builder()
+    public static DesignerProductionProgressIdResponse of(Long productionProgressId) {
+        return DesignerProductionProgressIdResponse.builder()
                 .productionProgressId(productionProgressId)
                 .build();
     }

@@ -24,6 +24,10 @@ public class ProductionProgress extends BaseTimeEntity {
     @JoinColumn(name = "designer_id")
     private Designer designer;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Enumerated(EnumType.STRING)
     private ProgressType status;
 
@@ -45,8 +49,9 @@ public class ProductionProgress extends BaseTimeEntity {
     private Boolean active;
 
     @Builder
-    public ProductionProgress(Designer designer, ProgressType status, String mainImg, String title, String category, int price, LocalDate expectStartDate, LocalDate expectEndDate, Boolean active) {
+    public ProductionProgress(Designer designer, Member member, ProgressType status, String mainImg, String title, String category, int price, LocalDate expectStartDate, LocalDate expectEndDate, Boolean active) {
         this.designer = designer;
+        this.member = member;
         this.status = status;
         this.mainImg = mainImg;
         this.title = title;
@@ -57,9 +62,10 @@ public class ProductionProgress extends BaseTimeEntity {
         this.active = active;
     }
 
-    public static ProductionProgress create(Designer designer, Custom custom) {
+    public static ProductionProgress create(Designer designer, Member member, Custom custom) {
         return ProductionProgress.builder()
                 .designer(designer)
+                .member(member)
                 .status(ProgressType.ACCEPT)
                 .mainImg(custom.getReference().getReferenceImgs().get(0).getUrl())
                 .title(custom.getTitle())

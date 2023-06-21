@@ -19,11 +19,12 @@ public interface MemberCustomRepository extends JpaRepository<Custom, Long> {
 
     @Query("select distinct c from Custom c " +
             "join fetch c.member " +
+            "join fetch c.designer " +
             "join fetch c.reference cr " +
             "join fetch cr.referenceImgs " +
             "where c.id= :customId " +
             "and c.active= true ")
-    Optional<Custom> findWithMemberAndImgsById(@Param("customId") Long customId);
+    Optional<Custom> findWithMemberAndDesignerAndImgsById(@Param("customId") Long customId);
 
     @Query("select distinct c from Custom c " +
             "join fetch c.designer d " +

@@ -7,7 +7,7 @@ import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomPostAcceptanceResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.repository.designer.custom.DesignerCustomRepository;
-import com.sctk.cmc.repository.designer.productionProgress.ProductionProgressRepository;
+import com.sctk.cmc.repository.designer.productionProgress.DesignerProductionProgressRepository;
 import com.sctk.cmc.service.designer.DesignerService;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
@@ -29,7 +29,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
     private final MemberCustomService memberCustomService;
     private final DesignerService designerService;
     private final DesignerCustomRepository designerCustomRepository;
-    private final ProductionProgressRepository productionProgressRepository;
+    private final DesignerProductionProgressRepository designerProductionProgressRepository;
 
     @Override
     public List<CustomGetInfoResponse> retrieveAllInfo(Long designerId) {
@@ -46,7 +46,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
     @Override
     public CustomGetDetailResponse retrieveDetailById(Long designerId, Long customId) {
 
-        Custom custom = memberCustomService.retrieveWithMemberAndImgs(customId);
+        Custom custom = memberCustomService.retrieveWithMemberAndDesignerAndImgs(customId);
 
         //해당 커스텀 요청이 로그인한 디자이너 소유인지 검증
         validateDesignerAuthority(designerId, custom);
@@ -72,7 +72,7 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
     public CustomPostAcceptanceResponse acceptCustom(Long designerId, Long customId,
                                                      CustomResultAcceptParams customResultAcceptParams) {
 
-        Custom custom = memberCustomService.retrieveWithMemberAndImgs(customId);
+        Custom custom = memberCustomService.retrieveWithMemberAndDesignerAndImgs(customId);
 
         validateDesignerAuthority(designerId, custom);
 
@@ -83,10 +83,8 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
         custom.changeStatusTo(CustomStatus.APPROVAL);
 
         //Production_Progress 생성
-        Designer designer = designerService.retrieveById(designerId);
-
-        ProductionProgress productionProgress = ProductionProgress.create(designer, custom);
-        ProductionProgress saveProductionProgress = productionProgressRepository.save(productionProgress);
+        ProductionProgress productionProgress = ProductionProgress.create(custom.getDesigner(), custom.getMember(), custom);
+        ProductionProgress saveProductionProgress = designerProductionProgressRepository.save(productionProgress);
 
         return CustomPostAcceptanceResponse.of( custom.getId(), saveProductionProgress.getId() );
     }

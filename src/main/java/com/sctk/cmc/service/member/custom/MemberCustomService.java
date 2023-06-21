@@ -24,7 +24,7 @@ public interface MemberCustomService {
 
     Custom retrieveWtihMember(Long customId);
 
-    Custom retrieveWithMemberAndImgs(Long customId);
+    Custom retrieveWithMemberAndDesignerAndImgs(Long customId);
 
     Custom retrieveWithImgsByMemberId(Long memberId, Long customId);
 

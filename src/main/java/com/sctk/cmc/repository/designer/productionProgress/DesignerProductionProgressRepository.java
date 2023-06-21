@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductionProgressRepository extends JpaRepository<ProductionProgress, Long> {
+public interface DesignerProductionProgressRepository extends JpaRepository<ProductionProgress, Long> {
     @Query("select pp from ProductionProgress pp " +
             "join pp.designer d " +
             "where d.id= :designerId " +
