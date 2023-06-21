@@ -105,8 +105,8 @@ public class MemberCustomServiceImpl implements MemberCustomService {
     }
 
     @Override
-    public Custom retrieveWithMemberAndImgs(Long customId) {
-        return memberCustomRepository.findWithMemberAndImgsById(customId)
+    public Custom retrieveWithMemberAndDesignerAndImgs(Long customId) {
+        return memberCustomRepository.findWithMemberAndDesignerAndImgsById(customId)
                 .orElseThrow(() -> new CMCException(CUSTOM_ILLEGAL_ID));
     }
 
