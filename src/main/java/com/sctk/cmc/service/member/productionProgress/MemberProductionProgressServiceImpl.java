@@ -31,11 +31,9 @@ public class MemberProductionProgressServiceImpl implements MemberProductionProg
     public List<MemberProductionProgressGetInfoResponse> retrieveAllInfo(Long memberId) {
         List<ProductionProgress> allProductionProgress = retrieveAllProductionProgress(memberId);
 
-        List<MemberProductionProgressGetInfoResponse> responseList = allProductionProgress.stream()
+        return allProductionProgress.stream()
                 .map(MemberProductionProgressGetInfoResponse::of)
                 .collect(Collectors.toList());
-
-        return responseList;
     }
 
     @Override
