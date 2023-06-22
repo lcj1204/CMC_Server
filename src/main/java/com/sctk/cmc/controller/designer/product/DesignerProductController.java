@@ -2,11 +2,11 @@ package com.sctk.cmc.controller.designer.product;
 
 import com.sctk.cmc.auth.domain.SecurityDesignerDetails;
 import com.sctk.cmc.common.response.BaseResponse;
-import com.sctk.cmc.service.designer.Product.DesignerProductService;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductGetDetailResponse;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductIdResponse;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductRegisterParams;
-import com.sctk.cmc.service.designer.Product.dto.ProductGetInfoResponse;
+import com.sctk.cmc.service.designer.product.DesignerProductService;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductGetDetailResponse;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductIdResponse;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductRegisterParams;
+import com.sctk.cmc.service.designer.product.dto.ProductGetInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
