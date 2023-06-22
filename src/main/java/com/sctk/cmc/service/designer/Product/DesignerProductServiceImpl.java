@@ -1,5 +1,6 @@
 package com.sctk.cmc.service.designer.Product;
 
+import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.domain.DescriptionImg;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.sctk.cmc.common.exception.ResponseStatus.PRODUCT_ILLEGAL_ID;
 
 @Service
 @Transactional(readOnly = true)
@@ -63,11 +66,27 @@ public class DesignerProductServiceImpl implements DesignerProductService{
 
     @Override
     public DesignerProductGetDetailResponse retrieveDetailById(Long designerId, Long productId) {
-        return null;
+        Product product = retrieveByDesignerIdAndId(designerId, productId);
+
+        List<String> descriptionImgList = convertToUrlList(product);
+
+        return DesignerProductGetDetailResponse.of(product, product.getDesigner(), descriptionImgList);
+    }
+
+    private static List<String> convertToUrlList(Product product) {
+        return product.getImgs().stream()
+                .map(DescriptionImg::getUrl)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Product> retrieveAllByDesignerId(Long designerId) {
         return designerProductRepository.findAllByDesignerId(designerId);
+    }
+
+    @Override
+    public Product retrieveByDesignerIdAndId(Long designerId, Long productId) {
+        return designerProductRepository.findByDesignerIdAndId(designerId, productId)
+                .orElseThrow(() -> new CMCException(PRODUCT_ILLEGAL_ID));
     }
 }

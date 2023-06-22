@@ -3,6 +3,7 @@ package com.sctk.cmc.controller.designer.product;
 import com.sctk.cmc.auth.domain.SecurityDesignerDetails;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.service.designer.Product.DesignerProductService;
+import com.sctk.cmc.service.designer.Product.dto.DesignerProductGetDetailResponse;
 import com.sctk.cmc.service.designer.Product.dto.DesignerProductIdResponse;
 import com.sctk.cmc.service.designer.Product.dto.DesignerProductRegisterParams;
 import com.sctk.cmc.service.designer.Product.dto.ProductGetInfoResponse;
@@ -41,6 +42,17 @@ public class DesignerProductController {
 
         Long designerId = designerDetails.getId();
         List<ProductGetInfoResponse> responses = designerProductService.retrieveAllInfoByDesignerId(designerId);
+
+        return new BaseResponse<>(responses);
+    }
+
+    @Operation(summary = "디자이너용 상품 상세 조회 API", description = "디자이너가 본인이 등록한 상품을 상세 조회할 때 사용합니다.")
+    @GetMapping("/product/{productId}/details")
+    public BaseResponse<DesignerProductGetDetailResponse> retrieveAllInfo(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
+                                                                          @PathVariable("productId") Long productId) {
+
+        Long designerId = designerDetails.getId();
+        DesignerProductGetDetailResponse responses = designerProductService.retrieveDetailById(designerId, productId);
 
         return new BaseResponse<>(responses);
     }

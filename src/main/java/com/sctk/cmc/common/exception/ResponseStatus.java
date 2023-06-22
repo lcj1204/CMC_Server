@@ -50,7 +50,10 @@ public enum ResponseStatus {
 
     // Production Progress
     PRODUCTION_PROGRESS_ILLEGAL_ID(7000, "존재 하지 않는 Production Progress 입니다."),
-    PRODUCTION_PROGRESS_ILLEGAL_TYPE(7001, "존재 하지 않는 Production Progress 이미지 타입 입니다.")
+    PRODUCTION_PROGRESS_ILLEGAL_TYPE(7001, "존재 하지 않는 Production Progress 이미지 타입 입니다."),
+
+    // Product
+    PRODUCT_ILLEGAL_ID(8000, "존재 하지 않는 Product 입니다."),
     ;
 
 
