@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -53,11 +54,20 @@ public class DesignerProductServiceImpl implements DesignerProductService{
 
     @Override
     public List<ProductGetInfoResponse> retrieveAllInfoByDesignerId(Long designerId) {
-        return null;
+        List<Product> productList = retrieveAllByDesignerId(designerId);
+
+        return productList.stream()
+                .map(ProductGetInfoResponse::of)
+                .collect(Collectors.toList());
     }
 
     @Override
     public DesignerProductGetDetailResponse retrieveDetailById(Long designerId, Long productId) {
         return null;
+    }
+
+    @Override
+    public List<Product> retrieveAllByDesignerId(Long designerId) {
+        return designerProductRepository.findAllByDesignerId(designerId);
     }
 }
