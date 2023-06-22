@@ -3,13 +3,13 @@ package com.sctk.cmc.service.designer.product.dto;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.service.designer.dto.DesignerInfoCard;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Getter
-@Builder
+@SuperBuilder
 public class DesignerProductGetDetailResponse {
     private DesignerInfoCard designerInfoCard;
     private Long productId;
