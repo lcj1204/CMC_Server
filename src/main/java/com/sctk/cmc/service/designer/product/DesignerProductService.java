@@ -1,10 +1,10 @@
-package com.sctk.cmc.service.designer.Product;
+package com.sctk.cmc.service.designer.product;
 
 import com.sctk.cmc.domain.Product;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductGetDetailResponse;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductIdResponse;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductRegisterParams;
-import com.sctk.cmc.service.designer.Product.dto.ProductGetInfoResponse;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductGetDetailResponse;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductIdResponse;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductRegisterParams;
+import com.sctk.cmc.service.designer.product.dto.ProductGetInfoResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

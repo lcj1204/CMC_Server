@@ -1,4 +1,4 @@
-package com.sctk.cmc.service.designer.Product;
+package com.sctk.cmc.service.designer.product;
 
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.domain.DescriptionImg;
@@ -6,10 +6,10 @@ import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.repository.designer.product.DesignerProductRepository;
 import com.sctk.cmc.service.designer.DesignerService;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductGetDetailResponse;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductIdResponse;
-import com.sctk.cmc.service.designer.Product.dto.DesignerProductRegisterParams;
-import com.sctk.cmc.service.designer.Product.dto.ProductGetInfoResponse;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductGetDetailResponse;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductIdResponse;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductRegisterParams;
+import com.sctk.cmc.service.designer.product.dto.ProductGetInfoResponse;
 import com.sctk.cmc.util.aws.AmazonS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
