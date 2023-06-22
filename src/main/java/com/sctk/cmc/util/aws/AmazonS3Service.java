@@ -32,9 +32,33 @@ public class AmazonS3Service {
     private final String DESIGNER_PORTFOLIO_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/portfolio-img/%s";
     private final String CUSTOM_REQUEST_IMG_UPLOAD_PATH_FORMAT = "ROLE_MEMBER/info/%d/custom-request-img/%d/%s";
     private final String PRODUCTION_PROGRESS_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/production-progress-img/%d/%s/%s";
+    private final String PRODUCT_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/product-img/%d/%s";
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;  // S3 버킷 이름
+
+    // 상품 이미지 업로드
+    public List<String> uploadProductImgs(List<MultipartFile> multipartFiles, Long userId, Long productId) {
+        List<File> uploadFiles = multipartFiles.stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
+
+        return uploadFiles.stream()
+                .map(f -> uploadProductImgs(f, userId, productId))
+                .collect(Collectors.toList());
+    }
+
+    public String uploadProductImgs(File uploadFile, Long userId, Long productId) {
+        String fileName = String.format(PRODUCT_IMG_UPLOAD_PATH_FORMAT,
+                userId,
+                productId,
+                UUID.randomUUID()
+        );
+
+        String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
+        removeLocalFile(uploadFile);
+        return uploadImageUrl;
+    }
 
     // 커스텀 요청 이미지 업로드
     public List<String> uploadProductionProgressImgs(List<MultipartFile> multipartFiles, Long userId, Long productionProgressId, String progressType) {
