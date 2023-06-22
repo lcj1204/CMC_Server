@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/designers")
 @RequiredArgsConstructor
-@Tag(name = "Designer Product", description = "디자이너용 상품 등록 API Document")
+@Tag(name = "Designer Product", description = "디자이너용 상품 관련 API Document")
 public class DesignerProductController {
     private final DesignerProductService designerProductService;
 

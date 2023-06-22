@@ -1,8 +1,9 @@
-package com.sctk.cmc.service.designer.product.dto;
+package com.sctk.cmc.service.member.product.dto;
 
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.service.designer.dto.DesignerInfoCard;
+import com.sctk.cmc.service.designer.product.dto.DesignerProductGetDetailResponse;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -10,20 +11,14 @@ import java.util.List;
 
 @Getter
 @SuperBuilder
-public class DesignerProductGetDetailResponse {
-    private DesignerInfoCard designerInfoCard;
-    private Long productId;
-    private String name;
-    private String tag;
-    private int price;
-    private String description;
-    private List<String> descriptionImgList;
-    private int productLikeCount;
+public class MemberProductGetDetailResponse extends DesignerProductGetDetailResponse {
+    private Boolean liked;
 
-    public static DesignerProductGetDetailResponse of(Product product, Designer designer, List<String> descriptionImgList) {
+    public static MemberProductGetDetailResponse of(Product product, Designer designer,
+                                                    List<String> descriptionImgList, Boolean liked){
         DesignerInfoCard designerInfoCard = DesignerInfoCard.of(designer);
 
-        return DesignerProductGetDetailResponse.builder()
+        return MemberProductGetDetailResponse.builder()
                 .designerInfoCard(designerInfoCard)
                 .productId(product.getId())
                 .name(product.getName())
@@ -32,6 +27,9 @@ public class DesignerProductGetDetailResponse {
                 .description(product.getDescription())
                 .descriptionImgList(descriptionImgList)
                 .productLikeCount(product.getLikeCount())
+                .liked(liked)
                 .build();
     }
+
+
 }
