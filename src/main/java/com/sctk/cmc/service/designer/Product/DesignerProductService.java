@@ -19,4 +19,6 @@ public interface DesignerProductService {
     DesignerProductGetDetailResponse retrieveDetailById(Long designerId, Long productId);
 
     List<Product> retrieveAllByDesignerId(Long designerId);
+
+    Product retrieveByDesignerIdAndId(Long designerId, Long productId);
 }
