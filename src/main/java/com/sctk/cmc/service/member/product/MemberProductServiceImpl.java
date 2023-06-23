@@ -1,14 +1,14 @@
 package com.sctk.cmc.service.member.product;
 
 import com.sctk.cmc.common.exception.CMCException;
+import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
 import com.sctk.cmc.domain.DescriptionImg;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.repository.member.product.MemberProductRepository;
+import com.sctk.cmc.service.common.product.dto.ProductGetDetailResponse;
 import com.sctk.cmc.service.member.MemberService;
 import com.sctk.cmc.service.member.like.product.LikeProductService;
-import com.sctk.cmc.controller.member.product.dto.MemberProductGetDetailResponse;
-import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -54,14 +54,14 @@ public class MemberProductServiceImpl implements MemberProductService {
     private final LikeProductService likeProductService;
 
     @Override
-    public MemberProductGetDetailResponse retrieveDetailById(Long memberId, Long productId) {
+    public ProductGetDetailResponse retrieveDetailById(Long memberId, Long productId) {
         Product product = retrieveById(productId);
 
         List<String> descriptionImgList = convertToUrlList(product);
 
         boolean liked = likeProductService.checkLikeProduct(memberId, productId);
 
-        return MemberProductGetDetailResponse.of(product, product.getDesigner(), descriptionImgList, liked);
+        return ProductGetDetailResponse.of(product, product.getDesigner(), descriptionImgList, liked);
     }
 
 

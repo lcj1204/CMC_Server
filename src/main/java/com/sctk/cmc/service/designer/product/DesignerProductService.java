@@ -1,7 +1,7 @@
 package com.sctk.cmc.service.designer.product;
 
 import com.sctk.cmc.domain.Product;
-import com.sctk.cmc.service.designer.product.dto.DesignerProductGetDetailResponse;
+import com.sctk.cmc.service.common.product.dto.ProductGetDetailResponse;
 import com.sctk.cmc.service.designer.product.dto.DesignerProductIdResponse;
 import com.sctk.cmc.service.designer.product.dto.DesignerProductRegisterParams;
 import com.sctk.cmc.service.designer.product.dto.ProductGetInfoResponse;
@@ -16,7 +16,7 @@ public interface DesignerProductService {
 
     List<ProductGetInfoResponse> retrieveAllInfoByDesignerId(Long designerId);
 
-    DesignerProductGetDetailResponse retrieveDetailById(Long designerId, Long productId);
+    ProductGetDetailResponse retrieveDetailById(Long designerId, Long productId);
 
     List<Product> retrieveAllByDesignerId(Long designerId);
 

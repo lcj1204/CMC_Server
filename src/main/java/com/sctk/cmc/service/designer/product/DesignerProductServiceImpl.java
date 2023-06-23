@@ -6,7 +6,7 @@ import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.repository.designer.product.DesignerProductRepository;
 import com.sctk.cmc.service.designer.DesignerService;
-import com.sctk.cmc.service.designer.product.dto.DesignerProductGetDetailResponse;
+import com.sctk.cmc.service.common.product.dto.ProductGetDetailResponse;
 import com.sctk.cmc.service.designer.product.dto.DesignerProductIdResponse;
 import com.sctk.cmc.service.designer.product.dto.DesignerProductRegisterParams;
 import com.sctk.cmc.service.designer.product.dto.ProductGetInfoResponse;
@@ -65,12 +65,12 @@ public class DesignerProductServiceImpl implements DesignerProductService{
     }
 
     @Override
-    public DesignerProductGetDetailResponse retrieveDetailById(Long designerId, Long productId) {
+    public ProductGetDetailResponse retrieveDetailById(Long designerId, Long productId) {
         Product product = retrieveByDesignerIdAndId(designerId, productId);
 
         List<String> descriptionImgList = convertToUrlList(product);
 
-        return DesignerProductGetDetailResponse.of(product, product.getDesigner(), descriptionImgList);
+        return ProductGetDetailResponse.of(product, product.getDesigner(), descriptionImgList, false);
     }
 
     private static List<String> convertToUrlList(Product product) {

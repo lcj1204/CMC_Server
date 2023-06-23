@@ -1,8 +1,8 @@
 package com.sctk.cmc.service.member.product;
 
-import com.sctk.cmc.domain.Product;
-import com.sctk.cmc.controller.member.product.dto.MemberProductGetDetailResponse;
 import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
+import com.sctk.cmc.domain.Product;
+import com.sctk.cmc.service.common.product.dto.ProductGetDetailResponse;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface MemberProductService {
 
     List<MemberProductGetInfoResponse> retrieveAllInfoById(Long memberId);
 
-    MemberProductGetDetailResponse retrieveDetailById(Long memberId, Long productId);
+    ProductGetDetailResponse retrieveDetailById(Long memberId, Long productId);
 
 //    List<Product> retrieveAllByDesignerId(Long designerId);
 //
