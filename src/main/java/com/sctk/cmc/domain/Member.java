@@ -1,5 +1,7 @@
 package com.sctk.cmc.domain;
 
+import com.sctk.cmc.domain.likeobject.LikeDesigner;
+import com.sctk.cmc.domain.likeobject.LikeProduct;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +29,8 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<LikeDesigner> designerLikes = new HashSet<>();
 
-    private int likeCount;
+    private int designerLikeCount;
+    private int productLikeCount;
     private Boolean active;
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -36,8 +39,8 @@ public class Member extends BaseTimeEntity {
     @JoinColumn(name = "body_info_id")
     private BodyInfo bodyInfo;
 
-    @OneToMany(mappedBy = "member")
-    private List<LikeProduct> likeProducts = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LikeProduct> productLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Custom> custom = new ArrayList<>();
@@ -51,7 +54,8 @@ public class Member extends BaseTimeEntity {
         this.password = password;
         this.introduce = introduce;
         this.profileImgUrl = profileImgUrl;
-        this.likeCount = 0;
+        this.designerLikeCount = 0;
+        this.productLikeCount = 0;
         this.role = Role.MEMBER;
         active = true;
     }
@@ -60,14 +64,24 @@ public class Member extends BaseTimeEntity {
         this.bodyInfo = bodyInfo;
     }
 
-    public void addLike(LikeDesigner like) {
+    public void addDesignerLike(LikeDesigner like) {
         this.designerLikes.add(like);
-        this.likeCount++;
+        this.designerLikeCount++;
     }
 
-    public void cancelLike(LikeDesigner likeDesigner) {
+    public void addProductLike(LikeProduct like) {
+        this.productLikes.add(like);
+        this.productLikeCount++;
+    }
+
+    public void cancelDesignerLike(LikeDesigner likeDesigner) {
         this.designerLikes.remove(likeDesigner);
-        this.likeCount--;
+        this.designerLikeCount--;
+    }
+
+    public void cancelProductLike(LikeProduct likeProduct) {
+        this.productLikes.remove(likeProduct);
+        this.productLikeCount--;
     }
 
     public void setProfileImgUrl(String profileImgUrl) {

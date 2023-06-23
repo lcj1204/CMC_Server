@@ -10,6 +10,7 @@ public enum ResponseStatus {
     AUTHENTICATION_DUPLICATE_EMAIL(1002, "중복된 이메일입니다."),
     AUTHENTICATION_ILLEGAL_PASSWORD(1003, "비밀번호가 일치하지 않습니다."),
     INTERNAL_SERVER_ERROR(1004, "서버 내부 오류 입니다."),
+    NOT_SUPPORTED_LIKING(1005, "지원하지 않는 좋아요입니다."),
 
     // Members
     MEMBERS_ILLEGAL_ID(2001, "존재하지 않는 회원 ID입니다."),
@@ -53,8 +54,7 @@ public enum ResponseStatus {
     PRODUCTION_PROGRESS_ILLEGAL_TYPE(7001, "존재 하지 않는 Production Progress 이미지 타입 입니다."),
 
     // Product
-    PRODUCT_ILLEGAL_ID(8000, "존재 하지 않는 Product 입니다."),
-    ;
+    PRODUCT_ILLEGAL_ID(8000, "존재 하지 않는 Product 입니다.");
 
 
     private int code;

@@ -1,5 +1,6 @@
 package com.sctk.cmc.domain;
 
+import com.sctk.cmc.domain.likeobject.LikeProduct;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,12 +8,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product extends BaseTimeEntity {
+public class Product extends BaseTimeEntity implements LikedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +38,7 @@ public class Product extends BaseTimeEntity {
 //    @OneToMany(mappedBy = "product")
 //    private List<Size> sizes = new ArrayList<>();
     @OneToMany(mappedBy = "product")
-    private List<LikeProduct> likeProducts = new ArrayList<>();
+    private Set<LikeProduct> likeProducts = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DescriptionImg> imgs = new ArrayList<>();
@@ -59,5 +62,15 @@ public class Product extends BaseTimeEntity {
                 .description(description)
                 .likeCount(0)
                 .build();
+    }
+
+    public void addMemberLike(LikeProduct likeProduct) {
+        this.likeProducts.add(likeProduct);
+        this.likeCount++;
+    }
+
+    public void removeMemberLike(LikeProduct like) {
+        this.likeProducts.remove(like);
+        likeCount--;
     }
 }

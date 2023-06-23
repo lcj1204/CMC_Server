@@ -1,4 +1,4 @@
-package com.sctk.cmc.service.member.likeProduct;
+package com.sctk.cmc.service.member.like.product;
 
 import com.sctk.cmc.repository.member.likeProduct.LikeProductRepository;
 import lombok.RequiredArgsConstructor;

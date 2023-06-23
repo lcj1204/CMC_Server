@@ -4,7 +4,7 @@ import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.domain.DescriptionImg;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.repository.member.product.MemberProductRepository;
-import com.sctk.cmc.service.member.likeProduct.LikeProductService;
+import com.sctk.cmc.service.member.like.product.LikeProductService;
 import com.sctk.cmc.service.member.product.dto.MemberProductGetDetailResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,14 @@ import static com.sctk.cmc.common.exception.ResponseStatus.PRODUCT_ILLEGAL_ID;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
-public class MemberProductServiceImpl implements MemberProductService{
+public class MemberProductServiceImpl implements MemberProductService {
     private final MemberProductRepository memberProductRepository;
+    @Override
+    public Product retrieveById(Long productId) {
+        return memberProductRepository.findByDesignerIdAndId(productId)
+                .orElseThrow(() -> new CMCException(PRODUCT_ILLEGAL_ID));
+    }
+
     private final LikeProductService likeProductService;
 
     @Override
@@ -35,10 +41,6 @@ public class MemberProductServiceImpl implements MemberProductService{
         return MemberProductGetDetailResponse.of(product, product.getDesigner(), descriptionImgList, liked);
     }
 
-    private Product retrieveById(Long productId) {
-        return memberProductRepository.findByDesignerIdAndId(productId)
-                .orElseThrow(() -> new CMCException(PRODUCT_ILLEGAL_ID));
-    }
 
     private static List<String> convertToUrlList(Product product) {
         return product.getImgs().stream()

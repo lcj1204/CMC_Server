@@ -4,6 +4,9 @@ import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.controller.member.dto.*;
+import com.sctk.cmc.domain.Designer;
+import com.sctk.cmc.domain.Product;
+import com.sctk.cmc.service.member.like.handler.function.adapter.LikeFunctionAdapter;
 import com.sctk.cmc.service.member.dto.*;
 import com.sctk.cmc.service.member.MemberService;
 import com.sctk.cmc.controller.common.ProfileImgPostResponse;
@@ -23,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberController {
 
     private final MemberService memberService;
+    private final LikeFunctionAdapter likeFunctionAdapter;
 
     // 구매자 간단 정보 조회
     @GetMapping("/{memberId}/info")
@@ -82,10 +86,18 @@ public class MemberController {
 
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
-    @PostMapping("/likes")
+    @PostMapping("/likes/designer")
     @Operation(summary = "디자니어 좋아요 처리", description = "디자이너에 좋아요 처리를 합니다.")
-    public BaseResponse<LikeDesignerResponse> postLikeForDesigner(@RequestParam(name = "designer-id") Long designerId) {
-        LikeDesignerResponse response = memberService.like(getMemberId(), designerId);
+    public BaseResponse<LikeResponse> postLikeForDesigner(@RequestParam(name = "designer-id") Long designerId) {
+        LikeResponse response = likeFunctionAdapter.handle(getMemberId(), designerId, Designer.class);
+
+        return new BaseResponse<>(response);
+    }
+
+    @PostMapping("/likes/product")
+    @Operation(summary = "상품 좋아요 처리", description = "상품에 좋아요 처리를 합니다.")
+    public BaseResponse<LikeResponse> postLikeForProduct(@RequestParam(name = "product-id") Long productId) {
+        LikeResponse response = likeFunctionAdapter.handle(getMemberId(), productId, Product.class);
 
         return new BaseResponse<>(response);
     }
