@@ -2,12 +2,12 @@ package com.sctk.cmc.service.member;
 
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.domain.*;
-import com.sctk.cmc.service.designer.DesignerService;
 import com.sctk.cmc.common.exception.CMCException;
+import com.sctk.cmc.domain.likeobject.LikeObject;
 import com.sctk.cmc.repository.member.MemberRepository;
 import com.sctk.cmc.controller.common.ProfileImgPostResponse;
-import com.sctk.cmc.controller.member.dto.LikeDesignerResponse;
 import com.sctk.cmc.service.member.dto.*;
+import com.sctk.cmc.service.member.like.handler.function.adapter.LikeFunctionAdapter;
 import com.sctk.cmc.util.aws.AmazonS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +23,6 @@ import static com.sctk.cmc.common.exception.ResponseStatus.*;
 public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
-    private final DesignerService designerService;
     private final AmazonS3Service amazonS3Service;
 
     @Value("${cmc.member.profile.default-img-url}")
@@ -45,7 +44,8 @@ public class MemberServiceImpl implements MemberService {
                 .build());
     }
 
-    private Member retrieveById(Long memberId) {
+    @Override
+    public Member retrieveById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new CMCException(MEMBERS_ILLEGAL_ID));
     }
@@ -120,30 +120,12 @@ public class MemberServiceImpl implements MemberService {
         new BodyInfo(member, params.getSizes());
     }
 
-    @Transactional
     @Override
-    public LikeDesignerResponse like(Long memberId, Long designerId) {
-        LikeDesigner like = retrieveLike(memberId, designerId);
-
-        if (like != null) {
-            return cancelLike(like);
-        }
-
-        Member member = retrieveById(memberId);
-        Designer designer = designerService.retrieveById(designerId);
-
-        // 생성자를 통해 연관관계 매핑
-        new LikeDesigner(member, designer);
-
-        return new LikeDesignerResponse(designer.getLikeCount());
-    }
-
-    @Override
-    public LikeDesignerResponse cancelLike(LikeDesigner like) {
-        Designer designer = like.getDesigner();
+    public int cancelLike(LikeObject like) {
+        LikedEntity likedEntity = like.getObject();
         like.remove();
 
-        return new LikeDesignerResponse(designer.getLikeCount());
+        return likedEntity.getLikeCount();
     }
 
     @Transactional
@@ -168,17 +150,6 @@ public class MemberServiceImpl implements MemberService {
         if (infoView == null) {
             throw new CMCException(MEMBERS_EMPTY_BODY_INFO);
         }
-
         // 추후 추가 가능
-    }
-
-    public LikeDesigner retrieveLike(Long memberId, Long designerId) {
-        Member member = retrieveById(memberId);
-
-        return member.getDesignerLikes()
-                .stream()
-                .filter(likeDesigner -> likeDesigner.getDesigner().getId() == designerId)
-                .findAny()
-                .orElse(null);
     }
 }
