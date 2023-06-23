@@ -6,9 +6,7 @@ import com.sctk.cmc.domain.DescriptionImg;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.repository.member.product.MemberProductRepository;
-import com.sctk.cmc.service.common.product.dto.ProductGetDetailResponse;
 import com.sctk.cmc.service.member.MemberService;
-import com.sctk.cmc.service.member.like.product.LikeProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,22 +49,8 @@ public class MemberProductServiceImpl implements MemberProductService {
                 .collect(Collectors.toList());
     }
 
-    private final LikeProductService likeProductService;
-
-    @Override
-    public ProductGetDetailResponse retrieveDetailById(Long memberId, Long productId) {
-        Product product = retrieveById(productId);
-
-        List<String> descriptionImgList = convertToUrlList(product);
-
-        boolean liked = likeProductService.checkLikeProduct(memberId, productId);
-
-        return ProductGetDetailResponse.of(product, product.getDesigner(), descriptionImgList, liked);
-    }
-
-
     private static List<String> convertToUrlList(Product product) {
-        return product.getImgs().stream()
+        return product.getDescriptionImgList().stream()
                 .map(DescriptionImg::getUrl)
                 .collect(Collectors.toList());
     }

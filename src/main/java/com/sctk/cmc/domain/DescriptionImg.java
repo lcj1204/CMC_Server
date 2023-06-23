@@ -28,7 +28,7 @@ public class DescriptionImg {
         this.url = url;
         this.product = product;
         if (product != null) {
-            product.getImgs().add(this);
+            product.getDescriptionImgList().add(this);
         }
     }
 
