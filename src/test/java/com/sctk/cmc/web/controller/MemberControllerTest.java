@@ -16,6 +16,7 @@ import com.sctk.cmc.controller.member.dto.MemberDetailResponse;
 import com.sctk.cmc.controller.member.dto.MemberInfoResponse;
 import com.sctk.cmc.controller.member.MemberController;
 import com.sctk.cmc.service.member.like.handler.function.adapter.LikeFunctionAdapter;
+import com.sctk.cmc.service.member.product.MemberProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ class MemberControllerTest {
 
     @MockBean
     MemberService memberService;
+
+    @MockBean
+    MemberProductService memberProductService;
 
     @MockBean
     LikeFunctionAdapter likeFunctionAdapter;
