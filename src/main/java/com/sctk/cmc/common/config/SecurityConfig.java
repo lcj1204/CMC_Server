@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/designers/**/categories/**").hasAnyRole("MEMBER", "DESIGNER")
                 .antMatchers("/api/v1/designers/**/info/**").hasAnyRole("MEMBER", "DESIGNER")
                 .antMatchers("/api/v1/designers/**/profiles/**").hasAnyRole("MEMBER", "DESIGNER")
+                .antMatchers("/api/v1/designers/**/search/**").hasAnyRole("MEMBER", "DESIGNER")
                 .antMatchers("/api/v1/designers/**").hasRole("DESIGNER")
 
                 .antMatchers("/swagger-ui/**").permitAll()
