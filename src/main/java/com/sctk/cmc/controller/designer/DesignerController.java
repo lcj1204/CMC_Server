@@ -140,6 +140,15 @@ public class DesignerController {
         return new BaseResponse<>(response);
     }
 
+    @Operation(
+            summary = "검색어([이름 / 닉네임] or [소재 / 카테고리])를 통한 디자이너 조회 API",
+            description = "[이름 / 닉네임] or [소재 / 카테고리]에 검색어를 포함하는 디자이너를 조회합니다. Like Count 내림차순")
+    @GetMapping("/search")
+    public BaseResponse<List<DesignerGetBySearchingResponse>> getSearchedDesigners(@RequestParam String keyword) {
+        List<DesignerGetBySearchingResponse> responses = designerService.searchAllByKeywordInNamesAndCategories(keyword);
+
+        return new BaseResponse<>(responses);
+    }
     private Long getDesignerId() {
 
         SecurityDesignerDetails designerDetails = (SecurityDesignerDetails) SecurityContextHolder.getContext()

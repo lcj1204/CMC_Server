@@ -113,4 +113,12 @@ public class Designer extends BaseTimeEntity implements LikedEntity {
         highCategories.clear();
         lowCategories.clear();
     }
+
+    public boolean containsNameInCategories(String name) {
+        return highCategories.stream()
+                .anyMatch(highCategory -> highCategory.getName().toUpperCase().contains(name))
+                ||
+                lowCategories.stream()
+                .anyMatch(lowCategory -> lowCategory.getName().toUpperCase().contains(name));
+    }
 }

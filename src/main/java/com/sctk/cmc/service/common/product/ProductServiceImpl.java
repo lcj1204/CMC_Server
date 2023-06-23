@@ -73,15 +73,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductGetBySearchingResponse> searchAllByKeywordInNameAndTag(String keyword) {
-        String upperKeyWord = keyword.toUpperCase();
+        String upperKeyword = keyword.toUpperCase();
 
-        if (upperKeyWord.length() < 2) {
+        if (upperKeyword.length() < 2) {
             throw new CMCException(SEARCH_KEYWORD_LENGTH_TOO_SHORT);
         }
         return productRepository.findAll()
                 .stream()
-                .filter(product -> product.getName().toUpperCase().contains(upperKeyWord)
-                        || product.getTag().toUpperCase().contains(upperKeyWord))
+                .filter(product -> product.getName().toUpperCase().contains(upperKeyword)
+                        || product.getTag().toUpperCase().contains(upperKeyword))
                 .map(product -> {
                     Designer designer = product.getDesigner();
                     return new ProductGetBySearchingResponse(
