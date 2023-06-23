@@ -13,7 +13,7 @@ public class ProductGetInfoResponse {
     public static ProductGetInfoResponse of(Product product) {
         return ProductGetInfoResponse.builder()
                 .productId(product.getId())
-                .mainImgUrl(product.getImgs().get(0).getUrl())
+                .mainImgUrl(product.getThumbnailImgList().get(0).getUrl())
                 .build();
     }
 }

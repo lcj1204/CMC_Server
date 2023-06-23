@@ -17,12 +17,12 @@ public class ProductGetDetailResponse {
     private String tag;
     private int price;
     private String description;
+    private List<String> thumbnailImgUrlList;
     private List<String> descriptionImgList;
     private int productLikeCount;
-    private Boolean liked;
 
     public static ProductGetDetailResponse of(Product product, Designer designer,
-                                              List<String> descriptionImgList, Boolean liked) {
+                                              List<String> thumbnailImgUrlList , List<String> descriptionImgList) {
 
         DesignerInfoCard designerInfoCard = DesignerInfoCard.of(designer);
 
@@ -33,9 +33,9 @@ public class ProductGetDetailResponse {
                 .tag(product.getTag())
                 .price(product.getPrice())
                 .description(product.getDescription())
+                .thumbnailImgUrlList(thumbnailImgUrlList)
                 .descriptionImgList(descriptionImgList)
                 .productLikeCount(product.getLikeCount())
-                .liked(liked)
                 .build();
     }
 }
