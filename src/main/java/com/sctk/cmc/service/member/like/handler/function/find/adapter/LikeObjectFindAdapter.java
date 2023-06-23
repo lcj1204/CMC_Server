@@ -7,7 +7,6 @@ import com.sctk.cmc.domain.likeobject.LikeObject;
 import com.sctk.cmc.service.member.like.handler.function.find.LikeDesignerFindFunction;
 import com.sctk.cmc.service.member.like.handler.function.find.LikeObjectFindFunction;
 import com.sctk.cmc.service.member.like.handler.function.find.LikeProductFindFunction;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

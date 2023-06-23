@@ -40,7 +40,7 @@ public class Member extends BaseTimeEntity {
     private BodyInfo bodyInfo;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LikeProduct> productLikes = new ArrayList<>();
+    private Set<LikeProduct> productLikes = new HashSet<>();
 
     @OneToMany(mappedBy = "member")
     private List<Custom> custom = new ArrayList<>();
