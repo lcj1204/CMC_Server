@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class LikeDesignerResponse {
+public class LikeResponse {
     private int likeCount;
 }
