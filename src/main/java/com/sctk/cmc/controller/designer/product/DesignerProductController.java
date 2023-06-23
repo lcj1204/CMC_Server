@@ -27,11 +27,12 @@ public class DesignerProductController {
     @Operation(summary = "디자이너용 상품 등록 API", description = "디자이너가 상품을 등록할 때 사용합니다.")
     @PostMapping("/product")
     public BaseResponse<DesignerProductIdResponse> register(@AuthenticationPrincipal SecurityDesignerDetails designerDetails,
-                                                            @RequestPart(value = "files") List<MultipartFile> multipartFileList,
+                                                            @RequestPart(value = "ThumbnailImgs") List<MultipartFile> ThumbnailImgs,
+                                                            @RequestPart(value = "DescriptionImgs") List<MultipartFile> DescriptionImgs,
                                                             @Valid @RequestPart(value = "designerProductRegisterParams") DesignerProductRegisterParams designerProductRegisterParams) {
 
         Long designerId = designerDetails.getId();
-        DesignerProductIdResponse responses = designerProductService.register(designerId, designerProductRegisterParams, multipartFileList);
+        DesignerProductIdResponse responses = designerProductService.register(designerId, designerProductRegisterParams, ThumbnailImgs, DescriptionImgs);
 
         return new BaseResponse<>(responses);
     }

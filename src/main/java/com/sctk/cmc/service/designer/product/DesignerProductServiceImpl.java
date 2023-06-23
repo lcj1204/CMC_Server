@@ -4,6 +4,7 @@ import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.domain.DescriptionImg;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
+import com.sctk.cmc.domain.ThumbnailImg;
 import com.sctk.cmc.repository.designer.product.DesignerProductRepository;
 import com.sctk.cmc.service.designer.DesignerService;
 import com.sctk.cmc.service.common.product.dto.ProductGetDetailResponse;
@@ -35,7 +36,8 @@ public class DesignerProductServiceImpl implements DesignerProductService{
     @Transactional
     public DesignerProductIdResponse register(Long designerId,
                                               DesignerProductRegisterParams designerProductRegisterParams,
-                                              List<MultipartFile> multipartFileList) {
+                                              List<MultipartFile> ThumbnailImgs,
+                                              List<MultipartFile> DescriptionImgs) {
 
         Designer designer = designerService.retrieveById(designerId);
 
@@ -47,10 +49,11 @@ public class DesignerProductServiceImpl implements DesignerProductService{
 
         Product savedProduct = designerProductRepository.save(createdProduct);
 
-        List<String> uploadUrls
-                = amazonS3Service.uploadProductImgs(multipartFileList, designerId, savedProduct.getId());
+        List<String> ThumbnailImgUrls = amazonS3Service.uploadProductThumbnailImgs(ThumbnailImgs, designerId, savedProduct.getId());
+        List<String> DescriptionImgUrls = amazonS3Service.uploadProductDescriptionImgs(DescriptionImgs, designerId, savedProduct.getId());
 
-        uploadUrls.forEach(u -> DescriptionImg.create(u, savedProduct));
+        ThumbnailImgUrls.forEach(u -> ThumbnailImg.create(u, savedProduct));
+        DescriptionImgUrls.forEach(u -> DescriptionImg.create(u, savedProduct));
 
         return DesignerProductIdResponse.of(savedProduct);
     }
