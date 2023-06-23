@@ -43,6 +43,9 @@ public class Product extends BaseTimeEntity implements LikedEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DescriptionImg> imgs = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ThumbnailImg> thumbnailImgList = new ArrayList<>();
+
     @Builder
     public Product(String name, int price, String tag, String description, int likeCount, Designer designer) {
         this.name = name;

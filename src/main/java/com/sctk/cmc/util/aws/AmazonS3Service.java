@@ -32,26 +32,37 @@ public class AmazonS3Service {
     private final String DESIGNER_PORTFOLIO_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/portfolio-img/%s";
     private final String CUSTOM_REQUEST_IMG_UPLOAD_PATH_FORMAT = "ROLE_MEMBER/info/%d/custom-request-img/%d/%s";
     private final String PRODUCTION_PROGRESS_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/production-progress-img/%d/%s/%s";
-    private final String PRODUCT_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/product-img/%d/%s";
+    private final String PRODUCT_IMG_UPLOAD_PATH_FORMAT = "ROLE_DESIGNER/info/%d/product-img/%d/%s/%s";
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;  // S3 버킷 이름
 
     // 상품 이미지 업로드
-    public List<String> uploadProductImgs(List<MultipartFile> multipartFiles, Long userId, Long productId) {
+    public List<String> uploadProductThumbnailImgs(List<MultipartFile> multipartFiles, Long userId, Long productId) {
         List<File> uploadFiles = multipartFiles.stream()
                 .map(this::convert)
                 .collect(Collectors.toList());
 
         return uploadFiles.stream()
-                .map(f -> uploadProductImgs(f, userId, productId))
+                .map(f -> uploadProductImgs(f, userId, productId, "THUMBNAIL"))
                 .collect(Collectors.toList());
     }
 
-    public String uploadProductImgs(File uploadFile, Long userId, Long productId) {
+    public List<String> uploadProductDescriptionImgs(List<MultipartFile> multipartFiles, Long userId, Long productId) {
+        List<File> uploadFiles = multipartFiles.stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
+
+        return uploadFiles.stream()
+                .map(f -> uploadProductImgs(f, userId, productId, "DESCRIPTION"))
+                .collect(Collectors.toList());
+    }
+
+    public String uploadProductImgs(File uploadFile, Long userId, Long productId, String type) {
         String fileName = String.format(PRODUCT_IMG_UPLOAD_PATH_FORMAT,
                 userId,
                 productId,
+                type,
                 UUID.randomUUID()
         );
 

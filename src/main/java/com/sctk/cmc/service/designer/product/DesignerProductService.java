@@ -12,7 +12,8 @@ import java.util.List;
 public interface DesignerProductService {
     DesignerProductIdResponse register(Long designerId,
                                        DesignerProductRegisterParams designerProductRegisterParams,
-                                       List<MultipartFile> multipartFileList);
+                                       List<MultipartFile> ThumbnailImgs,
+                                       List<MultipartFile> DescriptionImgs);
 
     List<ProductGetInfoResponse> retrieveAllInfoByDesignerId(Long designerId);
 
