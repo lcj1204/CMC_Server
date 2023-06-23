@@ -1,4 +1,4 @@
-package com.sctk.cmc.controller.common;
+package com.sctk.cmc.controller.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

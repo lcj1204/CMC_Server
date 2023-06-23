@@ -11,7 +11,7 @@ import com.sctk.cmc.repository.designer.DesignerRepository;
 import com.sctk.cmc.service.designer.dto.FilteredDesignerInfo;
 import com.sctk.cmc.service.designer.dto.FreshDesignerInfo;
 import com.sctk.cmc.service.designer.dto.PopularDesignerInfo;
-import com.sctk.cmc.controller.common.ProfileImgPostResponse;
+import com.sctk.cmc.controller.common.dto.ProfileImgPostResponse;
 import com.sctk.cmc.controller.designer.dto.PortfolioImgGetResponse;
 import com.sctk.cmc.controller.designer.dto.PortfolioImgPostResponse;
 import com.sctk.cmc.util.aws.AmazonS3Service;

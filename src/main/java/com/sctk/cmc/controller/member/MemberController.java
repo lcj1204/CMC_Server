@@ -3,7 +3,7 @@ package com.sctk.cmc.controller.member;
 import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
-import com.sctk.cmc.controller.common.ProfileImgPostResponse;
+import com.sctk.cmc.controller.common.dto.ProfileImgPostResponse;
 import com.sctk.cmc.controller.designer.dto.LikedDesignerInfoResponse;
 import com.sctk.cmc.controller.member.dto.*;
 import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;

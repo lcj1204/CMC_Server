@@ -8,7 +8,7 @@ import com.sctk.cmc.service.designer.DesignerService;
 import com.sctk.cmc.controller.designer.dto.CategoryView;
 import com.sctk.cmc.service.designer.dto.DesignerInfo;
 import com.sctk.cmc.service.designer.dto.FilteredDesignerInfo;
-import com.sctk.cmc.controller.common.ProfileImgPostResponse;
+import com.sctk.cmc.controller.common.dto.ProfileImgPostResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
