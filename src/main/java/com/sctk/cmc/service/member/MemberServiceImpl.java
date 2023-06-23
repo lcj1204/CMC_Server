@@ -1,6 +1,7 @@
 package com.sctk.cmc.service.member;
 
 import com.sctk.cmc.common.exception.ResponseStatus;
+import com.sctk.cmc.controller.designer.dto.LikedDesignerInfoResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.domain.likeobject.LikeObject;
@@ -15,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sctk.cmc.common.exception.ResponseStatus.*;
 
@@ -151,5 +155,23 @@ public class MemberServiceImpl implements MemberService {
             throw new CMCException(MEMBERS_EMPTY_BODY_INFO);
         }
         // 추후 추가 가능
+    }
+
+    @Override
+    public List<LikedDesignerInfoResponse> retrieveAllLikedDesignerInfo(Long memberId) {
+        return retrieveById(memberId).getDesignerLikes()
+                .stream()
+                .map(likeDesigner -> {
+                    Designer designer = likeDesigner.getDesigner();
+                    return new LikedDesignerInfoResponse(
+                            designer.getId(),
+                            designer.getName(),
+                            designer.getProfileImgUrl(),
+                            designer.getIntroduce(),
+                            designer.getLikeCount(),
+                            true
+                    );
+                })
+                .collect(Collectors.toList());
     }
 }

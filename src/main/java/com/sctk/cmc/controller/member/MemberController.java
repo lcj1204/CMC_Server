@@ -3,16 +3,17 @@ package com.sctk.cmc.controller.member;
 import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
+import com.sctk.cmc.controller.designer.dto.LikedDesignerInfoResponse;
 import com.sctk.cmc.controller.member.dto.*;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
+import com.sctk.cmc.service.designer.dto.DesignerInfoCard;
 import com.sctk.cmc.service.member.like.handler.function.adapter.LikeFunctionAdapter;
 import com.sctk.cmc.service.member.dto.*;
 import com.sctk.cmc.service.member.MemberService;
 import com.sctk.cmc.controller.common.ProfileImgPostResponse;
-import com.sctk.cmc.service.member.like.handler.function.find.adapter.LikeObjectFindAdapter;
 import com.sctk.cmc.service.member.product.MemberProductService;
-import com.sctk.cmc.service.member.product.dto.MemberProductGetInfoResponse;
+import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -91,6 +92,15 @@ public class MemberController {
 
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
+
+    @GetMapping("/likes/designer")
+    @Operation(summary = "찜한 디자이너 조회", description = "좋아요 처리가 된 디자이너를 조회합니다.")
+    public BaseResponse<List<LikedDesignerInfoResponse>> getAllLikedDesigner() {
+
+        List<LikedDesignerInfoResponse> responses = memberService.retrieveAllLikedDesignerInfo(getMemberId());
+        return new BaseResponse<>(responses);
+    }
+
     @PostMapping("/likes/designer")
     @Operation(summary = "디자니어 좋아요 처리", description = "디자이너에 좋아요 처리를 합니다.")
     public BaseResponse<LikeResponse> postLikeForDesigner(@RequestParam(name = "designer-id") Long designerId) {
