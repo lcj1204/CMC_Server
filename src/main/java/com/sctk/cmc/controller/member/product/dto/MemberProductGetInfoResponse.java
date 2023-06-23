@@ -1,9 +1,7 @@
-package com.sctk.cmc.service.member.product.dto;
+package com.sctk.cmc.controller.member.product.dto;
 
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
-import com.sctk.cmc.service.designer.dto.DesignerInfoCard;
-import com.sctk.cmc.service.designer.product.dto.DesignerProductGetDetailResponse;
 import com.sctk.cmc.service.designer.product.dto.DesignerProductGetInfoResponse;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;

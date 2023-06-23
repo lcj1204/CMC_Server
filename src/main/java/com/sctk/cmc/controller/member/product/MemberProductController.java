@@ -2,8 +2,8 @@ package com.sctk.cmc.controller.member.product;
 
 import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.response.BaseResponse;
+import com.sctk.cmc.controller.member.product.dto.MemberProductGetDetailResponse;
 import com.sctk.cmc.service.member.product.MemberProductService;
-import com.sctk.cmc.service.member.product.dto.MemberProductGetDetailResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
