@@ -3,13 +3,17 @@ package com.sctk.cmc.controller.member;
 import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
+import com.sctk.cmc.controller.designer.dto.LikedDesignerInfoResponse;
 import com.sctk.cmc.controller.member.dto.*;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
+import com.sctk.cmc.service.designer.dto.DesignerInfoCard;
 import com.sctk.cmc.service.member.like.handler.function.adapter.LikeFunctionAdapter;
 import com.sctk.cmc.service.member.dto.*;
 import com.sctk.cmc.service.member.MemberService;
 import com.sctk.cmc.controller.common.ProfileImgPostResponse;
+import com.sctk.cmc.service.member.product.MemberProductService;
+import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -26,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberProductService memberProductService;
     private final LikeFunctionAdapter likeFunctionAdapter;
 
     // 구매자 간단 정보 조회
@@ -86,12 +92,29 @@ public class MemberController {
 
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
+
+    @GetMapping("/likes/designer")
+    @Operation(summary = "찜한 디자이너 조회", description = "좋아요 처리가 된 디자이너를 조회합니다.")
+    public BaseResponse<List<LikedDesignerInfoResponse>> getAllLikedDesigner() {
+
+        List<LikedDesignerInfoResponse> responses = memberService.retrieveAllLikedDesignerInfo(getMemberId());
+        return new BaseResponse<>(responses);
+    }
+
     @PostMapping("/likes/designer")
     @Operation(summary = "디자니어 좋아요 처리", description = "디자이너에 좋아요 처리를 합니다.")
     public BaseResponse<LikeResponse> postLikeForDesigner(@RequestParam(name = "designer-id") Long designerId) {
         LikeResponse response = likeFunctionAdapter.handle(getMemberId(), designerId, Designer.class);
 
         return new BaseResponse<>(response);
+    }
+
+    @GetMapping("/likes/product")
+    @Operation(summary = "찜한 상품 조회", description = "좋아요 처리가 된 상품을 조회합니다.")
+    public BaseResponse<List<MemberProductGetInfoResponse>> getAllLikedProduct() {
+
+        List<MemberProductGetInfoResponse> responses = memberProductService.retrieveAllInfoById(getMemberId());
+        return new BaseResponse<>(responses);
     }
 
     @PostMapping("/likes/product")

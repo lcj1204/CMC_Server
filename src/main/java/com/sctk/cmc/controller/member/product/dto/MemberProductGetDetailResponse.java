@@ -1,4 +1,4 @@
-package com.sctk.cmc.service.member.product.dto;
+package com.sctk.cmc.controller.member.product.dto;
 
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
