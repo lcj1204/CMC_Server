@@ -1,6 +1,7 @@
 package com.sctk.cmc.domain;
 
 import com.sctk.cmc.common.exception.CMCException;
+import com.sctk.cmc.domain.likeobject.LikeDesigner;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import static com.sctk.cmc.common.exception.ResponseStatus.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Designer extends BaseTimeEntity {
+public class Designer extends BaseTimeEntity implements LikedEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "designer_id")
     private Long id;
