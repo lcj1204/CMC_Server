@@ -3,21 +3,22 @@ package com.sctk.cmc.controller.member;
 import com.sctk.cmc.auth.domain.SecurityMemberDetails;
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.common.response.BaseResponse;
+import com.sctk.cmc.controller.common.ProfileImgPostResponse;
 import com.sctk.cmc.controller.designer.dto.LikedDesignerInfoResponse;
 import com.sctk.cmc.controller.member.dto.*;
+import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
+import com.sctk.cmc.controller.member.product.dto.MemberProductLikeGetResponse;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
-import com.sctk.cmc.service.designer.dto.DesignerInfoCard;
-import com.sctk.cmc.service.member.like.handler.function.adapter.LikeFunctionAdapter;
-import com.sctk.cmc.service.member.dto.*;
 import com.sctk.cmc.service.member.MemberService;
-import com.sctk.cmc.controller.common.ProfileImgPostResponse;
+import com.sctk.cmc.service.member.dto.*;
+import com.sctk.cmc.service.member.like.handler.function.adapter.LikeFunctionAdapter;
 import com.sctk.cmc.service.member.product.MemberProductService;
-import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -114,6 +115,16 @@ public class MemberController {
     public BaseResponse<List<MemberProductGetInfoResponse>> getAllLikedProduct() {
 
         List<MemberProductGetInfoResponse> responses = memberProductService.retrieveAllInfoById(getMemberId());
+        return new BaseResponse<>(responses);
+    }
+
+    @Operation(summary = "상품 좋아요 확인 API", description = "해당 상품에 좋아요를 누른 기록이 있는지 확인합니다.")
+    @GetMapping("likes/product/{productId}")
+    public BaseResponse<MemberProductLikeGetResponse> checkLiked(@AuthenticationPrincipal SecurityMemberDetails memberDetails,
+                                                                 @PathVariable("productId") Long productId) {
+        Long memberId = memberDetails.getId();
+        MemberProductLikeGetResponse responses = memberProductService.checkLiked(memberId, productId);
+
         return new BaseResponse<>(responses);
     }
 
