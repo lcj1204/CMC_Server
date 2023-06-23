@@ -1,19 +1,12 @@
 package com.sctk.cmc.service.designer;
 
 import com.sctk.cmc.common.exception.ResponseStatus;
-import com.sctk.cmc.controller.designer.dto.CategoryView;
+import com.sctk.cmc.controller.designer.dto.*;
 import com.sctk.cmc.domain.*;
-import com.sctk.cmc.controller.designer.dto.CategoryParam;
-import com.sctk.cmc.service.designer.dto.DesignerInfo;
-import com.sctk.cmc.service.designer.dto.DesignerJoinParam;
+import com.sctk.cmc.service.designer.dto.*;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.repository.designer.DesignerRepository;
-import com.sctk.cmc.service.designer.dto.FilteredDesignerInfo;
-import com.sctk.cmc.service.designer.dto.FreshDesignerInfo;
-import com.sctk.cmc.service.designer.dto.PopularDesignerInfo;
 import com.sctk.cmc.controller.common.dto.ProfileImgPostResponse;
-import com.sctk.cmc.controller.designer.dto.PortfolioImgGetResponse;
-import com.sctk.cmc.controller.designer.dto.PortfolioImgPostResponse;
 import com.sctk.cmc.util.aws.AmazonS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,6 +111,24 @@ public class DesignerServiceImpl implements DesignerService {
 
         designer.clearCategories();
         createCategories(categoryParams, designer);
+    }
+
+    @Override
+    public List<DesignerGetBySearchingResponse> searchAllByKeywordInNamesAndCategories(String keyword) {
+        String upperKeyword = keyword.toUpperCase();
+        if (upperKeyword.length() < 2) {
+            throw new CMCException(SEARCH_KEYWORD_LENGTH_TOO_SHORT);
+        }
+
+        return designerRepository.findAll()
+                .stream()
+                .filter(designer -> designer.getName().toUpperCase().contains(upperKeyword)
+                        || designer.getNickname().toUpperCase().contains(upperKeyword)
+                        || designer.containsNameInCategories(upperKeyword))
+                .map(DesignerInfoCard::of)
+                .sorted(Comparator.comparing(DesignerInfoCard::getLikes).reversed())
+                .map(DesignerGetBySearchingResponse::new)
+                .collect(Collectors.toList());
     }
 
     private static void createCategories(List<CategoryParam> categoryParams, Designer designer) {
