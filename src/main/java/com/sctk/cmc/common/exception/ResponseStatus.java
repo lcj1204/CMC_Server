@@ -11,6 +11,7 @@ public enum ResponseStatus {
     AUTHENTICATION_ILLEGAL_PASSWORD(1003, "비밀번호가 일치하지 않습니다."),
     INTERNAL_SERVER_ERROR(1004, "서버 내부 오류 입니다."),
     NOT_SUPPORTED_LIKING(1005, "지원하지 않는 좋아요입니다."),
+    SEARCH_KEYWORD_LENGTH_TOO_SHORT(1006, "검색어는 최소 두 글자 이상이어야 합니다."),
 
     // Members
     MEMBERS_ILLEGAL_ID(2001, "존재하지 않는 회원 ID입니다."),
