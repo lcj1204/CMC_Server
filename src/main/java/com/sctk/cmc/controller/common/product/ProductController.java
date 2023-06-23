@@ -39,7 +39,7 @@ public class ProductController {
         return new BaseResponse<>(responses);
     }
 
-    @Operation(summary = "검색어(이름 or 태그)를 통한 상품 조회 API", description = "이름 or 태그에 검색어를 포함하는 상품을 조회합니다.")
+    @Operation(summary = "검색어(이름 or 태그)를 통한 상품 조회 API", description = "이름 or 태그에 검색어를 포함하는 상품을 조회합니다. Like Count 내림차순")
     @GetMapping("/search")
     public BaseResponse<List<ProductGetBySearchingResponse>> getSearchedProducts(@RequestParam String keyword) {
         List<ProductGetBySearchingResponse> responses = productService.searchAllByKeywordInNameAndTag(keyword);
