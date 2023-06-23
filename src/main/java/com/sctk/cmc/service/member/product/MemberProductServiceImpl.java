@@ -2,11 +2,13 @@ package com.sctk.cmc.service.member.product;
 
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
+import com.sctk.cmc.controller.member.product.dto.MemberProductLikeGetResponse;
 import com.sctk.cmc.domain.DescriptionImg;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.repository.member.product.MemberProductRepository;
 import com.sctk.cmc.service.member.MemberService;
+import com.sctk.cmc.service.member.like.product.LikeProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ import static com.sctk.cmc.common.exception.ResponseStatus.PRODUCT_ILLEGAL_ID;
 public class MemberProductServiceImpl implements MemberProductService {
     private final MemberService memberService;
     private final MemberProductRepository memberProductRepository;
+    private final LikeProductService likeProductService;
+
     @Override
     public Product retrieveById(Long productId) {
         return memberProductRepository.findByDesignerIdAndId(productId)
@@ -53,5 +57,12 @@ public class MemberProductServiceImpl implements MemberProductService {
         return product.getDescriptionImgList().stream()
                 .map(DescriptionImg::getUrl)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public MemberProductLikeGetResponse checkLiked(Long memberId, Long productId) {
+        boolean liked = likeProductService.checkMemberLikedProduct(memberId, productId);
+
+        return MemberProductLikeGetResponse.of(liked);
     }
 }

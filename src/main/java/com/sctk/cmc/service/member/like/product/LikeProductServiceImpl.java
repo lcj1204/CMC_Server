@@ -14,7 +14,7 @@ public class LikeProductServiceImpl implements LikeProductService{
     private final LikeProductRepository likeProductRepository;
 
     @Override
-    public boolean checkLikeProduct(Long memberId, Long productId) {
+    public boolean checkMemberLikedProduct(Long memberId, Long productId) {
         return likeProductRepository.existsByMemberIdAndId(memberId, productId);
     }
 }
