@@ -14,6 +14,8 @@ public class ProductGetDetailResponse {
     private DesignerInfoCard designerInfoCard;
     private Long productId;
     private String name;
+    private String highCategory;
+    private String lowCategory;
     private String tag;
     private int price;
     private String description;
@@ -30,6 +32,8 @@ public class ProductGetDetailResponse {
                 .designerInfoCard(designerInfoCard)
                 .productId(product.getId())
                 .name(product.getName())
+                .highCategory(product.getHighCategory())
+                .lowCategory(product.getLowCategory())
                 .tag(product.getTag())
                 .price(product.getPrice())
                 .description(product.getDescription())

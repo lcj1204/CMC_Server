@@ -37,6 +37,8 @@ public class DesignerProductServiceImpl implements DesignerProductService{
 
         Product createdProduct = Product.create(designer,
                                                 designerProductRegisterParams.getName(),
+                                                designerProductRegisterParams.getHighCategory(),
+                                                designerProductRegisterParams.getLowCategory(),
                                                 designerProductRegisterParams.getPrice(),
                                                 designerProductRegisterParams.getTag(),
                                                 designerProductRegisterParams.getDescription());

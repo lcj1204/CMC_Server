@@ -23,6 +23,8 @@ public class Product extends BaseTimeEntity implements LikedEntity {
     private Long id;
 
     private String name;
+    private String highCategory;
+    private String lowCategory;
     private int price;
     private String tag;
     private String description;
@@ -47,8 +49,11 @@ public class Product extends BaseTimeEntity implements LikedEntity {
     private List<ThumbnailImg> thumbnailImgList = new ArrayList<>();
 
     @Builder
-    public Product(String name, int price, String tag, String description, int likeCount, Designer designer) {
+    public Product(String name, String highCategory, String lowCategory,
+                   int price, String tag, String description, int likeCount, Designer designer) {
         this.name = name;
+        this.highCategory = highCategory;
+        this.lowCategory = lowCategory;
         this.price = price;
         this.tag = tag;
         this.description = description;
@@ -56,10 +61,13 @@ public class Product extends BaseTimeEntity implements LikedEntity {
         this.designer = designer;
     }
 
-    public static Product create(Designer designer, String name, int price, String tag, String description) {
+    public static Product create(Designer designer, String name, String highCategory, String lowCategory,
+                                 int price, String tag, String description) {
         return Product.builder()
                 .designer(designer)
                 .name(name)
+                .highCategory(highCategory)
+                .lowCategory(lowCategory)
                 .price(price)
                 .tag(tag)
                 .description(description)
