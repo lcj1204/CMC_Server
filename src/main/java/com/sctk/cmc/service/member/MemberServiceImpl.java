@@ -2,6 +2,7 @@ package com.sctk.cmc.service.member;
 
 import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.controller.designer.dto.LikedDesignerInfoResponse;
+import com.sctk.cmc.controller.member.dto.LikeDesignerGetExistenceResponse;
 import com.sctk.cmc.domain.*;
 import com.sctk.cmc.common.exception.CMCException;
 import com.sctk.cmc.domain.likeobject.LikeObject;
@@ -172,5 +173,16 @@ public class MemberServiceImpl implements MemberService {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public LikeDesignerGetExistenceResponse checkLiked(Long memberId, Long designerId) {
+        Member member = retrieveById(memberId);
+
+        boolean liked = member.getDesignerLikes()
+                .stream()
+                .anyMatch(likeDesigner -> likeDesigner.getDesigner().getId() == designerId);
+
+        return LikeDesignerGetExistenceResponse.of(liked);
     }
 }

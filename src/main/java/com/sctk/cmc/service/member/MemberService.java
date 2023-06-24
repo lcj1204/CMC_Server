@@ -2,6 +2,7 @@ package com.sctk.cmc.service.member;
 
 
 import com.sctk.cmc.controller.designer.dto.LikedDesignerInfoResponse;
+import com.sctk.cmc.controller.member.dto.LikeDesignerGetExistenceResponse;
 import com.sctk.cmc.domain.likeobject.LikeObject;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.controller.common.dto.ProfileImgPostResponse;
@@ -34,4 +35,6 @@ public interface MemberService {
     void checkRequirements(Long memberId);
 
     List<LikedDesignerInfoResponse> retrieveAllLikedDesignerInfo(Long memberId);
+
+    LikeDesignerGetExistenceResponse checkLiked(Long memberId, Long designerId);
 }
