@@ -1,8 +1,8 @@
 package com.sctk.cmc.service.member.product;
 
 import com.sctk.cmc.common.exception.CMCException;
+import com.sctk.cmc.controller.member.product.dto.LikeProductGetExistenceResponse;
 import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
-import com.sctk.cmc.controller.member.product.dto.MemberProductLikeGetResponse;
 import com.sctk.cmc.domain.DescriptionImg;
 import com.sctk.cmc.domain.Member;
 import com.sctk.cmc.domain.Product;
@@ -60,9 +60,13 @@ public class MemberProductServiceImpl implements MemberProductService {
     }
 
     @Override
-    public MemberProductLikeGetResponse checkLiked(Long memberId, Long productId) {
-        boolean liked = likeProductService.checkMemberLikedProduct(memberId, productId);
+    public LikeProductGetExistenceResponse checkLiked(Long memberId, Long productId) {
+        Member member = memberService.retrieveById(memberId);
 
-        return MemberProductLikeGetResponse.of(liked);
+        boolean liked = member.getProductLikes()
+                .stream()
+                .anyMatch(likeProduct -> likeProduct.getProduct().getId() == productId);
+        
+        return LikeProductGetExistenceResponse.of(liked);
     }
 }
