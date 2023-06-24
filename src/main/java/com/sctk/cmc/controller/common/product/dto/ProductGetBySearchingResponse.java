@@ -1,9 +1,12 @@
 package com.sctk.cmc.controller.common.product.dto;
 
+import com.sctk.cmc.domain.Product;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class ProductGetBySearchingResponse {
     private Long productId;
@@ -12,4 +15,15 @@ public class ProductGetBySearchingResponse {
     private int productLikeCount;
     private Long designerId;
     private String profileImgUrl;
+
+    public static ProductGetBySearchingResponse of(Product product) {
+        return ProductGetBySearchingResponse.builder()
+                .productId(product.getId())
+                .name(product.getName())
+                .mainImgUrl(product.getThumbnailImgList().get(0).getUrl())
+                .productLikeCount(product.getLikeCount())
+                .designerId(product.getDesigner().getId())
+                .profileImgUrl(product.getDesigner().getProfileImgUrl())
+                .build();
+    }
 }
