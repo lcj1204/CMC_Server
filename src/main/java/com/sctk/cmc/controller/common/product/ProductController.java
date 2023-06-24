@@ -59,9 +59,9 @@ public class ProductController {
 
     @Operation(summary = "기간내 최신순으로 제품 조회 API", description = "선택한 날짜 사이에 등록된 상품을 최신순으로 죄회합니다.")
     @GetMapping("/latest")
-    public BaseResponse<List<ProductGetBySearchingResponse>> getProductsBetweenDate(@RequestParam(name = "startDate", defaultValue = "#{T(java.time.LocalDate).now()}")
+    public BaseResponse<List<ProductGetBySearchingResponse>> getProductsBetweenDate(@RequestParam(name = "startDate", defaultValue = "#{T(java.time.LocalDate).now().minusDays(7)}")
                                                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-                                                                                    @RequestParam(name = "endDate", defaultValue = "#{T(java.time.LocalDate).now().minusDays(7)}")
+                                                                                    @RequestParam(name = "endDate", defaultValue = "#{T(java.time.LocalDate).now()}")
                                                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                                                                                     @PageableDefault(size=5) Pageable pageable) {
         List<ProductGetBySearchingResponse> responses = productService.retrieveAllByStartAndEndDate(startDate, endDate, pageable);
