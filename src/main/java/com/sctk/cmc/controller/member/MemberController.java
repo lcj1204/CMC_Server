@@ -6,8 +6,8 @@ import com.sctk.cmc.common.response.BaseResponse;
 import com.sctk.cmc.controller.common.dto.ProfileImgPostResponse;
 import com.sctk.cmc.controller.designer.dto.LikedDesignerInfoResponse;
 import com.sctk.cmc.controller.member.dto.*;
+import com.sctk.cmc.controller.member.product.dto.LikeProductGetExistenceResponse;
 import com.sctk.cmc.controller.member.product.dto.MemberProductGetInfoResponse;
-import com.sctk.cmc.controller.member.product.dto.MemberProductLikeGetResponse;
 import com.sctk.cmc.domain.Designer;
 import com.sctk.cmc.domain.Product;
 import com.sctk.cmc.service.member.MemberService;
@@ -94,6 +94,14 @@ public class MemberController {
         return new BaseResponse<>(ResponseStatus.SUCCESS);
     }
 
+    @Operation(summary = "디자이너 좋아요 확인 API", description = "해당 디자이너에 좋아요를 누른 기록이 있는지 확인합니다.")
+    @GetMapping("likes/designer/{designerId}")
+    public BaseResponse<LikeDesignerGetExistenceResponse> checkLikeDesigner(@PathVariable("designerId") Long designerId) {
+        LikeDesignerGetExistenceResponse response = memberService.checkLiked(getMemberId(), designerId);
+
+        return new BaseResponse<>(response);
+    }
+
     @GetMapping("/likes/designer")
     @Operation(summary = "찜한 디자이너 조회", description = "좋아요 처리가 된 디자이너를 조회합니다.")
     public BaseResponse<List<LikedDesignerInfoResponse>> getAllLikedDesigner() {
@@ -120,10 +128,8 @@ public class MemberController {
 
     @Operation(summary = "상품 좋아요 확인 API", description = "해당 상품에 좋아요를 누른 기록이 있는지 확인합니다.")
     @GetMapping("likes/product/{productId}")
-    public BaseResponse<MemberProductLikeGetResponse> checkLiked(@AuthenticationPrincipal SecurityMemberDetails memberDetails,
-                                                                 @PathVariable("productId") Long productId) {
-        Long memberId = memberDetails.getId();
-        MemberProductLikeGetResponse responses = memberProductService.checkLiked(memberId, productId);
+    public BaseResponse<LikeProductGetExistenceResponse> checkLikeProduct(@PathVariable("productId") Long productId) {
+        LikeProductGetExistenceResponse responses = memberProductService.checkLiked(getMemberId(), productId);
 
         return new BaseResponse<>(responses);
     }

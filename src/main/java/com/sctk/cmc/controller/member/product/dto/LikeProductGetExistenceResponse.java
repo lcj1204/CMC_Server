@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberProductLikeGetResponse {
+public class LikeProductGetExistenceResponse {
     Boolean liked;
 
-    public static MemberProductLikeGetResponse of(Boolean liked) {
-        return MemberProductLikeGetResponse.builder()
+    public static LikeProductGetExistenceResponse of(Boolean liked) {
+        return LikeProductGetExistenceResponse.builder()
                 .liked(liked)
                 .build();
     }
