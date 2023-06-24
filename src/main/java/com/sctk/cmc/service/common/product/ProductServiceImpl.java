@@ -12,15 +12,17 @@ import com.sctk.cmc.service.common.product.dto.ProductGetDetailResponse;
 import com.sctk.cmc.service.designer.product.dto.ProductGetInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sctk.cmc.common.exception.ResponseStatus.*;
 import static com.sctk.cmc.common.exception.ResponseStatus.PRODUCT_ILLEGAL_ID;
+import static com.sctk.cmc.common.exception.ResponseStatus.SEARCH_KEYWORD_LENGTH_TOO_SHORT;
 
 @Service
 @Transactional(readOnly = true)
@@ -94,5 +96,35 @@ public class ProductServiceImpl implements ProductService {
                     );
                 }).sorted(Comparator.comparing(ProductGetBySearchingResponse::getProductLikeCount).reversed())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductGetBySearchingResponse> retrieveAllOrderByLikeCount(Pageable pageable) {
+
+        List<Product> productList = productRepository.findAllOrderByLikeCount(pageable);
+
+        return productList.stream()
+                .map(ProductGetBySearchingResponse::of)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductGetBySearchingResponse> retrieveAllByStartAndEndDate(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+
+        validateStartDateBeforeEndDate(startDate, endDate);
+
+        List<Product> productList = productRepository.findAllByCreatedAtBetweenOrderByCreatedAtAsc(startDate, endDate, pageable);
+
+        return productList.stream()
+                .map(ProductGetBySearchingResponse::of)
+                .collect(Collectors.toList());
+    }
+
+    private static void validateStartDateBeforeEndDate(LocalDate startDate, LocalDate endDate) {
+        if (endDate != null) {
+            if (startDate.isAfter(endDate)) {
+                throw new CMCException(ResponseStatus.INVALID_DATE);
+            }
+        }
     }
 }
