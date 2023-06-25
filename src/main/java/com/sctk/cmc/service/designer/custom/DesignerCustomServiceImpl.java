@@ -1,14 +1,17 @@
 package com.sctk.cmc.service.designer.custom;
 
 import com.sctk.cmc.common.exception.CMCException;
+import com.sctk.cmc.common.exception.ResponseStatus;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetDetailResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomGetInfoResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomIdResponse;
 import com.sctk.cmc.controller.designer.custom.dto.CustomPostAcceptanceResponse;
-import com.sctk.cmc.domain.*;
+import com.sctk.cmc.domain.Custom;
+import com.sctk.cmc.domain.CustomResult;
+import com.sctk.cmc.domain.CustomStatus;
+import com.sctk.cmc.domain.ProductionProgress;
 import com.sctk.cmc.repository.designer.custom.DesignerCustomRepository;
 import com.sctk.cmc.repository.designer.productionProgress.DesignerProductionProgressRepository;
-import com.sctk.cmc.service.designer.DesignerService;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultAcceptParams;
 import com.sctk.cmc.service.designer.custom.dto.CustomResultRejectParams;
 import com.sctk.cmc.service.member.custom.MemberCustomService;
@@ -16,9 +19,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-import static com.sctk.cmc.common.exception.ResponseStatus.*;
+
+import static com.sctk.cmc.common.exception.ResponseStatus.ALREADY_RESPONDED_CUSTOM;
+import static com.sctk.cmc.common.exception.ResponseStatus.NOT_HAVE_DESIGNERS_AUTHORITY;
 
 
 @Service
@@ -27,7 +34,6 @@ import static com.sctk.cmc.common.exception.ResponseStatus.*;
 @Slf4j
 public class DesignerCustomServiceImpl implements DesignerCustomService {
     private final MemberCustomService memberCustomService;
-    private final DesignerService designerService;
     private final DesignerCustomRepository designerCustomRepository;
     private final DesignerProductionProgressRepository designerProductionProgressRepository;
 
@@ -74,15 +80,15 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
 
         Custom custom = memberCustomService.retrieveWithMemberAndDesignerAndImgs(customId);
 
+        validateStartDateBeforeEndDate(customResultAcceptParams.getExpectStartDate(), customResultAcceptParams.getExpectEndDate());
+
         validateDesignerAuthority(designerId, custom);
 
-        // accepted 가 REQUESTING 인지 검증
         validateAcceptedIsRequesting(custom);
 
         CustomResult.ofAcceptance(custom, customResultAcceptParams);
         custom.changeStatusTo(CustomStatus.APPROVAL);
 
-        //Production_Progress 생성
         ProductionProgress productionProgress = ProductionProgress.create(custom.getDesigner(), custom.getMember(), custom);
         ProductionProgress saveProductionProgress = designerProductionProgressRepository.save(productionProgress);
 
@@ -114,6 +120,14 @@ public class DesignerCustomServiceImpl implements DesignerCustomService {
     private void validateAcceptedIsRequesting(Custom custom) {
         if (custom.getAccepted() != CustomStatus.REQUESTING) {
             throw new CMCException(ALREADY_RESPONDED_CUSTOM);
+        }
+    }
+
+    private static void validateStartDateBeforeEndDate(LocalDate startDate, LocalDate endDate) {
+        if (endDate != null) {
+            if (startDate.isAfter(endDate)) {
+                throw new CMCException(ResponseStatus.INVALID_DATE);
+            }
         }
     }
 
