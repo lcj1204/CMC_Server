@@ -14,6 +14,8 @@ public class MemberProductionProgressGetInfoResponse {
     private String designerName;
     private String designerProfileImgUrl;
     private String title;
+    private String category;
+    private Integer price;
     private ProgressType status;
 
     public static MemberProductionProgressGetInfoResponse of(ProductionProgress productionProgress) {
@@ -21,6 +23,8 @@ public class MemberProductionProgressGetInfoResponse {
                 .productionProgressId(productionProgress.getId())
                 .mainImg(productionProgress.getMainImg())
                 .title(productionProgress.getTitle())
+                .category(productionProgress.getCategory())
+                .price(productionProgress.getPrice())
                 .designerId(productionProgress.getDesigner().getId())
                 .designerName(productionProgress.getDesigner().getName())
                 .designerProfileImgUrl(productionProgress.getDesigner().getProfileImgUrl())
