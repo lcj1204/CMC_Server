@@ -14,6 +14,7 @@ public class ProductGetBySearchingResponse {
     private String mainImgUrl;
     private int productLikeCount;
     private Long designerId;
+    private String designerName;
     private String profileImgUrl;
 
     public static ProductGetBySearchingResponse of(Product product) {
@@ -23,6 +24,7 @@ public class ProductGetBySearchingResponse {
                 .mainImgUrl(product.getThumbnailImgList().get(0).getUrl())
                 .productLikeCount(product.getLikeCount())
                 .designerId(product.getDesigner().getId())
+                .designerName(product.getDesigner().getName())
                 .profileImgUrl(product.getDesigner().getProfileImgUrl())
                 .build();
     }
