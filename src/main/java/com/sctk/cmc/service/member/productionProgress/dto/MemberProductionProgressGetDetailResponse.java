@@ -10,11 +10,11 @@ import java.util.Map;
 @Getter
 @Builder
 public class MemberProductionProgressGetDetailResponse {
-    private int DDay;
+    private Long DDay;
     private MemberProductionProgressGetInfoResponse productionProgressInfo;
     private Map<ProgressType, List<String>> productionProgressImgMap;
 
-    public static MemberProductionProgressGetDetailResponse of(Integer DDay, MemberProductionProgressGetInfoResponse productionProgressInfo,
+    public static MemberProductionProgressGetDetailResponse of(Long DDay, MemberProductionProgressGetInfoResponse productionProgressInfo,
                                                                Map<ProgressType, List<String>> productionProgressImgList) {
         return MemberProductionProgressGetDetailResponse.builder()
                 .DDay(DDay)
