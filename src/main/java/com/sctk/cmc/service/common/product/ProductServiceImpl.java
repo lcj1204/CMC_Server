@@ -92,6 +92,7 @@ public class ProductServiceImpl implements ProductService {
                             product.getThumbnailImgList().get(0).getUrl(),
                             product.getLikeCount(),
                             designer.getId(),
+                            designer.getName(),
                             designer.getProfileImgUrl()
                     );
                 }).sorted(Comparator.comparing(ProductGetBySearchingResponse::getProductLikeCount).reversed())
