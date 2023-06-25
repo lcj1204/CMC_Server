@@ -90,6 +90,7 @@ public class ProductServiceImpl implements ProductService {
                             product.getId(),
                             product.getName(),
                             product.getThumbnailImgList().get(0).getUrl(),
+                            product.getPrice(),
                             product.getLikeCount(),
                             designer.getId(),
                             designer.getName(),
