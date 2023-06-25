@@ -12,6 +12,7 @@ public class ProductGetBySearchingResponse {
     private Long productId;
     private String name;
     private String mainImgUrl;
+    private int price;
     private int productLikeCount;
     private Long designerId;
     private String designerName;
@@ -22,6 +23,7 @@ public class ProductGetBySearchingResponse {
                 .productId(product.getId())
                 .name(product.getName())
                 .mainImgUrl(product.getThumbnailImgList().get(0).getUrl())
+                .price(product.getPrice())
                 .productLikeCount(product.getLikeCount())
                 .designerId(product.getDesigner().getId())
                 .designerName(product.getDesigner().getName())
