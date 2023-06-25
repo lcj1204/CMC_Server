@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -115,7 +117,10 @@ public class ProductServiceImpl implements ProductService {
 
         validateStartDateBeforeEndDate(startDate, endDate);
 
-        List<Product> productList = productRepository.findAllByCreatedAtBetweenOrderByCreatedAtAsc(startDate, endDate, pageable);
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
+        List<Product> productList = productRepository.findAllByCreatedAtBetweenOrderByCreatedAtAsc(startDateTime, endDateTime, pageable);
 
         return productList.stream()
                 .map(ProductGetBySearchingResponse::of)
