@@ -68,4 +68,4 @@
 
 ## 📕 예시 API 리스트
 
-<img width="1086" height="350" alt="image" src="https://github.com/pothole-developer/pothole-backend/assets/54929830/fd2c6a8b-6ef8-4e22-a0ac-9d9f0fd005f4">
+<img width="100%" height="100%" alt="image" src="https://github.com/pothole-developer/pothole-backend/assets/54929830/fd2c6a8b-6ef8-4e22-a0ac-9d9f0fd005f4">
